@@ -1,0 +1,6 @@
+<resources>
+    <string name="core_app_name">core-lib</string>
+
+
+    <string name="core_click_again_to_exit">Please click again to exit</string>
+</resources>
