@@ -6,6 +6,7 @@ import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
+import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
 class MainActivity : AbstractActivity() {
@@ -17,7 +18,8 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.tvClickMvvm))
 
         findViewById<View>(R.id.tvClickMvvm).setOnClickListener {
-            ActivityHelper.startActivity(MvvmActivity::class.java)
+//            ActivityHelper.startActivity(MvvmActivity::class.java)
+            ActivityHelper.startActivity(NetworkActivity::class.java)
         }
 
         findViewById<View>(R.id.tvClickMvp).setOnClickListener {
