@@ -20,7 +20,7 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.tvClickMvvm).setOnClickListener {
 //            ActivityHelper.startActivity(MvvmActivity::class.java)
-            ActivityHelper.startActivity(NetworkActivity::class.java)
+            ActivityHelper.startActivity(NetActivityJava::class.java)
 //            ActivityHelper.startActivity(CropMainActivity::class.java)
         }
 

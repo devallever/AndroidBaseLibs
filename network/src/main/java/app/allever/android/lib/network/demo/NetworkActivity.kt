@@ -27,6 +27,9 @@ class NetworkActivity : AbstractActivity() {
             val result = NetRepository.getBanner()
             NetRepository.showMessageIfFail(result)
             if (result.isSuccess) {
+                val data = result.getOrNull()!!
+                val list = data.data
+                list?.size
             } else {
 
             }

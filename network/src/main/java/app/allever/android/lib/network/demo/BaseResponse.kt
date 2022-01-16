@@ -8,4 +8,12 @@ open class BaseResponse<DATA> : NetResponse<DATA>() {
 
     override fun getCode() = errorCode
     override fun getMsg() = errorMsg
+
+    override fun <T : NetResponse<DATA>> generateResponse(code: Int, msg: String, data: DATA?): T {
+        val baseResponse = BaseResponse<DATA>()
+        baseResponse.errorCode = code
+        baseResponse.errorMsg = msg
+        baseResponse.data = data
+        return baseResponse as T
+    }
 }
