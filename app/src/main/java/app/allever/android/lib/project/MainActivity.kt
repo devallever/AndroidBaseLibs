@@ -2,11 +2,10 @@ package app.allever.android.lib.project
 
 import android.os.Bundle
 import android.view.View
+import app.allever.androd.lib.cropper.CropMainActivity
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
-import app.allever.android.lib.mvvm.demo.MvvmActivity
-import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
 class MainActivity : AbstractActivity() {
@@ -19,7 +18,8 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.tvClickMvvm).setOnClickListener {
 //            ActivityHelper.startActivity(MvvmActivity::class.java)
-            ActivityHelper.startActivity(NetworkActivity::class.java)
+//            ActivityHelper.startActivity(NetworkActivity::class.java)
+            ActivityHelper.startActivity(CropMainActivity::class.java)
         }
 
         findViewById<View>(R.id.tvClickMvp).setOnClickListener {

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:id="@+id/scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CropMainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/content_padding">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <com.edmodo.cropper.CropImageView
+            android:id="@+id/CropImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/butterfly"/>
+
+        <LinearLayout
+            android:id="@+id/fixedAspectRatioLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fixedAspectRatio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="@string/fixedAspectRatio"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ToggleButton
+                    android:id="@+id/fixedAspectRatioToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding_half"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/aspectRatioXHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="@string/aspectRatioXHeader"/>
+
+            <TextView
+                android:id="@+id/aspectRatioX"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="start"
+                tools:text="10"/>
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/aspectRatioXSeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="10"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding_half"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/aspectRatioYHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="@string/aspectRatioYHeader"/>
+
+            <TextView
+                android:id="@+id/aspectRatioY"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="start"
+                tools:text="10"/>
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/aspectRatioYSeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="10"/>
+
+        <LinearLayout
+            android:id="@+id/showGuidelinesLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding_half"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/showGuidelines"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="@string/showGuidelines"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/showGuidelinesSpin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:entries="@array/showGuidelinesArray"
+                    android:gravity="start"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/Button_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/content_padding"
+            android:minWidth="120dp"
+            android:text="@string/crop"
+            android:textColor="#33B5E5"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/croppedImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/croppedImageDesc"
+            android:scaleType="centerInside"/>
+
+    </LinearLayout>
+
+</ScrollView>
