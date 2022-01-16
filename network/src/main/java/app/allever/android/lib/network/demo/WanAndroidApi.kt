@@ -1,6 +1,5 @@
 package app.allever.android.lib.network.demo
 
-import app.allever.android.lib.network.response.BaseResponse
 import retrofit2.http.GET
 
 interface WanAndroidApi {

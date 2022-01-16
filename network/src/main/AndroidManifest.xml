@@ -6,5 +6,6 @@
 
     <application>
         <activity android:name=".demo.NetworkActivity" />
+        <activity android:name=".demo.NetActivityJava" />
     </application>
 </manifest>

@@ -14,7 +14,8 @@ fun log(tag: String, msg: String) {
     LogUtils.d(tag, msg)
 }
 
-fun loge(msg: String) {
+fun loge(msg: String?) {
+    msg ?: return
     LogUtils.e(msg)
 }
 
@@ -26,7 +27,8 @@ fun toast(resId: Int) {
     toast(getString(resId))
 }
 
-fun toast(msg: String) {
+fun toast(msg: String?) {
+    msg ?: return
     HandlerHelper.mainHandler.post {
         Toast.makeText(App.context, msg, Toast.LENGTH_SHORT).show()
     }
