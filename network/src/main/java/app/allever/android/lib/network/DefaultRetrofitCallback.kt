@@ -1,12 +1,13 @@
 package app.allever.android.lib.network
 
 import app.allever.android.lib.core.loge
+import app.allever.android.lib.network.response.DefaultNetResponse
 import app.allever.android.lib.network.response.NetResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DefaultRetrofitCallback<DATA, R: NetResponse<DATA>> : Callback<R> {
+class DefaultRetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
 
     private var responseCallback: ResponseCallback<DATA>
 
@@ -24,17 +25,17 @@ class DefaultRetrofitCallback<DATA, R: NetResponse<DATA>> : Callback<R> {
         }
         val requestResult: R? = response.body()
         if (requestResult == null) {
-            callback.onFail(HttpCode.UNKNOW, "没有返回数据", null)
+            val defaultResponse = DefaultNetResponse<DATA>(HttpCode.UNKNOW, "没有返回数据")
+            callback.onFail(defaultResponse)
             return
         }
         val code: Int = requestResult.getCode()
         val msg: String = requestResult.getMsg()
-        var message = msg
         if (HttpCode.isSuccessCode(code)) {
-            val data = requestResult.data
-            callback.onSuccess(code, message, data)
+            callback.onSuccess(requestResult)
         } else {
-            callback.onFail(code, message, null)
+            val defaultResponse = DefaultNetResponse<DATA>(code, msg)
+            callback.onFail(defaultResponse)
         }
     }
 
@@ -42,12 +43,13 @@ class DefaultRetrofitCallback<DATA, R: NetResponse<DATA>> : Callback<R> {
         if (callback == null) {
             return
         }
-        var msg: String = ""
+        var msg = ""
         if (t != null) {
             loge(0.toString() + " -> " + t.message)
             msg = t.message ?: ""
         }
-        callback.onFail(0, msg, null)
+        val defaultNetResponse = DefaultNetResponse<DATA>(HttpCode.UNKNOW, msg)
+        callback.onFail(defaultNetResponse)
     }
 
     override fun onResponse(call: Call<R>, response: Response<R>) {

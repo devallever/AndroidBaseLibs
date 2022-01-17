@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 
-abstract class DefaultContinuation<T: NetResponse<*>> : Continuation<T> {
+abstract class DefaultContinuation<T : NetResponse<*>> : Continuation<T> {
     override val context: CoroutineContext
         get() = Dispatchers.IO
 

@@ -5,22 +5,17 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
-import javax.crypto.MacSpi;
 
 import app.allever.android.lib.core.base.AbstractActivity;
 import app.allever.android.lib.core.util.LogUtils;
-import app.allever.android.lib.network.DefaultContinuation;
 import app.allever.android.lib.network.HttpConfig;
 import app.allever.android.lib.network.ResponseCallback;
 import app.allever.android.lib.network.response.NetResponse;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlinx.coroutines.Dispatchers;
 
+/**
+ * @author allever
+ */
 public class NetActivityJava extends AbstractActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,13 +25,13 @@ public class NetActivityJava extends AbstractActivity {
 
         NetRepository.INSTANCE.getBannerCall(new ResponseCallback<List<BannerData>>() {
             @Override
-            public void onSuccess(int code, @NonNull String msg, @Nullable List<BannerData> bannerData) {
-                LogUtils.INSTANCE.d(msg);
+            public void onFail(@NonNull NetResponse<List<BannerData>> response) {
+                LogUtils.INSTANCE.d(response.getMsg());
             }
 
             @Override
-            public void onFail(int code, @NonNull String msg, @Nullable NetResponse<List<BannerData>> response) {
-                LogUtils.INSTANCE.d(msg);
+            public void onSuccess(@NonNull NetResponse<List<BannerData>> response) {
+                LogUtils.INSTANCE.d(response.getMsg());
             }
         });
 
