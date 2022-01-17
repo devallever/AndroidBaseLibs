@@ -6,7 +6,9 @@ import android.widget.TextView
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.network.HttpConfig
 import app.allever.android.lib.network.R
+import app.allever.android.lib.network.interceptor.LoggerInterceptor
 import kotlinx.coroutines.launch
+import okhttp3.logging.HttpLoggingInterceptor
 
 class NetworkActivity : AbstractActivity() {
     private lateinit var tvResult: TextView
@@ -14,6 +16,9 @@ class NetworkActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_network)
 
+        HttpConfig.baseUrl("https://www.wanandroid.com/")
+            .interceptor(GlobalInterceptor())
+            .header("KEY","VALUE")
         HttpConfig.baseUrl("https://www.wanandroid.com/")
 
         tvResult = findViewById<TextView>(R.id.tvResult)

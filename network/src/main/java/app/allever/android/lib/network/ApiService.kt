@@ -1,5 +1,7 @@
 package app.allever.android.lib.network
 
+import app.allever.android.lib.network.interceptor.HeaderInterceptor
+import app.allever.android.lib.network.interceptor.LoggerInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -9,8 +11,9 @@ object ApiService {
     private val mRetrofit by lazy {
 
         val builder = OkHttpClient.Builder()
+
         //日志拦截
-        val loggingInterceptor = HttpLoggingInterceptor()
+        val loggingInterceptor = HttpLoggingInterceptor(LoggerInterceptor())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         builder.addInterceptor(loggingInterceptor)
 
@@ -20,7 +23,8 @@ object ApiService {
         }
 
         //请求头拦截
-//        builder.addInterceptor(HttpHeaderInterceptor())
+        builder.addInterceptor(HeaderInterceptor())
+//        builder.addInterceptor(HttpHeaderseaderInterceptor())
         Retrofit.Builder()
             .client(builder.build())
             .baseUrl(HttpConfig.baseUrl)

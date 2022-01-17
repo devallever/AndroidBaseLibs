@@ -8,6 +8,8 @@ object HttpConfig {
 
     val interceptors = mutableSetOf<Interceptor>()
 
+    val headers = mutableMapOf<String, String>()
+
     fun build(): HttpConfig {
         return this
     }
@@ -19,6 +21,11 @@ object HttpConfig {
 
     fun interceptor(interceptor: Interceptor): HttpConfig {
         interceptors.add(interceptor)
+        return this
+    }
+
+    fun header(key: String, value: String): HttpConfig {
+        headers[key] = value
         return this
     }
 
