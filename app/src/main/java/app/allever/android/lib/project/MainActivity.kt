@@ -8,6 +8,8 @@ import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.network.demo.NetActivityJava
 import app.allever.android.lib.network.demo.NetworkActivity
+import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
+import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
 class MainActivity : AbstractActivity() {
@@ -20,8 +22,9 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.tvClickMvvm).setOnClickListener {
 //            ActivityHelper.startActivity(MvvmActivity::class.java)
-            ActivityHelper.startActivity(NetworkActivity::class.java)
+//            ActivityHelper.startActivity(NetworkActivity::class.java)
 //            ActivityHelper.startActivity(CropMainActivity::class.java)
+            ActivityHelper.startActivity(AndPermissionActivity::class.java)
         }
 
         findViewById<View>(R.id.tvClickMvp).setOnClickListener {
