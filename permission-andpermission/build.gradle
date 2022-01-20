@@ -39,5 +39,6 @@ dependencies {
     implementation project(path: ':core')
     implementation project(path: ':permission-core')
 
-    api 'com.yanzhenjie:permission:2+'
+    //https://github.com/yanzhenjie/AndPermission
+    implementation 'com.yanzhenjie:permission:2+'
 }

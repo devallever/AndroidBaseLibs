@@ -31,4 +31,8 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(MvpActivity::class.java)
         }
     }
+
+    override fun isSupportSwipeBack(): Boolean {
+        return false
+    }
 }
