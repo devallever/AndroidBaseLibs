@@ -1,6 +1,7 @@
 package app.allever.android.lib.core.base
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.HandlerHelper
 import app.allever.android.lib.core.log
 import app.allever.android.lib.core.toast
+import cn.bingoogolapple.swipebacklayout.BGAKeyboardUtil
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
 import java.lang.ref.WeakReference
 
@@ -112,7 +114,15 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
      * 滑动返回执行完毕，销毁当前 Activity
      */
     override fun onSwipeBackLayoutExecuted() {
-        mSwipeBackHelper.swipeBackward()
+//        mSwipeBackHelper.swipeBackward();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            mSwipeBackHelper.swipeBackward()
+        } else {
+            BGAKeyboardUtil.closeKeyboard(this)
+            finish()
+            //TODO 动画造成关闭界面闪动
+            overridePendingTransition(0, 0)
+        }
     }
 
     override fun onBackPressed() {
