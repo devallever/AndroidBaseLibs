@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvClickMvvm"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="50dp"
-        android:text="Click Mvvm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/tvClickMvp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="50dp"
-        android:text="Click Mvp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/btnMvp"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="MVP"
+            android:textStyle="bold" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/btnMvvm"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="MVVM"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/btnBottomDialog"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Bottom Dialog"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnCenterDialog"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Center Dialog"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</ScrollView>

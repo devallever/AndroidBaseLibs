@@ -6,6 +6,7 @@ import app.allever.androd.lib.cropper.CropMainActivity
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
+import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetActivityJava
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
@@ -17,19 +18,31 @@ class MainActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        RippleHelper.addRippleView(findViewById(R.id.tvClickMvp))
-        RippleHelper.addRippleView(findViewById(R.id.tvClickMvvm))
+        RippleHelper.addRippleView(findViewById(R.id.btnMvvm))
+        RippleHelper.addRippleView(findViewById(R.id.btnBottomDialog))
+        RippleHelper.addRippleView(findViewById(R.id.btnMvp))
+        RippleHelper.addRippleView(findViewById(R.id.btnCenterDialog))
 
-        findViewById<View>(R.id.tvClickMvvm).setOnClickListener {
-//            ActivityHelper.startActivity(MvvmActivity::class.java)
+        findViewById<View>(R.id.btnMvvm).setOnClickListener {
+            ActivityHelper.startActivity(MvvmActivity::class.java)
 //            ActivityHelper.startActivity(NetworkActivity::class.java)
 //            ActivityHelper.startActivity(CropMainActivity::class.java)
-            ActivityHelper.startActivity(AndPermissionActivity::class.java)
+//            ActivityHelper.startActivity(AndPermissionActivity::class.java)
         }
 
-        findViewById<View>(R.id.tvClickMvp).setOnClickListener {
+        findViewById<View>(R.id.btnMvp).setOnClickListener {
             ActivityHelper.startActivity(MvpActivity::class.java)
         }
+
+        findViewById<View>(R.id.btnBottomDialog).setOnClickListener {
+            BottomDialog(this).show()
+        }
+
+        findViewById<View>(R.id.btnCenterDialog).setOnClickListener {
+            CenterDialog(this).show()
+        }
+
+
     }
 
     override fun isSupportSwipeBack(): Boolean {
