@@ -3,10 +3,10 @@ package app.allever.android.lib.network
 import okhttp3.Interceptor
 
 object HttpConfig {
-
-    lateinit var baseUrl: String
+    var baseUrl: String = ""
 
     val interceptors = mutableSetOf<Interceptor>()
+    val networkInterceptors = mutableListOf<Interceptor>()
 
     val headers = mutableMapOf<String, String>()
 
@@ -21,6 +21,11 @@ object HttpConfig {
 
     fun interceptor(interceptor: Interceptor): HttpConfig {
         interceptors.add(interceptor)
+        return this
+    }
+
+    fun networkInterceptor(interceptor: Interceptor): HttpConfig {
+        networkInterceptors.add(interceptor)
         return this
     }
 

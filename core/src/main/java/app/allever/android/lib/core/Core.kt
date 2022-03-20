@@ -24,14 +24,11 @@ fun loge(tag: String, msg: String) {
 }
 
 fun toast(resId: Int) {
-    toast(getString(resId))
+    app.allever.android.lib.core.ext.toast(getString(resId))
 }
 
 fun toast(msg: String?) {
-    msg ?: return
-    HandlerHelper.mainHandler.post {
-        Toast.makeText(App.context, msg, Toast.LENGTH_SHORT).show()
-    }
+    app.allever.android.lib.core.ext.toast(msg)
 }
 
 fun getString(@StringRes resId: Int): String {

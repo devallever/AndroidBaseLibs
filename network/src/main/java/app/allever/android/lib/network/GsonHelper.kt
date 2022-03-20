@@ -11,4 +11,12 @@ object GsonHelper {
             e.message ?: ""
         }
     }
+
+    fun <T> fromJson(json: String, clazz: Class<T>): T? {
+        return mGson.fromJson(json, clazz)
+    }
+
+    fun getGson(): Gson {
+        return mGson
+    }
 }

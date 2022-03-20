@@ -1,7 +1,11 @@
 package app.allever.android.lib.network
 
+import app.allever.android.lib.core.app.App
+import app.allever.android.lib.core.helper.NetworkHelper
+import app.allever.android.lib.core.log
 import app.allever.android.lib.core.loge
 import app.allever.android.lib.core.toast
+import app.allever.android.lib.network.cache.ResponseCache
 import app.allever.android.lib.network.response.NetResponse
 
 abstract class NetworkHandler {
@@ -31,6 +35,29 @@ abstract class NetworkHandler {
             e.printStackTrace()
             loge(e.message)
             Result.failure(e)
+        }
+    }
+
+    inline fun <T : NetResponse<*>> request(
+        responseCache: ResponseCache<*>? = null,
+        block: () -> T
+    ): T? {
+        try {
+            if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
+                val response = responseCache?.getCache<T>()
+                response?.let {
+                    log("使用缓存: ${response.data}")
+                    return response
+                }
+            }
+
+            val response = block()
+            responseCache?.cacheResponse(response)
+            return response
+        } catch (e: Exception) {
+            e.printStackTrace()
+            loge(e.message)
+            return null
         }
     }
 

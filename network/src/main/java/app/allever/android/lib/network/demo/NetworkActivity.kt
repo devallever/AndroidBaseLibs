@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import app.allever.android.lib.core.base.AbstractActivity
+import app.allever.android.lib.core.ext.toast
+import app.allever.android.lib.network.GsonHelper
 import app.allever.android.lib.network.HttpConfig
 import app.allever.android.lib.network.R
-import app.allever.android.lib.network.interceptor.LoggerInterceptor
 import kotlinx.coroutines.launch
-import okhttp3.logging.HttpLoggingInterceptor
 
 class NetworkActivity : AbstractActivity() {
     private lateinit var tvResult: TextView
@@ -23,22 +23,17 @@ class NetworkActivity : AbstractActivity() {
 
         tvResult = findViewById<TextView>(R.id.tvResult)
         findViewById<View>(R.id.btnSend).setOnClickListener {
+            toast("发送请求")
             send()
         }
     }
 
     private fun send() {
         mainCoroutine.launch {
-            val result = NetRepository.getBanner()
-            NetRepository.showMessageIfFail(result)
-            if (result.isSuccess) {
-                val data = result.getOrNull()!!
-                val list = data.data
-                list?.size
-            } else {
-
+            val result = NetRepository.getBanner(BannerResponseCache())
+            result?.let {
+                tvResult.text = GsonHelper.toJson(it)
             }
-            tvResult.text = NetRepository.getJson(result)
         }
     }
 }

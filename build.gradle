@@ -17,3 +17,7 @@ buildscript {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext{
+    MmkvVersion = '1.2.12'
+}

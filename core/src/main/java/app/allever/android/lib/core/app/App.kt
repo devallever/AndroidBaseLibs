@@ -3,6 +3,8 @@ package app.allever.android.lib.core.app
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
 
 abstract class App : Application() {
@@ -28,8 +30,13 @@ abstract class App : Application() {
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
+        lateinit var mainHandler: Handler
+//        val mainHandler : Handler by  lazy {
+//            Handler(Looper.getMainLooper())
+//        }
         fun init(context: Context) {
             Companion.context = context.applicationContext
+            mainHandler = Handler(Looper.getMainLooper())
         }
     }
 
