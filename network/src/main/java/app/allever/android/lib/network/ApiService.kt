@@ -3,6 +3,7 @@ package app.allever.android.lib.network
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.network.interceptor.HeaderInterceptor
 import app.allever.android.lib.network.interceptor.LoggerInterceptor
+import app.allever.android.lib.network.interceptor.HttpInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,6 +21,7 @@ object ApiService {
         val loggingInterceptor = HttpLoggingInterceptor(LoggerInterceptor())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         builder.addInterceptor(loggingInterceptor)
+        builder.addInterceptor(HttpInterceptor())
 
         //添加外部拦截器
         HttpConfig.interceptors.map {
