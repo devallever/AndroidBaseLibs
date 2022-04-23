@@ -23,6 +23,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnMvp))
         RippleHelper.addRippleView(findViewById(R.id.btnNetwork))
         RippleHelper.addRippleView(findViewById(R.id.btnCenterDialog))
+        RippleHelper.addRippleView(findViewById(R.id.btnPermission))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -46,6 +47,9 @@ class MainActivity : AbstractActivity() {
             CenterDialog(this).show()
         }
 
+        findViewById<View>(R.id.btnPermission).setOnClickListener {
+            ActivityHelper.startActivity(AndPermissionActivity::class.java)
+        }
 
     }
 

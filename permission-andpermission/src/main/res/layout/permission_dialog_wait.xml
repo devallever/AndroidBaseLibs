@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:gravity="center"
+    android:paddingStart="@dimen/permission_dp_20"
+    android:paddingTop="@dimen/permission_dp_5"
+    android:paddingEnd="@dimen/permission_dp_20"
+    android:paddingBottom="@dimen/permission_dp_5"
+    tools:background="@android:color/transparent">
+
+</LinearLayout>

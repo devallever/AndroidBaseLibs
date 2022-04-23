@@ -58,6 +58,15 @@
             android:text="Center Dialog"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/btnPermission"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="AndPermission"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 
