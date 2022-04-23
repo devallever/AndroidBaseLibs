@@ -1,6 +1,7 @@
 package app.allever.android.lib.mvvm.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +26,7 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         _binding?.lifecycleOwner = this
-        mViewModel =
-            ViewModelProvider(this, object : ViewModelProvider.Factory {
-                override fun <VM : ViewModel?> create(modelClass: Class<VM>): VM {
-                    return modelClass.getDeclaredConstructor().newInstance()
-                }
-            }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
+        mViewModel = createVM()
         _binding?.setVariable(getBindingVariable(), mViewModel)
 
         mViewModel.init()
@@ -41,7 +37,35 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
     override fun onDestroyView() {
         super.onDestroyView()
         mViewModel.destroy()
-        _binding = null
+//        _binding = null
+        Log.e("BaseMvvmFragment", "onDestroyView: bind = null")
+    }
+
+    /**
+     * 判断是否viewModel是否初始化
+     */
+    fun requestViewMode(): VM? {
+        return if (this::mViewModel.isInitialized)
+            mViewModel
+        else {
+            mViewModel = createVM()
+            mViewModel
+        }
+    }
+
+    /**
+     * 该方法可用于判断_binding是否初始化
+     */
+    fun requestBinding(): DB? {
+        return _binding
+    }
+
+    private fun createVM(): VM {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <VM : ViewModel?> create(modelClass: Class<VM>): VM {
+                return modelClass.getDeclaredConstructor().newInstance()
+            }
+        }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
     }
 
     abstract fun getLayoutId(): Int

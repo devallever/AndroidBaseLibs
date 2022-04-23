@@ -17,16 +17,31 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
 
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         mBinding.lifecycleOwner = this
-        mViewModel =
-            ViewModelProvider(this, object : ViewModelProvider.Factory {
-                override fun <VM : ViewModel?> create(modelClass: Class<VM>): VM {
-                    return modelClass.getDeclaredConstructor().newInstance()
-                }
-            }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
+        mViewModel = createVM()
         mBinding.setVariable(getBindingVariable(), mViewModel)
 
         mViewModel.init()
 
+    }
+
+    /**
+     * 判断是否viewModel是否初始化
+     */
+    fun requestViewMode(): VM? {
+        return if (this::mViewModel.isInitialized)
+            mViewModel
+        else {
+            mViewModel = createVM()
+            mViewModel
+        }
+    }
+
+    private fun createVM(): VM {
+        return ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <VM : ViewModel?> create(modelClass: Class<VM>): VM {
+                return modelClass.getDeclaredConstructor().newInstance()
+            }
+        }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
     }
 
     override fun onDestroy() {
