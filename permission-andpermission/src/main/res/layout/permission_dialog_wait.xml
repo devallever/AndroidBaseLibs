@@ -3,10 +3,10 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:gravity="center"
-    android:paddingStart="@dimen/permission_dp_20"
-    android:paddingTop="@dimen/permission_dp_5"
-    android:paddingEnd="@dimen/permission_dp_20"
-    android:paddingBottom="@dimen/permission_dp_5"
+    android:paddingStart="0dp"
+    android:paddingTop="0dp"
+    android:paddingEnd="0dp"
+    android:paddingBottom="0dp"
     tools:background="@android:color/transparent">
 
 </LinearLayout>

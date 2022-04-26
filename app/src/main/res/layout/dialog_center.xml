@@ -4,7 +4,7 @@
     android:layout_height="300dp"
     android:layout_gravity="center"
     android:layout_margin="60dp"
-    android:background="@drawable/shape_white_r45">
+    android:background="@drawable/shape_white_r15">
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
