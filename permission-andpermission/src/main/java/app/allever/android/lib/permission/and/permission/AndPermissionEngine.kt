@@ -3,10 +3,7 @@ package app.allever.android.lib.permission.and.permission
 import android.content.Context
 import android.util.Log
 import app.allever.android.lib.core.helper.ActivityHelper
-import app.allever.android.lib.permission.core.IPermissionEngine
-import app.allever.android.lib.permission.core.JumpPermissionSettingDialog
-import app.allever.android.lib.permission.core.PermissionHelper
-import app.allever.android.lib.permission.core.PermissionListener
+import app.allever.android.lib.permission.core.*
 import com.yanzhenjie.permission.AndPermission
 
 class AndPermissionEngine : IPermissionEngine {
@@ -42,38 +39,50 @@ class AndPermissionEngine : IPermissionEngine {
         listener: PermissionListener,
         vararg permissions: String
     ) {
-        AndPermission.with(context)
-            .runtime()
-            .permission(permissions)
-            .onGranted {
-                if (it.size == permissions.size) {
-                    listener.onAllGranted()
+        val requestTask = Runnable {
+            AndPermission.with(context)
+                .runtime()
+                .permission(permissions)
+                .onGranted {
+                    if (it.size == permissions.size) {
+                        listener.onAllGranted()
+                    }
                 }
-            }
-            .onDenied {
-                //判断是否总是拒绝
-                if (PermissionHelper.hasAlwaysDeniedPermission(
-                        ActivityHelper.getTopActivity()!!,
-                        it
-                    )
-                ) {
-                    permissions.map {
-                        Log.e(TAG, "总是拒绝权限：$it")
+                .onDenied {
+                    //判断是否总是拒绝
+                    if (PermissionHelper.hasAlwaysDeniedPermission(
+                            ActivityHelper.getTopActivity()!!,
+                            it
+                        )
+                    ) {
+                        permissions.map {
+                            Log.e(TAG, "总是拒绝权限：$it")
+                        }
+                        listener.alwaysDenied(it)
+                        var jumpSettingDialog = listener.getSettingDialog()
+                        if (jumpSettingDialog == null) {
+                            jumpSettingDialog = JumpPermissionSettingDialog(context)
+                        }
+                        jumpSettingDialog.show()
+                    } else {
+                        permissions.map {
+                            Log.e(TAG, "拒绝权限：$it")
+                        }
+                        listener.onDenied(it)
                     }
-                    listener.alwaysDenied(it)
-                    var jumpSettingDialog = listener.getSettingDialog()
-                    if (jumpSettingDialog == null) {
-                        jumpSettingDialog = JumpPermissionSettingDialog(context)
-                    }
-                    jumpSettingDialog.show()
-                } else {
-                    permissions.map {
-                        Log.e(TAG, "拒绝权限：$it")
-                    }
-                    listener.onDenied(it)
                 }
+                .start()
+        }
+
+        if (listener.needShowWhyRequestPermissionDialog()) {
+            var dialog = listener.getWhyRequestPermissionDialog()
+            if (dialog == null) {
+                dialog = WhyRequestPermissionDialog(context, requestTask = requestTask)
             }
-            .start()
+            dialog.show()
+        } else {
+            requestTask.run()
+        }
     }
 
 }

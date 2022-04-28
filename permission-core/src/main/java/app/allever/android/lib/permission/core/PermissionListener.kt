@@ -30,4 +30,10 @@ interface PermissionListener {
      * 默认总是拒绝后弹出设置权限，设置false不弹出
      */
     fun needShowJumpSettingDialog(): Boolean = true
+
+    fun getWhyRequestPermissionDialog(): Dialog? {
+        return null
+    }
+
+    fun needShowWhyRequestPermissionDialog(): Boolean = false
 }

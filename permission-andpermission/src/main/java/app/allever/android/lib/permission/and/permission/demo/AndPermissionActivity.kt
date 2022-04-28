@@ -23,6 +23,10 @@ class AndPermissionActivity : AbstractActivity() {
                 override fun onAllGranted() {
                     toast("全部同意")
                 }
+
+                override fun needShowWhyRequestPermissionDialog(): Boolean {
+                    return true
+                }
             }, Manifest.permission.CAMERA,
                 Manifest.permission.READ_PHONE_STATE)
         }
