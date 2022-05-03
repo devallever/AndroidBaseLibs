@@ -1,6 +1,6 @@
 package app.allever.android.lib.network.interceptor
 
-import app.allever.android.lib.core.loge
+import app.allever.android.lib.core.ext.loge
 import okhttp3.logging.HttpLoggingInterceptor
 
 class LoggerInterceptor: HttpLoggingInterceptor.Logger {

@@ -2,7 +2,7 @@ package app.allever.android.lib.network.cache
 
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.NetworkHelper
-import app.allever.android.lib.core.log
+import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.network.GsonHelper.toJson
 import app.allever.android.lib.network.HttpDataUtils
 import app.allever.android.lib.network.cache.HttpCacheManager.getCacheTime

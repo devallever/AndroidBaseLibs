@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import app.allever.android.lib.core.base.AbstractActivity;
-import app.allever.android.lib.core.util.LogUtils;
+import app.allever.android.lib.core.helper.LogHelper;
 import app.allever.android.lib.network.HttpConfig;
 import app.allever.android.lib.network.ResponseCallback;
 import app.allever.android.lib.network.response.NetResponse;
@@ -26,12 +26,12 @@ public class NetActivityJava extends AbstractActivity {
         NetRepository.INSTANCE.getBannerCall(new ResponseCallback<List<BannerData>>() {
             @Override
             public void onFail(@NonNull NetResponse<List<BannerData>> response) {
-                LogUtils.INSTANCE.d(response.getMsg());
+                LogHelper.INSTANCE.d(response.getMsg());
             }
 
             @Override
             public void onSuccess(@NonNull NetResponse<List<BannerData>> response) {
-                LogUtils.INSTANCE.d(response.getMsg());
+                LogHelper.INSTANCE.d(response.getMsg());
             }
         });
 

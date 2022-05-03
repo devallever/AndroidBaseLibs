@@ -1,6 +1,6 @@
 package app.allever.android.lib.network
 
-import app.allever.android.lib.core.loge
+import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.network.response.DefaultNetResponse
 import app.allever.android.lib.network.response.NetResponse
 import retrofit2.Call

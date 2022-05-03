@@ -2,7 +2,6 @@ package app.allever.android.lib.core.ext
 
 import android.widget.Toast
 import app.allever.android.lib.core.app.App
-import app.allever.android.lib.core.getString
 import app.allever.android.lib.core.helper.HandlerHelper
 
 private val mToast : Toast by lazy {

@@ -1,4 +1,4 @@
-package app.allever.android.lib.widget.helper
+package app.allever.android.lib.core.helper
 
 import android.annotation.SuppressLint
 import android.content.Context

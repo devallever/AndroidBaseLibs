@@ -1,6 +1,6 @@
 package app.allever.android.lib.network.demo
 
-import app.allever.android.lib.core.loge
+import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.network.BuildConfig
 import okhttp3.*
 import okio.Buffer

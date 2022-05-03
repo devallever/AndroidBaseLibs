@@ -2,9 +2,10 @@ package app.allever.android.lib.network
 
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.NetworkHelper
-import app.allever.android.lib.core.log
-import app.allever.android.lib.core.loge
-import app.allever.android.lib.core.toast
+import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.loge
+import app.allever.android.lib.core.ext.toast
+//import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.network.cache.ResponseCache
 import app.allever.android.lib.network.response.NetResponse
 

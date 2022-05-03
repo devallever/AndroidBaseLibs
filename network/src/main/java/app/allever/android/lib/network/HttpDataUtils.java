@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import app.allever.android.lib.core.util.LogUtils;
+import app.allever.android.lib.core.helper.LogHelper;
 
 /**
  * 反射工具类
@@ -31,7 +31,7 @@ public class HttpDataUtils {
             }
             return true;
         } catch (Exception e) {
-            LogUtils.INSTANCE.e("set value error:" + e.getMessage());
+            LogHelper.INSTANCE.e("set value error:" + e.getMessage());
         }
         return false;
     }
@@ -52,7 +52,7 @@ public class HttpDataUtils {
                 return field.get(obj);
             }
         } catch (Exception e) {
-            LogUtils.INSTANCE.e("get value error:" + e.getMessage());
+            LogHelper.INSTANCE.e("get value error:" + e.getMessage());
         }
         return null;
     }

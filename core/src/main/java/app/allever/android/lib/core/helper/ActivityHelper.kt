@@ -18,7 +18,8 @@ package app.allever.android.lib.core.helper
 
 import android.app.Activity
 import android.content.Intent
-import app.allever.android.lib.core.log
+import app.allever.android.lib.core.ext.log
+//import app.allever.android.lib.core.ext.log
 import java.lang.ref.WeakReference
 import java.util.*
 

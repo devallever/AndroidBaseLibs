@@ -1,7 +1,7 @@
 package app.allever.android.lib.network.interceptor
 
 import android.util.Log
-import app.allever.android.lib.core.log
+import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.network.BuildConfig
 import okhttp3.*
 import okio.Buffer

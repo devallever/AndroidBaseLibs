@@ -4,8 +4,8 @@ import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import app.allever.android.lib.core.log
-import app.allever.android.lib.core.toast
+import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.permission.core.PermissionCompat
 import app.allever.android.lib.permission.core.PermissionHelper
 import app.allever.android.lib.permission.core.PermissionListener

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import app.allever.android.lib.core.helper.ActivityHelper
-import app.allever.android.lib.core.log
+import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.permission.core.*
 import com.permissionx.guolindev.PermissionX
 

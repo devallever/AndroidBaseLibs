@@ -10,7 +10,7 @@ import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.HandlerHelper
-import app.allever.android.lib.core.log
+import app.allever.android.lib.core.ext.log
 import cn.bingoogolapple.swipebacklayout.BGAKeyboardUtil
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
 import java.lang.ref.WeakReference
