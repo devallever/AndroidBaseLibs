@@ -5,7 +5,7 @@ import app.allever.android.lib.core.function.imageloader.ILoader
 import app.allever.android.lib.core.function.imageloader.ImageLoader
 import com.bumptech.glide.Glide
 
-class GlideLoader : ILoader {
+object GlideLoader : ILoader {
 
     override fun load(resource: Any, imageView: ImageView) {
         if (!ImageLoader.checkCanLoad(imageView)) {
@@ -25,7 +25,7 @@ class GlideLoader : ILoader {
         if (!ImageLoader.checkCanLoad(imageView)) {
             return
         }
-        Glide.with(imageView.context).asBitmap().error(errorResId).placeholder(placeholder)
+        Glide.with(imageView.context).asBitmap().load(resource).error(errorResId).placeholder(placeholder)
             .into(imageView)
     }
 }

@@ -1,6 +1,11 @@
 <resources>
     <string name="core_app_name">core-lib</string>
 
-
     <string name="core_click_again_to_exit">Please click again to exit</string>
+
+    <string name="permission_permission_deny_tips">No Permission, You can not use this function.</string>
+    <string name="permission_permission_cancel">cancel</string>
+    <string name="permission_permission_go">Go</string>
+    <string name="permission_permission_need_some_permission">Need Some permissions, please set manually</string>
+    <string name="permission_permission_warm_tips">Warm Tips:</string>
 </resources>

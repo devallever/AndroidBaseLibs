@@ -46,8 +46,8 @@ dependencies {
     implementation project(path: ':cropper')
     implementation project(path: ':permission-permissionx')
     implementation project(path: ':permission-andpermission')
-    implementation project(path: ':datastore-core')
     implementation project(path: ':datastore-mmkv')
+    implementation project(path: ':imageloader-glide')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

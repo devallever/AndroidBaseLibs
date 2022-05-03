@@ -2,7 +2,7 @@ package app.allever.android.lib.store.mmkv
 
 import android.os.Parcelable
 import app.allever.android.lib.core.app.App
-import app.allever.android.lib.store.core.IDataStore
+import app.allever.android.lib.core.function.datastore.IDataStore
 import com.tencent.mmkv.MMKV
 
 object MMKVStore : IDataStore {

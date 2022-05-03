@@ -1,4 +1,4 @@
-package app.allever.android.lib.store.core
+package app.allever.android.lib.core.function.datastore
 
 import android.os.Parcelable
 

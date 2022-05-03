@@ -6,9 +6,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
-import app.allever.android.lib.permission.core.PermissionCompat
-import app.allever.android.lib.permission.core.PermissionHelper
-import app.allever.android.lib.permission.core.PermissionListener
+import app.allever.android.lib.core.function.permission.PermissionCompat
+import app.allever.android.lib.core.function.permission.PermissionHelper
+import app.allever.android.lib.core.function.permission.PermissionListener
 import app.allever.android.lib.permission.permissiox.PermissionXEngine
 import app.allever.android.lib.permission.permissiox.R
 import com.permissionx.guolindev.PermissionX

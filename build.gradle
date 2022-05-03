@@ -28,5 +28,5 @@ ext{
 
     //第三方库
     MmkvVersion = '1.2.12'
-    GlideVersion = '4.13.0'
+    GlideVersion = '4.9.0'
 }

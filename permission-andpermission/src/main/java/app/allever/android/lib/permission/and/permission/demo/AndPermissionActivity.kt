@@ -6,11 +6,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.toast
+import app.allever.android.lib.core.function.permission.PermissionHelper
+import app.allever.android.lib.core.function.permission.PermissionListener
 //import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.permission.and.permission.AndPermissionEngine
 import app.allever.android.lib.permission.and.permission.R
-import app.allever.android.lib.permission.core.PermissionHelper
-import app.allever.android.lib.permission.core.PermissionListener
 
 class AndPermissionActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,9 +1,10 @@
-package app.allever.android.lib.permission.core
+package app.allever.android.lib.core.function.permission
 
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.TextView
+import app.allever.android.lib.core.R
 import app.allever.android.lib.core.base.AbstractCenterDialog
 
 abstract class PermissionDialog

@@ -1,4 +1,4 @@
-package app.allever.android.lib.permission.core
+package app.allever.android.lib.core.function.permission
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -13,6 +13,7 @@ import android.text.TextUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.ContextCompat
+import app.allever.android.lib.core.R
 import java.util.*
 
 /**
@@ -96,8 +97,8 @@ object PermissionCompat {
         builder.show()
     }
 
-    fun requestPermission(activity: Activity, permission: String, requestCode: Int) {
-        ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode)
+    fun requestPermission(activity: Activity, requestCode: Int, vararg permissions: String) {
+        ActivityCompat.requestPermissions(activity, permissions, requestCode)
     }
 
 

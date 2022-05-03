@@ -1,4 +1,4 @@
-package app.allever.android.lib.permission.core
+package app.allever.android.lib.core.function.permission
 
 import android.app.Activity
 import android.content.Context
@@ -16,7 +16,7 @@ object PermissionHelper : IPermissionEngine {
 
     const val RC_CODE_JUMP_SETTING = 1000
 
-    private lateinit var mEngine: IPermissionEngine
+    private var mEngine: IPermissionEngine = DefaultPermissionEngine
 
     fun init(engine: IPermissionEngine) {
         mEngine = engine
@@ -37,6 +37,16 @@ object PermissionHelper : IPermissionEngine {
 
     override fun jumpSetting(context: Context, requestCode: Int) {
         mEngine.jumpSetting(context, requestCode)
+    }
+
+
+    override fun handlePermissionResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+        listener: PermissionListener
+    ) {
+        mEngine.handlePermissionResult(requestCode, permissions, grantResults, listener)
     }
 
     fun hasPermission(vararg permissions: String): Boolean =

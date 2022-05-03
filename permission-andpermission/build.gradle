@@ -33,7 +33,6 @@ android {
 
 dependencies {
     implementation project(path: ':core')
-    implementation project(path: ':permission-core')
 
     //https://github.com/yanzhenjie/AndPermission
     implementation 'com.yanzhenjie:permission:2+'

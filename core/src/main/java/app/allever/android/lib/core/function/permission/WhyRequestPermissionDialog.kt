@@ -1,7 +1,9 @@
-package app.allever.android.lib.permission.core
+package app.allever.android.lib.core.function.permission
 
 import android.content.Context
 import android.widget.TextView
+import app.allever.android.lib.core.R
+import app.allever.android.lib.core.function.permission.PermissionDialog
 
 class WhyRequestPermissionDialog(
     context: Context,
