@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -13,6 +13,7 @@ android {
         versionName rootProject.ext.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -21,11 +22,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    dataBinding {
-        enabled = true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,19 +32,5 @@ android {
 }
 
 dependencies {
-
-
     api project(path: ':core')
-    implementation project(path: ':mvvm')
-    implementation project(path: ':widget')
-    implementation project(path: ':mvp')
-    implementation project(path: ':network')
-    implementation project(path: ':cropper')
-    implementation project(path: ':permission-permissionx')
-    implementation project(path: ':permission-andpermission')
-    implementation project(path: ':datastore-core')
-    implementation project(path: ':datastore-mmkv')
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

@@ -96,6 +96,28 @@ object SPHelper {
     fun getInt(key: String, value: Int) = sharedPref.getInt(key, value)
 
     /**
+     * 保存Float
+     *
+     * @param key      键名
+     * @param defValue 默认值
+     *
+     * @return Long
+     */
+    fun putFloat(key: String, value: Float) {
+        sharedPref.edit().putFloat(key, value).apply()
+    }
+
+    /**
+     * 获取Float
+     *
+     * @param key      键名
+     * @param defValue 默认值
+     *
+     * @return Long
+     */
+    fun getFloat(key: String, value: Float) = sharedPref.getFloat(key, value)
+
+    /**
      * 保存Long
      *
      * @param key      键名
