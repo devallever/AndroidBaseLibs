@@ -15,14 +15,10 @@ import app.allever.android.lib.core.app.App;
 
 public class BitmapUtils {
 
-    public static String saveBitmap2File(Bitmap bitmap) {
+    public static String saveBitmap2File(Bitmap bitmap, String path) {
         if (bitmap == null) {
             return "";
         }
-
-        String dir = App.context.getCacheDir().getAbsolutePath();
-        String fileName = System.currentTimeMillis() + ".jpg";
-        String path = dir + File.separator + fileName;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);

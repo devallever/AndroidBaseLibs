@@ -2,15 +2,15 @@ package app.allever.android.lib.project
 
 import android.os.Bundle
 import android.view.View
-import app.allever.androd.lib.cropper.CropMainActivity
+import android.widget.ImageView
 import app.allever.android.lib.core.base.AbstractActivity
+import app.allever.android.lib.core.function.imageloader.ImageLoader
+import app.allever.android.lib.core.function.imageloader.load
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
-import app.allever.android.lib.network.demo.NetActivityJava
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
-import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
 class MainActivity : AbstractActivity() {
@@ -50,6 +50,8 @@ class MainActivity : AbstractActivity() {
         findViewById<View>(R.id.btnPermission).setOnClickListener {
             ActivityHelper.startActivity(AndPermissionActivity::class.java)
         }
+
+        ImageView(this).load("")
 
     }
 

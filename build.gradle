@@ -19,11 +19,14 @@ task clean(type: Delete) {
 }
 
 ext{
-    MmkvVersion = '1.2.12'
     // 版本号相关
     compileSdkVersion = 30
     targetSdkVersion = 30
     minSdkVersion = 21
     versionName = '1.0.0'
     versionCode = 1
+
+    //第三方库
+    MmkvVersion = '1.2.12'
+    GlideVersion = '4.13.0'
 }
