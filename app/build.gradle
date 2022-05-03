@@ -4,14 +4,13 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "app.allever.android.lib.project"
-        minSdk 21
-        targetSdk 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
