@@ -17,6 +17,10 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
     private var _binding: DB? = null
     protected val mBinding: DB
         get() = _binding!!
+
+    /**
+     * 不确定mViewModel是否初始化，请调用requestViewMode
+     */
     protected lateinit var mViewModel: VM
 
     override fun onCreateView(
@@ -48,6 +52,10 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         return if (this::mViewModel.isInitialized)
             mViewModel
         else {
+            // 解决 Can't access ViewModels from detached fragment
+            if (isDetached || fragmentManager == null) {
+                return null
+            }
             mViewModel = createVM()
             mViewModel
         }

@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import app.allever.android.lib.core.helper.HandlerHelper
 import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.helper.HandlerHelper
 
 abstract class AbstractFragment : Fragment() {
 

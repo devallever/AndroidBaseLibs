@@ -1,7 +1,6 @@
 package app.allever.android.lib.core.helper
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.os.Build
@@ -79,6 +78,21 @@ object DisplayHelper {
 
     fun getScreenHeight(): Int {
         return getDisplayMetrics().heightPixels
+    }
+
+    /**
+     * 获取屏幕高度,包括状态栏
+     */
+    fun getFullScreenHeight(context: Context): Int {
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val dm = DisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealMetrics(dm)
+        } else {
+            display.getMetrics(dm)
+        }
+        return dm.heightPixels
     }
 
     private fun getScreenRealMetrics(): DisplayMetrics {

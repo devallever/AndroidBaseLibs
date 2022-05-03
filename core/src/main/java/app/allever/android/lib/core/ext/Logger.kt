@@ -3,6 +3,10 @@ package app.allever.android.lib.core.ext
 import android.util.Log
 import app.allever.android.lib.core.BuildConfig
 
+object Logger {
+
+}
+
 private const val TAG = "ILogger"
 
 fun log(msg: String?) {
