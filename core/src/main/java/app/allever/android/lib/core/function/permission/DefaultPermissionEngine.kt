@@ -7,6 +7,9 @@ import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.helper.ActivityHelper
 
 object DefaultPermissionEngine : IPermissionEngine {
+
+    private var mPermissionListener: PermissionListener? = null
+
     private const val RC_CODE = 0x01
     override fun requestPermission(
         context: Context,
@@ -14,6 +17,7 @@ object DefaultPermissionEngine : IPermissionEngine {
         vararg permissions: String
     ) {
 
+        mPermissionListener = listener
         val requestTask = Runnable {
             when (context) {
                 is Activity -> {
@@ -78,18 +82,17 @@ object DefaultPermissionEngine : IPermissionEngine {
     override fun handlePermissionResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray,
-        listener: PermissionListener
+        grantResults: IntArray
     ) {
         if (PermissionCompat.hasPermission(ActivityHelper.getTopActivity()!!, *permissions)) {
-            listener.onAllGranted()
+            mPermissionListener?.onAllGranted()
         } else {
 
             if (PermissionHelper.hasAlwaysDeny(*permissions)) {
                 //总是拒绝
-                listener.alwaysDenied(permissions.toMutableList())
+                mPermissionListener?.alwaysDenied(permissions.toMutableList())
 
-                var jumpSettingDialog = listener.getSettingDialog()
+                var jumpSettingDialog = mPermissionListener?.getSettingDialog()
                 if (jumpSettingDialog == null) {
                     jumpSettingDialog =
                         JumpPermissionSettingDialog(ActivityHelper.getTopActivity()!!)
@@ -105,8 +108,10 @@ object DefaultPermissionEngine : IPermissionEngine {
                     }
                     log("拒绝权限：$it")
                 }
-                listener.onDenied(deniedList)
+                mPermissionListener?.onDenied(deniedList)
             }
         }
+
+        mPermissionListener = null
     }
 }

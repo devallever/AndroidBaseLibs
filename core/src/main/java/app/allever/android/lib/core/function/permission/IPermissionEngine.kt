@@ -18,7 +18,7 @@ interface IPermissionEngine {
     fun handlePermissionResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray, listener: PermissionListener
+        grantResults: IntArray
     ) {
 
     }

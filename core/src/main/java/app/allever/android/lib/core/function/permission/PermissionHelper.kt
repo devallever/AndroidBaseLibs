@@ -43,10 +43,9 @@ object PermissionHelper : IPermissionEngine {
     override fun handlePermissionResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray,
-        listener: PermissionListener
+        grantResults: IntArray
     ) {
-        mEngine.handlePermissionResult(requestCode, permissions, grantResults, listener)
+        mEngine.handlePermissionResult(requestCode, permissions, grantResults)
     }
 
     fun hasPermission(vararg permissions: String): Boolean =
