@@ -43,6 +43,9 @@ abstract class NetworkHandler {
 
     /**
      * kotlin协程方式请求
+     * @param responseClz 响应体的class类型
+     * @param responseCache 缓存类，null表示不使用缓存
+     * @param block 高阶函数，执行相应都网络请求
      */
     inline fun <T : NetResponse<*>> request(
         responseClz: Class<*>?,
