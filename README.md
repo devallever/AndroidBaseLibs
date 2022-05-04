@@ -1,4 +1,4 @@
-# AndroidBaseLibs - 基础组建
+# AndroidBaseLibs - 基础组件
 
 - core：底层基类/工具类/基础功能模块
   - app包：App全局提供context
