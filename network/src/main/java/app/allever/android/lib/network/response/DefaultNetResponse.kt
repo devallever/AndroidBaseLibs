@@ -6,9 +6,15 @@ class DefaultNetResponse<DATA>(private var code: Int, private var msg: String) :
 
     override fun getMsg() = msg
 
-    override fun <T : NetResponse<DATA>> generateResponse(code: Int, msg: String, data: DATA?): T {
-        val baseResponse = DefaultNetResponse<DATA>(code, msg)
-        baseResponse.data = data
-        return baseResponse as T
+    override fun setData(code: Int, msg: String, data: DATA?) {
+        this.code = code
+        this.msg = msg
+        this.data = data
     }
+
+//    override fun <T : NetResponse<DATA>> generateResponse(code: Int, msg: String, data: DATA?): T {
+//        this.code = code
+//        this.msg = msg
+//        return this as T
+//    }
 }

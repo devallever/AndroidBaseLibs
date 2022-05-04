@@ -5,6 +5,7 @@ import app.allever.android.lib.network.DefaultRetrofitCallback
 import app.allever.android.lib.network.NetworkHandler
 import app.allever.android.lib.network.ResponseCallback
 import app.allever.android.lib.network.cache.ResponseCache
+import app.allever.android.lib.network.response.NetResponse
 import kotlinx.coroutines.delay
 
 object NetRepository : NetworkHandler() {
@@ -21,7 +22,7 @@ object NetRepository : NetworkHandler() {
     }
 
     suspend fun getBanner(responseCache: ResponseCache<*>? = null) =
-        request(responseCache) {
+        request(BaseResponse::class.java, responseCache) {
             wanAndroidApi.getBanner()
         }
 

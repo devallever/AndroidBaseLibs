@@ -1,6 +1,5 @@
 package app.allever.android.lib.network
 
-import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.network.response.DefaultNetResponse
 import app.allever.android.lib.network.response.NetResponse
 import retrofit2.Call
@@ -25,30 +24,30 @@ class DefaultRetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
         }
         val requestResult: R? = response.body()
         if (requestResult == null) {
-            val defaultResponse = DefaultNetResponse<DATA>(HttpCode.UNKNOW, "服务器开小差")
+            val defaultResponse = DefaultNetResponse<DATA>(HttpCode.UNKNOW, "没有返回数据")
             callback.onFail(defaultResponse)
             return
         }
-        val code: Int = requestResult.getCode()
-        val msg: String = requestResult.getMsg()
-        if (HttpCode.isSuccessCode(code)) {
-            callback.onSuccess(requestResult)
-        } else {
-            val defaultResponse = DefaultNetResponse<DATA>(code, msg)
-            callback.onFail(defaultResponse)
-        }
+
+        callback.onSuccess(requestResult)
+
+        //返回其他码也有可能成功
+//        val code: Int = requestResult.getCode()
+//        val msg: String = requestResult.getMsg()
+//        if (HttpCode.isSuccessCode(code)) {
+//            callback.onSuccess(requestResult)
+//        } else {
+//            val defaultResponse = DefaultNetResponse<DATA>(code, msg)
+//            callback.onFail(defaultResponse)
+//        }
     }
 
     private fun <DATA> handleFail(callback: ResponseCallback<DATA>?, t: Throwable?) {
         if (callback == null) {
             return
         }
-        var msg = ""
-        if (t != null) {
-            loge(0.toString() + " -> " + t.message)
-            msg = t.message ?: ""
-        }
-        val defaultNetResponse = DefaultNetResponse<DATA>(HttpCode.UNKNOW, msg)
+        val exception = ExceptionHandle.handleException(t)
+        val defaultNetResponse = DefaultNetResponse<DATA>(exception.code, exception.message)
         callback.onFail(defaultNetResponse)
     }
 

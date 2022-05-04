@@ -6,5 +6,7 @@ abstract class NetResponse<DATA> {
     abstract fun getCode(): Int
     abstract fun getMsg(): String
 
-    abstract fun <T : NetResponse<DATA>> generateResponse(code: Int, msg: String, data: DATA?): T
+    abstract fun setData(code: Int, msg: String, data: DATA?)
+
+//    abstract fun <T : NetResponse<DATA>> generateResponse(code: Int, msg: String, data: DATA?): T
 }
