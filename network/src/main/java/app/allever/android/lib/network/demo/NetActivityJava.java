@@ -1,6 +1,8 @@
 package app.allever.android.lib.network.demo;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +11,9 @@ import java.util.List;
 
 import app.allever.android.lib.core.base.AbstractActivity;
 import app.allever.android.lib.core.helper.LogHelper;
+import app.allever.android.lib.network.GsonHelper;
 import app.allever.android.lib.network.HttpConfig;
+import app.allever.android.lib.network.R;
 import app.allever.android.lib.network.ResponseCallback;
 import app.allever.android.lib.network.response.NetResponse;
 
@@ -20,18 +24,28 @@ public class NetActivityJava extends AbstractActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_network);
+
+        TextView textView = findViewById(R.id.tvResult);
 
         HttpConfig.INSTANCE.baseUrl("https://www.wanandroid.com/");
 
-        NetRepository.INSTANCE.getBannerCall(new ResponseCallback<List<BannerData>>() {
+        findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFail(@NonNull NetResponse<List<BannerData>> response) {
-                LogHelper.INSTANCE.d(response.getMsg());
-            }
+            public void onClick(View v) {
+                NetRepository.INSTANCE.getBannerCall(new BannerResponseCache(), new ResponseCallback<List<BannerData>>() {
+                    @Override
+                    public void onFail(@NonNull NetResponse<List<BannerData>> response) {
+                        LogHelper.INSTANCE.d(response.getMsg());
+                        textView.setText(GsonHelper.INSTANCE.toJson(response));
+                    }
 
-            @Override
-            public void onSuccess(@NonNull NetResponse<List<BannerData>> response) {
-                LogHelper.INSTANCE.d(response.getMsg());
+                    @Override
+                    public void onSuccess(@NonNull NetResponse<List<BannerData>> response) {
+                        LogHelper.INSTANCE.d(response.getMsg());
+                        textView.setText(GsonHelper.INSTANCE.toJson(response));
+                    }
+                });
             }
         });
 

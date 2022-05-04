@@ -5,7 +5,6 @@ import app.allever.android.lib.network.DefaultRetrofitCallback
 import app.allever.android.lib.network.NetworkHandler
 import app.allever.android.lib.network.ResponseCallback
 import app.allever.android.lib.network.cache.ResponseCache
-import app.allever.android.lib.network.response.NetResponse
 import kotlinx.coroutines.delay
 
 object NetRepository : NetworkHandler() {
@@ -32,7 +31,17 @@ object NetRepository : NetworkHandler() {
 
     }
 
+    @Deprecated("不使用缓存")
     fun getBannerCall(callback: ResponseCallback<List<BannerData>>) {
         wanAndroidApi.getBannerCall().enqueue(DefaultRetrofitCallback(callback))
+    }
+
+    fun getBannerCall(
+        responseCache: ResponseCache<*>? = null,
+        callback: ResponseCallback<List<BannerData>>
+    ) {
+        enqueue(responseCache, callback) {
+            wanAndroidApi.getBannerCall().enqueue(DefaultRetrofitCallback(responseCache, callback))
+        }
     }
 }

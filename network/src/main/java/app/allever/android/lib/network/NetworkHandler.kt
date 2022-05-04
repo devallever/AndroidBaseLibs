@@ -1,13 +1,12 @@
 package app.allever.android.lib.network
 
+//import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.app.App
-import app.allever.android.lib.core.helper.NetworkHelper
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.core.ext.toast
-//import app.allever.android.lib.core.ext.toast
+import app.allever.android.lib.core.helper.NetworkHelper
 import app.allever.android.lib.network.cache.ResponseCache
-import app.allever.android.lib.network.response.DefaultNetResponse
 import app.allever.android.lib.network.response.NetResponse
 
 abstract class NetworkHandler {
@@ -42,7 +41,11 @@ abstract class NetworkHandler {
     }
 
 
-    inline fun <T : NetResponse<*>> request(responseClz: Class<*>?,
+    /**
+     * kotlin协程方式请求
+     */
+    inline fun <T : NetResponse<*>> request(
+        responseClz: Class<*>?,
         responseCache: ResponseCache<*>? = null,
         block: () -> T
     ): T? {
@@ -56,7 +59,9 @@ abstract class NetworkHandler {
             }
 
             val response = block()
-            responseCache?.cacheResponse(response)
+            if (HttpCode.isSuccessCode(response.getCode())) {
+                responseCache?.cacheResponse(response)
+            }
             return response
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
@@ -71,6 +76,25 @@ abstract class NetworkHandler {
         }
     }
 
+    /**
+     * java回调方式请求
+     */
+    fun <DATA, R : NetResponse<DATA>> enqueue(
+        responseCache: ResponseCache<*>? = null,
+        callback: ResponseCallback<DATA>,
+        requestTask: Runnable
+    ) {
+        if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
+            val response = responseCache?.getCache<R>()
+            response?.let {
+                log("使用缓存: ${GsonHelper.toJson(response)}")
+                callback.onSuccess(response)
+                return
+            }
+        }
+
+        requestTask.run()
+    }
 
     @Deprecated("没处理异常时候的返回，弃用")
     inline fun <T : NetResponse<*>> request(

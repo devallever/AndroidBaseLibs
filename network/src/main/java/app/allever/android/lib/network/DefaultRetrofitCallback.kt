@@ -1,5 +1,6 @@
 package app.allever.android.lib.network
 
+import app.allever.android.lib.network.cache.ResponseCache
 import app.allever.android.lib.network.response.DefaultNetResponse
 import app.allever.android.lib.network.response.NetResponse
 import retrofit2.Call
@@ -9,11 +10,16 @@ import retrofit2.Response
 class DefaultRetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
 
     private var responseCallback: ResponseCallback<DATA>
+    private var responseCache: ResponseCache<*>? = null
 
     constructor(responseCallback: ResponseCallback<DATA>) {
         this.responseCallback = responseCallback
     }
 
+    constructor(responseCache: ResponseCache<*>?, responseCallback: ResponseCallback<DATA>) {
+        this.responseCallback = responseCallback
+        this.responseCache = responseCache
+    }
 
     private fun handleSuccess(
         response: Response<R>,
@@ -30,6 +36,10 @@ class DefaultRetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
         }
 
         callback.onSuccess(requestResult)
+
+        if (HttpCode.isSuccessCode(requestResult.getCode())) {
+            responseCache?.cacheResponse(requestResult)
+        }
 
         //返回其他码也有可能成功
 //        val code: Int = requestResult.getCode()

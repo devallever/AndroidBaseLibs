@@ -45,7 +45,7 @@ abstract class ResponseCache<T : NetResponse<*>> {
                 HttpDataUtils.getGenericType(this::class.java, 0)
             ) as? T
             response.let {
-                log("使用缓存: $cacheString")
+                log("获取缓存: $cacheString")
                 return response
             }
         } catch (e: Exception) {
