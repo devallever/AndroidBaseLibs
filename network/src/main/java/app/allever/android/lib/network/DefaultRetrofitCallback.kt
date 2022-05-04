@@ -30,7 +30,7 @@ class DefaultRetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
         }
         val requestResult: R? = response.body()
         if (requestResult == null) {
-            val defaultResponse = DefaultNetResponse<DATA>(HttpCode.UNKNOW, "没有返回数据")
+            val defaultResponse = DefaultNetResponse<DATA>(-1, "没有返回数据")
             callback.onFail(defaultResponse)
             return
         }

@@ -3,6 +3,8 @@ package app.allever.android.lib.network
 import okhttp3.Interceptor
 
 object HttpConfig {
+    var successCode = 0
+
     var baseUrl: String = ""
 
     val interceptors = mutableSetOf<Interceptor>()
@@ -11,6 +13,11 @@ object HttpConfig {
     val headers = mutableMapOf<String, String>()
 
     fun build(): HttpConfig {
+        return this
+    }
+
+    fun successCode(code: Int): HttpConfig {
+        successCode = code
         return this
     }
 
