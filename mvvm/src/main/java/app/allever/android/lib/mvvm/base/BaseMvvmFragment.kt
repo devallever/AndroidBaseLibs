@@ -1,7 +1,6 @@
 package app.allever.android.lib.mvvm.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,21 +27,15 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
+        val mvvmConfig = getMvvmConfig()
+        _binding = DataBindingUtil.inflate(inflater, mvvmConfig.layoutId, container, false)
         _binding?.lifecycleOwner = this
         mViewModel = createVM()
-        _binding?.setVariable(getBindingVariable(), mViewModel)
+        _binding?.setVariable(mvvmConfig.bindingVariable, mViewModel)
 
         mViewModel.init()
         init()
         return _binding?.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mViewModel.destroy()
-//        _binding = null
-        Log.e("BaseMvvmFragment", "onDestroyView: bind = null")
     }
 
     /**
@@ -76,7 +69,6 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
     }
 
-    abstract fun getLayoutId(): Int
-    abstract fun getBindingVariable(): Int
+    abstract fun getMvvmConfig(): MvvmConfig
     abstract fun init()
 }

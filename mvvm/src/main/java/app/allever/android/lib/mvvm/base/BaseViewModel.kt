@@ -18,8 +18,14 @@ abstract class BaseViewModel : ViewModel() {
         CoroutineScope(Dispatchers.Default + mJob)
     }
 
+    /***
+     * Activity#onCreate()后调用
+     * Fragment#onCreateView()后调用
+     */
     abstract fun init()
-    fun destroy() {
+
+    override fun onCleared() {
+        super.onCleared()
         viewModelScope.launch {
 
         }

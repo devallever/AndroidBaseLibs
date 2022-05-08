@@ -18,10 +18,11 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        val mvvmConfig = getMvvmConfig()
+        mBinding = DataBindingUtil.setContentView(this, mvvmConfig.layoutId)
         mBinding.lifecycleOwner = this
         mViewModel = createVM()
-        mBinding.setVariable(getBindingVariable(), mViewModel)
+        mBinding.setVariable(mvvmConfig.bindingVariable, mViewModel)
 
         mViewModel.init()
 
@@ -34,9 +35,6 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         return if (this::mViewModel.isInitialized)
             mViewModel
         else {
-            if (fragmentManager == null) {
-                return null
-            }
             mViewModel = createVM()
             mViewModel
         }
@@ -50,12 +48,6 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mViewModel.destroy()
-    }
-
-    abstract fun getLayoutId(): Int
-    abstract fun getBindingVariable(): Int
+    abstract fun getMvvmConfig(): MvvmConfig
     abstract fun init()
 }
