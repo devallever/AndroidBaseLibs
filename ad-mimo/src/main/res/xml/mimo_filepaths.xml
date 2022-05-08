@@ -1,0 +1,7 @@
+<!--FileProvider提供的共享目录配置文件-->
+<!-- 基本覆盖了手机中所有目录的权限， 外置SD卡对应共享目录的权限需要配置自定义的root-path中。 -->
+<paths>
+    <!-- 米盟 -->
+    <external-path path="mimoDownload" name="files_root" />
+    <external-path path="." name="external_storage_root" />
+</paths>

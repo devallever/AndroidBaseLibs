@@ -1,0 +1,128 @@
+{
+  "business": [
+    {
+      "name": "厂家-定值：A, AMZ, F, MI, IFly",
+      "appId": "",
+      "appKey": "",
+      "token": ""
+    },
+    {
+      "name": "A",
+      "appId": "",
+      "appKey": "",
+      "token": ""
+    },
+    {
+      "name": "MI",
+      "appId": "",
+      "appKey": "",
+      "token": ""
+    }
+  ],
+  "adConfig": [
+    {
+      "name": "广告位名称-变量：例如主页退出插屏",
+      "type": "广告类型-定值：Banner，Insert，Video",
+      "chain": [
+        {
+          "business": "厂家-定值：A, AMZ, F, MI, IFly",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "A: AdMob",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "AMZ: 亚马逊",
+          "adPosition": "广告位"
+        },{
+          "business": "F: Facebook",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "MI: 小米",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "IFly: 科大讯飞",
+          "adPosition": "广告位"
+        }
+      ]
+    },
+    {
+      "name": "mainExitInsert",
+      "type": "Insert",
+      "chain": [
+        {
+          "business": "A: AdMob",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "AMZ: 亚马逊",
+          "adPosition": "广告位"
+        },{
+          "business": "F: Facebook",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "MI: 小米",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "IFly: 科大讯飞",
+          "adPosition": "广告位"
+        }
+      ]
+    },
+    {
+      "name": "settingBanner",
+      "type": "Banner",
+      "chain": [
+        {
+          "business": "A: AdMob",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "AMZ: 亚马逊",
+          "adPosition": "广告位"
+        },{
+          "business": "F: Facebook",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "MI: 小米",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "IFly: 科大讯飞",
+          "adPosition": "广告位"
+        }
+      ]
+    },
+    {
+      "name": "settingVideo",
+      "type": "Video",
+      "chain": [
+        {
+          "business": "A: AdMob",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "AMZ: 亚马逊",
+          "adPosition": "广告位"
+        },{
+          "business": "F: Facebook",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "MI: 小米",
+          "adPosition": "广告位"
+        },
+        {
+          "business": "IFly: 科大讯飞",
+          "adPosition": "广告位"
+        }
+      ]
+    }
+  ]
+}

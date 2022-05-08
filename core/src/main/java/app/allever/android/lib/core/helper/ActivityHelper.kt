@@ -16,10 +16,10 @@
  */
 package app.allever.android.lib.core.helper
 
+//import app.allever.android.lib.core.ext.log
 import android.app.Activity
 import android.content.Intent
 import app.allever.android.lib.core.ext.log
-//import app.allever.android.lib.core.ext.log
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -31,7 +31,8 @@ import java.util.*
  */
 object ActivityHelper {
 
-    private val activityList = ArrayList<WeakReference<Activity>?>()
+    private val activityList = LinkedList<WeakReference<Activity>?>()
+    private var weakReference: WeakReference<Activity>? = null
 
     fun size(): Int {
         return activityList.size
@@ -44,6 +45,10 @@ object ActivityHelper {
     fun remove(weakRefActivity: WeakReference<Activity>?) {
         val result = activityList.remove(weakRefActivity)
         log("remove activity reference $result")
+    }
+
+    fun setCurrent(activity: Activity) {
+        weakReference = WeakReference(activity)
     }
 
     fun finishAll() {
@@ -82,9 +87,10 @@ object ActivityHelper {
     }
 
     fun getTopActivity(): Activity? {
-        if (activityList.isNotEmpty()) {
+        return weakReference?.get() ?: if (activityList.isNotEmpty()) {
             return activityList[activityList.size - 1]?.get()
+        } else {
+            null
         }
-        return null
     }
 }

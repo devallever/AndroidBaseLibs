@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import app.allever.android.lib.core.R
+import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.HandlerHelper
-import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.helper.LifecycleHelper
 import cn.bingoogolapple.swipebacklayout.BGAKeyboardUtil
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
 import java.lang.ref.WeakReference
@@ -79,6 +80,8 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
 
     override fun onResume() {
         super.onResume()
+        ActivityHelper.setCurrent(this)
+        LifecycleHelper.pullRootOwner(this)
     }
 
     override fun onPause() {

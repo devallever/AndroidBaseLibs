@@ -29,6 +29,8 @@ abstract class App : Application() {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
+        lateinit var app: Application
+        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
         lateinit var mainHandler: Handler
 //        val mainHandler : Handler by  lazy {
@@ -37,6 +39,7 @@ abstract class App : Application() {
         fun init(context: Context) {
             Companion.context = context.applicationContext
             mainHandler = Handler(Looper.getMainLooper())
+            app = context as Application
         }
     }
 

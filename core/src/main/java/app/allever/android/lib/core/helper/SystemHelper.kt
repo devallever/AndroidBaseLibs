@@ -308,7 +308,7 @@ object SystemHelper {
     fun isOpenNotification() = NotificationManagerCompat.from(App.context).areNotificationsEnabled()
 
     private val isDebug = true
-    fun log(message: String) {
+    private fun log(message: String) {
         if (isDebug) {
             Log.e("breeze", message)
         }

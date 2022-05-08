@@ -48,6 +48,10 @@ dependencies {
     implementation project(path: ':permission-andpermission')
     implementation project(path: ':datastore-mmkv')
     implementation project(path: ':imageloader-glide')
+    implementation project(path: ':ad-admob')
+    implementation project(path: ':ad-facebook')
+    implementation project(path: ':ad-amazon')
+    implementation project(path: ':ad-mimo')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.gms.ads.formats.UnifiedNativeAdView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/nativeAdView">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.ads.formats.MediaView
+            android:id="@+id/mediaView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#cccccc"/>
+
+
+        <RelativeLayout
+            android:id="@+id/infoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@id/mediaView">
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="#66ff0000"/>
+
+            <RelativeLayout
+                android:id="@+id/contentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@id/ivLogo"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/tvHeadLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Title"
+                    android:singleLine="true"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvHeadLine"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp"
+                    android:text="Description"
+                    android:singleLine="true"
+                    android:textColor="#333333"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnAction"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/infoContainer"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:background="#ffffff"
+            android:text="@string/admob_flag_ad"
+            android:textSize="12sp"
+            android:textColor="#0000ff"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+</com.google.android.gms.ads.formats.UnifiedNativeAdView>
