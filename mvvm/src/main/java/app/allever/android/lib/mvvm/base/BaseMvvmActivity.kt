@@ -9,6 +9,9 @@ import app.allever.android.lib.core.base.AbstractActivity
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : AbstractActivity() {
+//    private val clz = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
+//    protected lateinit var mBinding: DB
+//    val mViewModel: VM by viewModel(Reflection.createKotlinClass(clz) as KClass<VM>)
     protected lateinit var mBinding: DB
     protected lateinit var mViewModel: VM
 
@@ -31,6 +34,9 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         return if (this::mViewModel.isInitialized)
             mViewModel
         else {
+            if (fragmentManager == null) {
+                return null
+            }
             mViewModel = createVM()
             mViewModel
         }

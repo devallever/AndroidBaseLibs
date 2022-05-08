@@ -1,12 +1,11 @@
 package app.allever.android.lib.mvvm.base
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 
 abstract class BaseViewModel : ViewModel() {
+
     protected val mJob by lazy {
         Job()
     }
@@ -21,6 +20,9 @@ abstract class BaseViewModel : ViewModel() {
 
     abstract fun init()
     fun destroy() {
+        viewModelScope.launch {
+
+        }
         mainCoroutine.cancel()
         threadCoroutine.cancel()
         mJob.cancel()
