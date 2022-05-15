@@ -20,12 +20,16 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="APP_ID" android:value="09f277ca386ee99cb4c910e09f562112" />
-        <meta-data android:name="APP_PID" android:value="google" />
+        <meta-data
+            android:name="APP_ID"
+            android:value="09f277ca386ee99cb4c910e09f562112" />
+        <meta-data
+            android:name="APP_PID"
+            android:value="google" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8815582923430605~2604321696"/>
+            android:value="ca-app-pub-8815582923430605~2604321696" />
     </application>
 
 </manifest>

@@ -5,8 +5,6 @@ import static android.content.Context.ALARM_SERVICE;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -80,6 +78,7 @@ public class AlarmUtils {
 
     /**
      * 取消闹钟
+     *
      * @param context
      * @param taskId
      */
@@ -91,7 +90,7 @@ public class AlarmUtils {
 //        Intent intent = new Intent(context, TimerTaskReceiver.class);
 //        intent.setAction(TimerTaskReceiver.ACTION_TIMER_TASK);
 //        int requestCode = Integer.parseInt(taskId + "" + switchType);
-        PendingIntent pi= PendingIntent.getBroadcast(context, 1, null, 0);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 1, null, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         //取消警报
         am.cancel(pi);

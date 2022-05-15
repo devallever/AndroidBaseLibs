@@ -6,7 +6,7 @@ import app.allever.android.lib.core.function.ad.chain.IAd
 import com.miui.zeus.mimo.sdk.ad.IAdWorker
 import com.xiaomi.ad.common.pojo.AdType
 
-open class IMiMoAd(private val adType: AdType): IAd() {
+open class IMiMoAd(private val adType: AdType) : IAd() {
 
     private var mAdWorker: IAdWorker? = null
 

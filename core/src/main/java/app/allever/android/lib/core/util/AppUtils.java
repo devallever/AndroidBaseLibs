@@ -6,7 +6,6 @@ import android.os.Build;
 
 import androidx.core.content.FileProvider;
 
-
 import java.io.File;
 
 import app.allever.android.lib.core.app.App;
@@ -15,7 +14,10 @@ import app.allever.android.lib.core.helper.SPHelper;
 
 public class AppUtils {
 
-    private AppUtils() {}
+    private static final String SP_FIRST_LAUNCH = "SP_FIRST_LAUNCH";
+
+    private AppUtils() {
+    }
 
     /**
      * 安装代码块
@@ -50,7 +52,6 @@ public class AppUtils {
 
     }
 
-
     /**
      * Install the app.
      * <p>Target APIs greater than 25 must hold
@@ -63,7 +64,6 @@ public class AppUtils {
         if (installAppIntent == null) return;
         App.context.startActivity(installAppIntent);
     }
-
 
     /**
      * Return the intent of install app.
@@ -85,7 +85,6 @@ public class AppUtils {
         return getInstallAppIntent(uri);
     }
 
-
     /**
      * Return the intent of install app.
      * <p>Target APIs greater than 25 must hold
@@ -105,7 +104,6 @@ public class AppUtils {
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
-    private static final String SP_FIRST_LAUNCH = "SP_FIRST_LAUNCH";
     public static void handleFirstLaunch() {
         boolean isFirstLaunch = SPHelper.INSTANCE.getBoolean(SP_FIRST_LAUNCH, true);
         if (isFirstLaunch) {

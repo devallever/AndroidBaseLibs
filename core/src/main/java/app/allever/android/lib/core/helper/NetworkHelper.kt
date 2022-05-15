@@ -35,7 +35,8 @@ object NetworkHelper {
     private val phoneStateListener: PhoneStateListener = object : PhoneStateListener() {
         override fun onDataConnectionStateChanged(state: Int) {
             super.onDataConnectionStateChanged(state)
-            mMobileDataSwitchListener?.get()?.onStateChange(state == TelephonyManager.DATA_CONNECTED)
+            mMobileDataSwitchListener?.get()
+                ?.onStateChange(state == TelephonyManager.DATA_CONNECTED)
 //            LogUtils.debugLogD("网络变化：state = $state")
         }
     }

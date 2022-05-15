@@ -4,11 +4,11 @@ import android.widget.Toast
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.HandlerHelper
 
-object Toast{
+object Toast {
 
 }
 
-private val mToast : Toast by lazy {
+private val mToast: Toast by lazy {
     val toast = Toast.makeText(App.context, "", Toast.LENGTH_SHORT)
     toast
 }

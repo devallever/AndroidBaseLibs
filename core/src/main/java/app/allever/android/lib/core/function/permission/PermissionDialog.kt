@@ -8,7 +8,8 @@ import app.allever.android.lib.core.R
 import app.allever.android.lib.core.base.AbstractCenterDialog
 
 abstract class PermissionDialog
-    (context: Context, val title: String? = "", val message: String? = "") : AbstractCenterDialog(context) {
+    (context: Context, val title: String? = "", val message: String? = "") :
+    AbstractCenterDialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

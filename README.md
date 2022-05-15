@@ -10,6 +10,7 @@
     - datastore：封装数据存储模块抽象基类和默认实现类，默认使用SP实现数据存储
     - imageloader包：封装图片加载模块抽象基类和默认实现类
     - permission包：封装权限模块抽象基类和默认实现类，包括统一请求流程/提示弹窗/跳转弹窗
+    - ad包：广告库核心组建
 
 - mvp包：MVP架构的基类, BaseMvpActivity/BaseMvpFragment
 - mvvm包：MVVM架构的基类，BaseMvvmActivity/BaseMvvmFragment/BaseViewModel/

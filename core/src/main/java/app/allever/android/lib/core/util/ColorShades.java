@@ -53,6 +53,7 @@ public class ColorShades {
 
     /**
      * Generates the shade for the given color.
+     *
      * @return the int value of the shade.
      */
     public int generate() {
@@ -69,16 +70,17 @@ public class ColorShades {
         int diffG = toG - fromG;
         int diffB = toB - fromB;
 
-        int R = fromR + (int) (( diffR * mShade));
-        int G = fromG + (int) (( diffG * mShade));
-        int B = fromB + (int) (( diffB * mShade));
+        int R = fromR + (int) ((diffR * mShade));
+        int G = fromG + (int) ((diffG * mShade));
+        int B = fromB + (int) ((diffB * mShade));
 
-        return  Color.rgb(R, G, B);
+        return Color.rgb(R, G, B);
     }
 
 
     /**
      * Assumes the from and to color are inverted before generating the shade.
+     *
      * @return the int value of the inverted shade.
      */
     public int generateInverted() {
@@ -96,15 +98,16 @@ public class ColorShades {
         int diffG = toG - fromG;
         int diffB = toB - fromB;
 
-        int R = toR - (int) (( diffR * mShade));
-        int G = toG - (int) (( diffG * mShade));
-        int B = toB - (int) (( diffB * mShade));
+        int R = toR - (int) ((diffR * mShade));
+        int G = toG - (int) ((diffG * mShade));
+        int B = toB - (int) ((diffB * mShade));
 
-        return  Color.rgb(R, G, B);
+        return Color.rgb(R, G, B);
     }
 
     /**
      * Gets the String equivalent of the generated shade
+     *
      * @return String value of the shade
      */
     public String generateInvertedString() {
@@ -113,6 +116,7 @@ public class ColorShades {
 
     /**
      * Gets the inverted String equivalent of the generated shade
+     *
      * @return String value of the shade
      */
     public String generateString() {

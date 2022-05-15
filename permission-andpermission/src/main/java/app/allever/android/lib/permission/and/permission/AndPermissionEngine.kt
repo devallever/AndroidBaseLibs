@@ -2,11 +2,7 @@ package app.allever.android.lib.permission.and.permission
 
 import android.content.Context
 import android.util.Log
-import app.allever.android.lib.core.function.permission.IPermissionEngine
-import app.allever.android.lib.core.function.permission.JumpPermissionSettingDialog
-import app.allever.android.lib.core.function.permission.PermissionHelper
-import app.allever.android.lib.core.function.permission.PermissionListener
-import app.allever.android.lib.core.function.permission.WhyRequestPermissionDialog
+import app.allever.android.lib.core.function.permission.*
 import app.allever.android.lib.core.helper.ActivityHelper
 import com.yanzhenjie.permission.AndPermission
 

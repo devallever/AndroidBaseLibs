@@ -1,19 +1,20 @@
 /*
- * Copyright 2013, Edmodo, Inc. 
+ * Copyright 2013, Edmodo, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License.
  * You may obtain a copy of the License in the LICENSE file, or at:
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" 
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language 
- * governing permissions and limitations under the License. 
-*/
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 
 package com.edmodo.cropper.cropwindow.edge;
 
 import android.graphics.RectF;
+
 import androidx.annotation.NonNull;
 
 import com.edmodo.cropper.util.AspectRatioUtil;
@@ -43,13 +44,162 @@ public enum Edge {
     // Public Methods //////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Sets the coordinate of the Edge. The coordinate will represent the x-coordinate for LEFT and
-     * RIGHT Edges and the y-coordinate for TOP and BOTTOM edges.
-     *
-     * @param coordinate the position of the edge
+     * Gets the current width of the crop window.
      */
-    public void setCoordinate(float coordinate) {
-        mCoordinate = coordinate;
+    public static float getWidth() {
+        return Edge.RIGHT.getCoordinate() - Edge.LEFT.getCoordinate();
+    }
+
+    /**
+     * Gets the current height of the crop window.
+     */
+    public static float getHeight() {
+        return Edge.BOTTOM.getCoordinate() - Edge.TOP.getCoordinate();
+    }
+
+    /**
+     * Get the resulting x-position of the left edge of the crop window given the handle's position
+     * and the image's bounding box and snap radius.
+     *
+     * @param x               the x-position that the left edge is dragged to
+     * @param imageRect       the bounding box of the image that is being cropped
+     * @param imageSnapRadius the snap distance to the image edge (in pixels)
+     * @return the actual x-position of the left edge
+     */
+    private static float adjustLeft(float x, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
+
+        final float resultX;
+
+        if (x - imageRect.left < imageSnapRadius) {
+
+            resultX = imageRect.left;
+
+        } else {
+
+            // Select the minimum of the three possible values to use
+            float resultXHoriz = Float.POSITIVE_INFINITY;
+            float resultXVert = Float.POSITIVE_INFINITY;
+
+            // Checks if the window is too small horizontally
+            if (x >= Edge.RIGHT.getCoordinate() - MIN_CROP_LENGTH_PX) {
+                resultXHoriz = Edge.RIGHT.getCoordinate() - MIN_CROP_LENGTH_PX;
+            }
+            // Checks if the window is too small vertically
+            if (((Edge.RIGHT.getCoordinate() - x) / aspectRatio) <= MIN_CROP_LENGTH_PX) {
+                resultXVert = Edge.RIGHT.getCoordinate() - (MIN_CROP_LENGTH_PX * aspectRatio);
+            }
+            resultX = Math.min(x, Math.min(resultXHoriz, resultXVert));
+        }
+        return resultX;
+    }
+
+    /**
+     * Get the resulting x-position of the right edge of the crop window given the handle's position
+     * and the image's bounding box and snap radius.
+     *
+     * @param x               the x-position that the right edge is dragged to
+     * @param imageRect       the bounding box of the image that is being cropped
+     * @param imageSnapRadius the snap distance to the image edge (in pixels)
+     * @return the actual x-position of the right edge
+     */
+    private static float adjustRight(float x, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
+
+        final float resultX;
+
+        // If close to the edge...
+        if (imageRect.right - x < imageSnapRadius) {
+
+            resultX = imageRect.right;
+
+        } else {
+
+            // Select the maximum of the three possible values to use
+            float resultXHoriz = Float.NEGATIVE_INFINITY;
+            float resultXVert = Float.NEGATIVE_INFINITY;
+
+            // Checks if the window is too small horizontally
+            if (x <= Edge.LEFT.getCoordinate() + MIN_CROP_LENGTH_PX) {
+                resultXHoriz = Edge.LEFT.getCoordinate() + MIN_CROP_LENGTH_PX;
+            }
+            // Checks if the window is too small vertically
+            if (((x - Edge.LEFT.getCoordinate()) / aspectRatio) <= MIN_CROP_LENGTH_PX) {
+                resultXVert = Edge.LEFT.getCoordinate() + (MIN_CROP_LENGTH_PX * aspectRatio);
+            }
+            resultX = Math.max(x, Math.max(resultXHoriz, resultXVert));
+        }
+        return resultX;
+    }
+
+    /**
+     * Get the resulting y-position of the top edge of the crop window given the handle's position
+     * and the image's bounding box and snap radius.
+     *
+     * @param y               the x-position that the top edge is dragged to
+     * @param imageRect       the bounding box of the image that is being cropped
+     * @param imageSnapRadius the snap distance to the image edge (in pixels)
+     * @return the actual y-position of the top edge
+     */
+    private static float adjustTop(float y, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
+
+        final float resultY;
+
+        if (y - imageRect.top < imageSnapRadius) {
+
+            resultY = imageRect.top;
+
+        } else {
+
+            // Select the minimum of the three possible values to use
+            float resultYVert = Float.POSITIVE_INFINITY;
+            float resultYHoriz = Float.POSITIVE_INFINITY;
+
+            // Checks if the window is too small vertically
+            if (y >= Edge.BOTTOM.getCoordinate() - MIN_CROP_LENGTH_PX)
+                resultYHoriz = Edge.BOTTOM.getCoordinate() - MIN_CROP_LENGTH_PX;
+
+            // Checks if the window is too small horizontally
+            if (((Edge.BOTTOM.getCoordinate() - y) * aspectRatio) <= MIN_CROP_LENGTH_PX)
+                resultYVert = Edge.BOTTOM.getCoordinate() - (MIN_CROP_LENGTH_PX / aspectRatio);
+
+            resultY = Math.min(y, Math.min(resultYHoriz, resultYVert));
+        }
+        return resultY;
+    }
+
+    /**
+     * Get the resulting y-position of the bottom edge of the crop window given the handle's
+     * position and the image's bounding box and snap radius.
+     *
+     * @param y               the x-position that the bottom edge is dragged to
+     * @param imageRect       the bounding box of the image that is being cropped
+     * @param imageSnapRadius the snap distance to the image edge (in pixels)
+     * @return the actual y-position of the bottom edge
+     */
+    private static float adjustBottom(float y, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
+
+        final float resultY;
+
+        if (imageRect.bottom - y < imageSnapRadius) {
+
+            resultY = imageRect.bottom;
+
+        } else {
+
+            // Select the maximum of the three possible values to use
+            float resultYVert = Float.NEGATIVE_INFINITY;
+            float resultYHoriz = Float.NEGATIVE_INFINITY;
+
+            // Checks if the window is too small vertically
+            if (y <= Edge.TOP.getCoordinate() + MIN_CROP_LENGTH_PX) {
+                resultYVert = Edge.TOP.getCoordinate() + MIN_CROP_LENGTH_PX;
+            }
+            // Checks if the window is too small horizontally
+            if (((y - Edge.TOP.getCoordinate()) * aspectRatio) <= MIN_CROP_LENGTH_PX) {
+                resultYHoriz = Edge.TOP.getCoordinate() + (MIN_CROP_LENGTH_PX / aspectRatio);
+            }
+            resultY = Math.max(y, Math.max(resultYHoriz, resultYVert));
+        }
+        return resultY;
     }
 
     /**
@@ -69,6 +219,16 @@ public enum Edge {
      */
     public float getCoordinate() {
         return mCoordinate;
+    }
+
+    /**
+     * Sets the coordinate of the Edge. The coordinate will represent the x-coordinate for LEFT and
+     * RIGHT Edges and the y-coordinate for TOP and BOTTOM edges.
+     *
+     * @param coordinate the position of the edge
+     */
+    public void setCoordinate(float coordinate) {
+        mCoordinate = coordinate;
     }
 
     /**
@@ -97,7 +257,6 @@ public enum Edge {
                 break;
         }
     }
-
 
     /**
      * Adjusts this Edge position such that the resulting window will have the given aspect ratio.
@@ -134,7 +293,6 @@ public enum Edge {
      * @param edge        the Edge that is about to be expanded
      * @param imageRect   the rectangle of the picture
      * @param aspectRatio the desired aspectRatio of the picture
-     *
      * @return whether or not the new image would be out of bounds.
      */
     public boolean isNewRectangleOutOfBounds(@NonNull Edge edge, @NonNull RectF imageRect, float aspectRatio) {
@@ -235,11 +393,12 @@ public enum Edge {
         return true;
     }
 
+    // Private Methods /////////////////////////////////////////////////////////////////////////////
+
     /**
      * Returns whether the new rectangle would be out of bounds.
      *
      * @param imageRect the Image to be compared with
-     *
      * @return whether it would be out of bounds
      */
     private boolean isOutOfBounds(float top, float left, float bottom, float right, @NonNull RectF imageRect) {
@@ -250,7 +409,6 @@ public enum Edge {
      * Snap this Edge to the given image boundaries.
      *
      * @param imageRect the bounding rectangle of the image to snap to
-     *
      * @return the amount (in pixels) that this coordinate was changed (i.e. the new coordinate
      * minus the old coordinate value)
      */
@@ -280,7 +438,6 @@ public enum Edge {
      * Returns the potential snap offset of snapToRect, without changing the coordinate.
      *
      * @param imageRect the bounding rectangle of the image to snap to
-     *
      * @return the amount (in pixels) that this coordinate was changed (i.e. the new coordinate
      * minus the old coordinate value)
      */
@@ -308,20 +465,6 @@ public enum Edge {
     }
 
     /**
-     * Gets the current width of the crop window.
-     */
-    public static float getWidth() {
-        return Edge.RIGHT.getCoordinate() - Edge.LEFT.getCoordinate();
-    }
-
-    /**
-     * Gets the current height of the crop window.
-     */
-    public static float getHeight() {
-        return Edge.BOTTOM.getCoordinate() - Edge.TOP.getCoordinate();
-    }
-
-    /**
      * Determines if this Edge is outside the inner margins of the given bounding rectangle. The
      * margins come inside the actual frame by SNAPRADIUS amount; therefore, determines if the point
      * is outside the inner "margin" frame.
@@ -345,156 +488,5 @@ public enum Edge {
                 break;
         }
         return result;
-    }
-
-    // Private Methods /////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Get the resulting x-position of the left edge of the crop window given the handle's position
-     * and the image's bounding box and snap radius.
-     *
-     * @param x               the x-position that the left edge is dragged to
-     * @param imageRect       the bounding box of the image that is being cropped
-     * @param imageSnapRadius the snap distance to the image edge (in pixels)
-     *
-     * @return the actual x-position of the left edge
-     */
-    private static float adjustLeft(float x, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
-
-        final float resultX;
-
-        if (x - imageRect.left < imageSnapRadius) {
-
-            resultX = imageRect.left;
-
-        } else {
-
-            // Select the minimum of the three possible values to use
-            float resultXHoriz = Float.POSITIVE_INFINITY;
-            float resultXVert = Float.POSITIVE_INFINITY;
-
-            // Checks if the window is too small horizontally
-            if (x >= Edge.RIGHT.getCoordinate() - MIN_CROP_LENGTH_PX) {
-                resultXHoriz = Edge.RIGHT.getCoordinate() - MIN_CROP_LENGTH_PX;
-            }
-            // Checks if the window is too small vertically
-            if (((Edge.RIGHT.getCoordinate() - x) / aspectRatio) <= MIN_CROP_LENGTH_PX) {
-                resultXVert = Edge.RIGHT.getCoordinate() - (MIN_CROP_LENGTH_PX * aspectRatio);
-            }
-            resultX = Math.min(x, Math.min(resultXHoriz, resultXVert));
-        }
-        return resultX;
-    }
-
-    /**
-     * Get the resulting x-position of the right edge of the crop window given the handle's position
-     * and the image's bounding box and snap radius.
-     *
-     * @param x               the x-position that the right edge is dragged to
-     * @param imageRect       the bounding box of the image that is being cropped
-     * @param imageSnapRadius the snap distance to the image edge (in pixels)
-     *
-     * @return the actual x-position of the right edge
-     */
-    private static float adjustRight(float x, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
-
-        final float resultX;
-
-        // If close to the edge...
-        if (imageRect.right - x < imageSnapRadius) {
-
-            resultX = imageRect.right;
-
-        } else {
-
-            // Select the maximum of the three possible values to use
-            float resultXHoriz = Float.NEGATIVE_INFINITY;
-            float resultXVert = Float.NEGATIVE_INFINITY;
-
-            // Checks if the window is too small horizontally
-            if (x <= Edge.LEFT.getCoordinate() + MIN_CROP_LENGTH_PX) {
-                resultXHoriz = Edge.LEFT.getCoordinate() + MIN_CROP_LENGTH_PX;
-            }
-            // Checks if the window is too small vertically
-            if (((x - Edge.LEFT.getCoordinate()) / aspectRatio) <= MIN_CROP_LENGTH_PX) {
-                resultXVert = Edge.LEFT.getCoordinate() + (MIN_CROP_LENGTH_PX * aspectRatio);
-            }
-            resultX = Math.max(x, Math.max(resultXHoriz, resultXVert));
-        }
-        return resultX;
-    }
-
-    /**
-     * Get the resulting y-position of the top edge of the crop window given the handle's position
-     * and the image's bounding box and snap radius.
-     *
-     * @param y               the x-position that the top edge is dragged to
-     * @param imageRect       the bounding box of the image that is being cropped
-     * @param imageSnapRadius the snap distance to the image edge (in pixels)
-     *
-     * @return the actual y-position of the top edge
-     */
-    private static float adjustTop(float y, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
-
-        final float resultY;
-
-        if (y - imageRect.top < imageSnapRadius) {
-
-            resultY = imageRect.top;
-
-        } else {
-
-            // Select the minimum of the three possible values to use
-            float resultYVert = Float.POSITIVE_INFINITY;
-            float resultYHoriz = Float.POSITIVE_INFINITY;
-
-            // Checks if the window is too small vertically
-            if (y >= Edge.BOTTOM.getCoordinate() - MIN_CROP_LENGTH_PX)
-                resultYHoriz = Edge.BOTTOM.getCoordinate() - MIN_CROP_LENGTH_PX;
-
-            // Checks if the window is too small horizontally
-            if (((Edge.BOTTOM.getCoordinate() - y) * aspectRatio) <= MIN_CROP_LENGTH_PX)
-                resultYVert = Edge.BOTTOM.getCoordinate() - (MIN_CROP_LENGTH_PX / aspectRatio);
-
-            resultY = Math.min(y, Math.min(resultYHoriz, resultYVert));
-        }
-        return resultY;
-    }
-
-    /**
-     * Get the resulting y-position of the bottom edge of the crop window given the handle's
-     * position and the image's bounding box and snap radius.
-     *
-     * @param y               the x-position that the bottom edge is dragged to
-     * @param imageRect       the bounding box of the image that is being cropped
-     * @param imageSnapRadius the snap distance to the image edge (in pixels)
-     *
-     * @return the actual y-position of the bottom edge
-     */
-    private static float adjustBottom(float y, @NonNull RectF imageRect, float imageSnapRadius, float aspectRatio) {
-
-        final float resultY;
-
-        if (imageRect.bottom - y < imageSnapRadius) {
-
-            resultY = imageRect.bottom;
-
-        } else {
-
-            // Select the maximum of the three possible values to use
-            float resultYVert = Float.NEGATIVE_INFINITY;
-            float resultYHoriz = Float.NEGATIVE_INFINITY;
-
-            // Checks if the window is too small vertically
-            if (y <= Edge.TOP.getCoordinate() + MIN_CROP_LENGTH_PX) {
-                resultYVert = Edge.TOP.getCoordinate() + MIN_CROP_LENGTH_PX;
-            }
-            // Checks if the window is too small horizontally
-            if (((y - Edge.TOP.getCoordinate()) * aspectRatio) <= MIN_CROP_LENGTH_PX) {
-                resultYHoriz = Edge.TOP.getCoordinate() + (MIN_CROP_LENGTH_PX / aspectRatio);
-            }
-            resultY = Math.max(y, Math.max(resultYHoriz, resultYVert));
-        }
-        return resultY;
     }
 }

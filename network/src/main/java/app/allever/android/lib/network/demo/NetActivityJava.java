@@ -29,7 +29,7 @@ public class NetActivityJava extends AbstractActivity {
         TextView textView = findViewById(R.id.tvResult);
 
         HttpConfig.INSTANCE.baseUrl("https://www.wanandroid.com/")
-            .successCode(0);
+                .successCode(0);
 
         findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override

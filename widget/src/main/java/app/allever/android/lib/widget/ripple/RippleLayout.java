@@ -141,10 +141,53 @@ public class RippleLayout extends FrameLayout {
     private GestureDetector gestureDetector;
     private PerformClickEvent pendingClickEvent;
     private PressedEvent pendingPressEvent;
+    private boolean hasPerformedLongPress;
+    /*
+     * Animations
+     */
+    private Property<RippleLayout, Float> radiusProperty
+            = new Property<RippleLayout, Float>(Float.class, "radius") {
+        @Override
+        public Float get(RippleLayout object) {
+            return object.getRadius();
+        }
 
-    public static RippleBuilder on(View view) {
-        return new RippleBuilder(view);
-    }
+        @Override
+        public void set(RippleLayout object, Float value) {
+            object.setRadius(value);
+        }
+    };
+    private Property<RippleLayout, Integer> circleAlphaProperty
+            = new Property<RippleLayout, Integer>(Integer.class, "rippleAlpha") {
+        @Override
+        public Integer get(RippleLayout object) {
+            return object.getRippleAlpha();
+        }
+
+        @Override
+        public void set(RippleLayout object, Integer value) {
+            object.setRippleAlpha(value);
+        }
+    };
+    private SimpleOnGestureListener longClickListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public void onLongPress(MotionEvent e) {
+            hasPerformedLongPress = childView.performLongClick();
+            if (hasPerformedLongPress) {
+                if (rippleHover) {
+                    startRipple(null);
+                }
+                cancelPressedEvent();
+            }
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            hasPerformedLongPress = false;
+            return super.onDown(e);
+        }
+    };
+
 
     public RippleLayout(Context context) {
         this(context, null, 0);
@@ -185,6 +228,13 @@ public class RippleLayout extends FrameLayout {
         enableClipPathSupportIfNecessary();
     }
 
+    public static RippleBuilder on(View view) {
+        return new RippleBuilder(view);
+    }
+
+    static float dpToPx(Resources resources, float dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
+    }
 
     @SuppressWarnings("unchecked")
     public <T extends View> T getChildView() {
@@ -322,26 +372,6 @@ public class RippleLayout extends FrameLayout {
             prepressed = false;
         }
     }
-
-    private boolean hasPerformedLongPress;
-    private SimpleOnGestureListener longClickListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public void onLongPress(MotionEvent e) {
-            hasPerformedLongPress = childView.performLongClick();
-            if (hasPerformedLongPress) {
-                if (rippleHover) {
-                    startRipple(null);
-                }
-                cancelPressedEvent();
-            }
-        }
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            hasPerformedLongPress = false;
-            return super.onDown(e);
-        }
-    };
 
     private void startHover() {
         if (eventCancelled) return;
@@ -534,44 +564,14 @@ public class RippleLayout extends FrameLayout {
         }
     }
 
-    /*
-     * Animations
-     */
-    private Property<RippleLayout, Float> radiusProperty
-            = new Property<RippleLayout, Float>(Float.class, "radius") {
-        @Override
-        public Float get(RippleLayout object) {
-            return object.getRadius();
-        }
-
-        @Override
-        public void set(RippleLayout object, Float value) {
-            object.setRadius(value);
-        }
-    };
-
     private float getRadius() {
         return radius;
     }
-
 
     public void setRadius(float radius) {
         this.radius = radius;
         invalidate();
     }
-
-    private Property<RippleLayout, Integer> circleAlphaProperty
-            = new Property<RippleLayout, Integer>(Integer.class, "rippleAlpha") {
-        @Override
-        public Integer get(RippleLayout object) {
-            return object.getRippleAlpha();
-        }
-
-        @Override
-        public void set(RippleLayout object, Integer value) {
-            object.setRippleAlpha(value);
-        }
-    };
 
     public int getRippleAlpha() {
         return paint.getAlpha();
@@ -667,69 +667,6 @@ public class RippleLayout extends FrameLayout {
             }
         }
     }
-
-    /*
-     * Helper
-     */
-    private class PerformClickEvent implements Runnable {
-
-        @Override
-        public void run() {
-            if (hasPerformedLongPress) return;
-
-            // if parent is an AdapterView, try to call its ItemClickListener
-            if (getParent() instanceof AdapterView) {
-                // try clicking direct child first
-                if (!childView.performClick())
-                    // if it did not handle it dispatch to adapterView
-                    clickAdapterView((AdapterView) getParent());
-            } else if (rippleInAdapter) {
-                // find adapter view
-                clickAdapterView(findParentAdapterView());
-            } else {
-                // otherwise, just perform click on child
-                childView.performClick();
-            }
-        }
-
-        private void clickAdapterView(AdapterView parent) {
-            final int position = parent.getPositionForView(RippleLayout.this);
-            final long itemId = parent.getAdapter() != null
-                    ? parent.getAdapter().getItemId(position)
-                    : 0;
-            if (position != AdapterView.INVALID_POSITION) {
-                parent.performItemClick(RippleLayout.this, position, itemId);
-            }
-        }
-    }
-
-    private final class PressedEvent implements Runnable {
-
-        private final MotionEvent event;
-
-        public PressedEvent(MotionEvent event) {
-            this.event = event;
-        }
-
-        @Override
-        public void run() {
-            prepressed = false;
-            childView.setLongClickable(false);//prevent the child's long click,let's the ripple layout call it's performLongClick
-            childView.onTouchEvent(event);
-            childView.setPressed(true);
-            if (rippleHover) {
-                startHover();
-            }
-        }
-    }
-
-    static float dpToPx(Resources resources, float dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
-    }
-
-    /*
-     * Builder
-     */
 
     public static class RippleBuilder {
 
@@ -849,6 +786,65 @@ public class RippleLayout extends FrameLayout {
             }
 
             return layout;
+        }
+    }
+
+    /*
+     * Helper
+     */
+    private class PerformClickEvent implements Runnable {
+
+        @Override
+        public void run() {
+            if (hasPerformedLongPress) return;
+
+            // if parent is an AdapterView, try to call its ItemClickListener
+            if (getParent() instanceof AdapterView) {
+                // try clicking direct child first
+                if (!childView.performClick())
+                    // if it did not handle it dispatch to adapterView
+                    clickAdapterView((AdapterView) getParent());
+            } else if (rippleInAdapter) {
+                // find adapter view
+                clickAdapterView(findParentAdapterView());
+            } else {
+                // otherwise, just perform click on child
+                childView.performClick();
+            }
+        }
+
+        private void clickAdapterView(AdapterView parent) {
+            final int position = parent.getPositionForView(RippleLayout.this);
+            final long itemId = parent.getAdapter() != null
+                    ? parent.getAdapter().getItemId(position)
+                    : 0;
+            if (position != AdapterView.INVALID_POSITION) {
+                parent.performItemClick(RippleLayout.this, position, itemId);
+            }
+        }
+    }
+
+    /*
+     * Builder
+     */
+
+    private final class PressedEvent implements Runnable {
+
+        private final MotionEvent event;
+
+        public PressedEvent(MotionEvent event) {
+            this.event = event;
+        }
+
+        @Override
+        public void run() {
+            prepressed = false;
+            childView.setLongClickable(false);//prevent the child's long click,let's the ripple layout call it's performLongClick
+            childView.onTouchEvent(event);
+            childView.setPressed(true);
+            if (rippleHover) {
+                startHover();
+            }
         }
     }
 }

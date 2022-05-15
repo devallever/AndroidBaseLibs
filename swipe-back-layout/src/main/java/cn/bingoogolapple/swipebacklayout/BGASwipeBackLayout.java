@@ -32,19 +32,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.FloatRange;
-import androidx.core.content.ContextCompat;
-import androidx.core.os.ParcelableCompat;
-import androidx.core.os.ParcelableCompatCreatorCallbacks;
-import androidx.customview.view.AbsSavedState;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.MotionEventCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -53,6 +40,19 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.core.content.ContextCompat;
+import androidx.core.os.ParcelableCompat;
+import androidx.core.os.ParcelableCompatCreatorCallbacks;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.customview.widget.ViewDragHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -64,8 +64,8 @@ import java.util.ArrayList;
  * 描述:通过修改 support-v4 包中 SlidingPaneLayout 的源码来实现滑动返回布局
  */
 public class BGASwipeBackLayout extends ViewGroup {
+    static final SlidingPanelLayoutImpl IMPL;
     private static final String TAG = "SlidingPaneLayout";
-
     /**
      * Default size of the overhang for a pane in the open state.
      * At least this much of a sliding pane will remain visible.
@@ -73,103 +73,14 @@ public class BGASwipeBackLayout extends ViewGroup {
      * a "physical" edge to grab to pull it closed.
      */
     private static final int DEFAULT_OVERHANG_SIZE = 32; // dp;
-
     /**
      * If no fade color is given by default it will fade to 80% gray.
      */
     private static final int DEFAULT_FADE_COLOR = 0xcccccccc;
-
-    /**
-     * The fade color used for the sliding panel. 0 = no fading.
-     */
-    private int mSliderFadeColor = DEFAULT_FADE_COLOR;
-
     /**
      * Minimum velocity that will be detected as a fling
      */
     private static final int MIN_FLING_VELOCITY = 400; // dips per second
-
-    /**
-     * The fade color used for the panel covered by the slider. 0 = no fading.
-     */
-    private int mCoveredFadeColor;
-
-    /**
-     * Drawable used to draw the shadow between panes by default.
-     */
-    private Drawable mShadowDrawableLeft;
-
-    /**
-     * Drawable used to draw the shadow between panes to support RTL (right to left language).
-     */
-    private Drawable mShadowDrawableRight;
-
-    /**
-     * The size of the overhang in pixels.
-     * This is the minimum section of the sliding panel that will
-     * be visible in the open state to allow for a closing drag.
-     */
-    private final int mOverhangSize;
-
-    /**
-     * True if a panel can slide with the current measurements
-     */
-    private boolean mCanSlide;
-
-    /**
-     * The child view that can slide, if any.
-     */
-    View mSlideableView;
-
-    /**
-     * How far the panel is offset from its closed position.
-     * range [0, 1] where 0 = closed, 1 = open.
-     */
-    float mSlideOffset;
-
-    /**
-     * How far the non-sliding panel is parallaxed from its usual position when open.
-     * range [0, 1]
-     */
-    private float mParallaxOffset;
-
-    /**
-     * How far in pixels the slideable panel may move.
-     */
-    int mSlideRange;
-
-    /**
-     * A panel view is locked into internal scrolling or another condition that
-     * is preventing a drag.
-     */
-    boolean mIsUnableToDrag;
-
-    /**
-     * Distance in pixels to parallax the fixed pane by when fully closed
-     */
-    private int mParallaxBy;
-
-    private float mInitialMotionX;
-    private float mInitialMotionY;
-
-    private PanelSlideListener mPanelSlideListener;
-
-    final ViewDragHelper mDragHelper;
-
-    /**
-     * Stores whether or not the pane was open the last time it was slideable.
-     * If open/close operations are invoked this state is modified. Used by
-     * instance state save/restore.
-     */
-    boolean mPreservedOpenState;
-    private boolean mFirstLayout = true;
-
-    private final Rect mTmpRect = new Rect();
-
-    final ArrayList<DisableLayerRunnable> mPostedRunnables =
-            new ArrayList<DisableLayerRunnable>();
-
-    static final SlidingPanelLayoutImpl IMPL;
 
     static {
         final int deviceVersion = Build.VERSION.SDK_INT;
@@ -181,6 +92,75 @@ public class BGASwipeBackLayout extends ViewGroup {
             IMPL = new SlidingPanelLayoutImplBase();
         }
     }
+
+    final ViewDragHelper mDragHelper;
+    final ArrayList<DisableLayerRunnable> mPostedRunnables =
+            new ArrayList<DisableLayerRunnable>();
+    /**
+     * The size of the overhang in pixels.
+     * This is the minimum section of the sliding panel that will
+     * be visible in the open state to allow for a closing drag.
+     */
+    private final int mOverhangSize;
+    private final Rect mTmpRect = new Rect();
+    /**
+     * The child view that can slide, if any.
+     */
+    View mSlideableView;
+
+    /**
+     * How far the panel is offset from its closed position.
+     * range [0, 1] where 0 = closed, 1 = open.
+     */
+    float mSlideOffset;
+    /**
+     * How far in pixels the slideable panel may move.
+     */
+    int mSlideRange;
+    /**
+     * A panel view is locked into internal scrolling or another condition that
+     * is preventing a drag.
+     */
+    boolean mIsUnableToDrag;
+    /**
+     * Stores whether or not the pane was open the last time it was slideable.
+     * If open/close operations are invoked this state is modified. Used by
+     * instance state save/restore.
+     */
+    boolean mPreservedOpenState;
+    /**
+     * The fade color used for the sliding panel. 0 = no fading.
+     */
+    private int mSliderFadeColor = DEFAULT_FADE_COLOR;
+    /**
+     * The fade color used for the panel covered by the slider. 0 = no fading.
+     */
+    private int mCoveredFadeColor;
+    /**
+     * Drawable used to draw the shadow between panes by default.
+     */
+    private Drawable mShadowDrawableLeft;
+    /**
+     * Drawable used to draw the shadow between panes to support RTL (right to left language).
+     */
+    private Drawable mShadowDrawableRight;
+    /**
+     * True if a panel can slide with the current measurements
+     */
+    private boolean mCanSlide;
+    /**
+     * How far the non-sliding panel is parallaxed from its usual position when open.
+     * range [0, 1]
+     */
+    private float mParallaxOffset;
+    /**
+     * Distance in pixels to parallax the fixed pane by when fully closed
+     */
+    private int mParallaxBy;
+    private float mInitialMotionX;
+    private float mInitialMotionY;
+    private PanelSlideListener mPanelSlideListener;
+    private boolean mFirstLayout = true;
 
     // ======================== 新加的 START ========================
     /**
@@ -216,6 +196,54 @@ public class BGASwipeBackLayout extends ViewGroup {
      */
     private boolean mIsSliding;
 
+    public BGASwipeBackLayout(Context context) {
+        this(context, null);
+    }
+
+    public BGASwipeBackLayout(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public BGASwipeBackLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        final float density = context.getResources().getDisplayMetrics().density;
+
+        // ======================== 新加的 START ========================
+//        mOverhangSize = (int) (DEFAULT_OVERHANG_SIZE * density + 0.5f);
+        mOverhangSize = 0;
+        // ======================== 新加的 END ========================
+
+        final ViewConfiguration viewConfig = ViewConfiguration.get(context);
+
+        setWillNotDraw(false);
+
+        ViewCompat.setAccessibilityDelegate(this, new AccessibilityDelegate());
+        ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+
+        mDragHelper = ViewDragHelper.create(this, 0.5f, new DragHelperCallback());
+        mDragHelper.setMinVelocity(MIN_FLING_VELOCITY * density);
+    }
+
+    private static boolean viewIsOpaque(View v) {
+        if (v.isOpaque()) {
+            return true;
+        }
+
+        // View#isOpaque didn't take all valid opaque scrollbar modes into account
+        // before API 18 (JB-MR2). On newer devices rely solely on isOpaque above and return false
+        // here. On older devices, check the view's background drawable directly as a fallback.
+        if (Build.VERSION.SDK_INT >= 18) {
+            return false;
+        }
+
+        final Drawable bg = v.getBackground();
+        if (bg != null) {
+            return bg.getOpacity() == PixelFormat.OPAQUE;
+        }
+        return false;
+    }
+
     /**
      * 将该滑动返回控件添加到 Activity 上
      */
@@ -233,13 +261,6 @@ public class BGASwipeBackLayout extends ViewGroup {
         decorView.removeView(mContentView);
         decorView.addView(this);
         addView(mContentView, 1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-    }
-
-    /**
-     * 设置滑动返回是否可用。默认值为 true
-     */
-    void setSwipeBackEnable(boolean swipeBackEnable) {
-        mSwipeBackEnable = swipeBackEnable;
     }
 
     /**
@@ -285,6 +306,14 @@ public class BGASwipeBackLayout extends ViewGroup {
     private boolean isSwipeBackEnable() {
         return mSwipeBackEnable && BGASwipeBackManager.getInstance().isSwipeBackEnable();
     }
+    // ======================== 新加的 END ========================
+
+    /**
+     * 设置滑动返回是否可用。默认值为 true
+     */
+    void setSwipeBackEnable(boolean swipeBackEnable) {
+        mSwipeBackEnable = swipeBackEnable;
+    }
 
     /**
      * 设置阴影资源 id
@@ -306,82 +335,13 @@ public class BGASwipeBackLayout extends ViewGroup {
     void setIsShadowAlphaGradient(boolean isShadowAlphaGradient) {
         mShadowView.setIsShadowAlphaGradient(isShadowAlphaGradient);
     }
-    // ======================== 新加的 END ========================
 
     /**
-     * Listener for monitoring events about sliding panes.
+     * @return The distance the lower pane will parallax by when the upper pane is fully closed.
+     * @see #setParallaxDistance(int)
      */
-    public interface PanelSlideListener {
-        /**
-         * Called when a sliding pane's position changes.
-         *
-         * @param panel       The child view that was moved
-         * @param slideOffset The new offset of this sliding pane within its range, from 0-1
-         */
-        void onPanelSlide(View panel, float slideOffset);
-
-        /**
-         * Called when a sliding pane becomes slid completely open. The pane may or may not
-         * be interactive at this point depending on how much of the pane is visible.
-         *
-         * @param panel The child view that was slid to an open position, revealing other panes
-         */
-        void onPanelOpened(View panel);
-
-        /**
-         * Called when a sliding pane becomes slid completely closed. The pane is now guaranteed
-         * to be interactive. It may now obscure other views in the layout.
-         *
-         * @param panel The child view that was slid to a closed position
-         */
-        void onPanelClosed(View panel);
-    }
-
-    /**
-     * No-op stubs for {@link PanelSlideListener}. If you only want to implement a subset
-     * of the listener methods you can extend this instead of implement the full interface.
-     */
-    public static class SimplePanelSlideListener implements PanelSlideListener {
-        @Override
-        public void onPanelSlide(View panel, float slideOffset) {
-        }
-
-        @Override
-        public void onPanelOpened(View panel) {
-        }
-
-        @Override
-        public void onPanelClosed(View panel) {
-        }
-    }
-
-    public BGASwipeBackLayout(Context context) {
-        this(context, null);
-    }
-
-    public BGASwipeBackLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BGASwipeBackLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-
-        final float density = context.getResources().getDisplayMetrics().density;
-
-        // ======================== 新加的 START ========================
-//        mOverhangSize = (int) (DEFAULT_OVERHANG_SIZE * density + 0.5f);
-        mOverhangSize = 0;
-        // ======================== 新加的 END ========================
-
-        final ViewConfiguration viewConfig = ViewConfiguration.get(context);
-
-        setWillNotDraw(false);
-
-        ViewCompat.setAccessibilityDelegate(this, new AccessibilityDelegate());
-        ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
-
-        mDragHelper = ViewDragHelper.create(this, 0.5f, new DragHelperCallback());
-        mDragHelper.setMinVelocity(MIN_FLING_VELOCITY * density);
+    public int getParallaxDistance() {
+        return mParallaxBy;
     }
 
     /**
@@ -397,11 +357,11 @@ public class BGASwipeBackLayout extends ViewGroup {
     }
 
     /**
-     * @return The distance the lower pane will parallax by when the upper pane is fully closed.
-     * @see #setParallaxDistance(int)
+     * @return The ARGB-packed color value used to fade the sliding pane
      */
-    public int getParallaxDistance() {
-        return mParallaxBy;
+    @ColorInt
+    public int getSliderFadeColor() {
+        return mSliderFadeColor;
     }
 
     /**
@@ -414,11 +374,11 @@ public class BGASwipeBackLayout extends ViewGroup {
     }
 
     /**
-     * @return The ARGB-packed color value used to fade the sliding pane
+     * @return The ARGB-packed color value used to fade the fixed pane
      */
     @ColorInt
-    public int getSliderFadeColor() {
-        return mSliderFadeColor;
+    public int getCoveredFadeColor() {
+        return mCoveredFadeColor;
     }
 
     /**
@@ -429,14 +389,6 @@ public class BGASwipeBackLayout extends ViewGroup {
      */
     public void setCoveredFadeColor(@ColorInt int color) {
         mCoveredFadeColor = color;
-    }
-
-    /**
-     * @return The ARGB-packed color value used to fade the fixed pane
-     */
-    @ColorInt
-    public int getCoveredFadeColor() {
-        return mCoveredFadeColor;
     }
 
     public void setPanelSlideListener(PanelSlideListener listener) {
@@ -529,25 +481,6 @@ public class BGASwipeBackLayout extends ViewGroup {
                 child.setVisibility(VISIBLE);
             }
         }
-    }
-
-    private static boolean viewIsOpaque(View v) {
-        if (v.isOpaque()) {
-            return true;
-        }
-
-        // View#isOpaque didn't take all valid opaque scrollbar modes into account
-        // before API 18 (JB-MR2). On newer devices rely solely on isOpaque above and return false
-        // here. On older devices, check the view's background drawable directly as a fallback.
-        if (Build.VERSION.SDK_INT >= 18) {
-            return false;
-        }
-
-        final Drawable bg = v.getBackground();
-        if (bg != null) {
-            return bg.getOpacity() == PixelFormat.OPAQUE;
-        }
-        return false;
     }
 
     @Override
@@ -1461,6 +1394,206 @@ public class BGASwipeBackLayout extends ViewGroup {
         mPreservedOpenState = ss.isOpen;
     }
 
+    boolean isLayoutRtlSupport() {
+        return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    }
+
+    /**
+     * Listener for monitoring events about sliding panes.
+     */
+    public interface PanelSlideListener {
+        /**
+         * Called when a sliding pane's position changes.
+         *
+         * @param panel       The child view that was moved
+         * @param slideOffset The new offset of this sliding pane within its range, from 0-1
+         */
+        void onPanelSlide(View panel, float slideOffset);
+
+        /**
+         * Called when a sliding pane becomes slid completely open. The pane may or may not
+         * be interactive at this point depending on how much of the pane is visible.
+         *
+         * @param panel The child view that was slid to an open position, revealing other panes
+         */
+        void onPanelOpened(View panel);
+
+        /**
+         * Called when a sliding pane becomes slid completely closed. The pane is now guaranteed
+         * to be interactive. It may now obscure other views in the layout.
+         *
+         * @param panel The child view that was slid to a closed position
+         */
+        void onPanelClosed(View panel);
+    }
+
+    interface SlidingPanelLayoutImpl {
+        void invalidateChildRegion(BGASwipeBackLayout parent, View child);
+    }
+
+    /**
+     * No-op stubs for {@link PanelSlideListener}. If you only want to implement a subset
+     * of the listener methods you can extend this instead of implement the full interface.
+     */
+    public static class SimplePanelSlideListener implements PanelSlideListener {
+        @Override
+        public void onPanelSlide(View panel, float slideOffset) {
+        }
+
+        @Override
+        public void onPanelOpened(View panel) {
+        }
+
+        @Override
+        public void onPanelClosed(View panel) {
+        }
+    }
+
+    public static class LayoutParams extends ViewGroup.MarginLayoutParams {
+        private static final int[] ATTRS = new int[]{
+                android.R.attr.layout_weight
+        };
+
+        /**
+         * The weighted proportion of how much of the leftover space
+         * this child should consume after measurement.
+         */
+        public float weight = 0;
+
+        /**
+         * True if this pane is the slideable pane in the layout.
+         */
+        boolean slideable;
+
+        /**
+         * True if this view should be drawn dimmed
+         * when it's been offset from its default position.
+         */
+        boolean dimWhenOffset;
+
+        Paint dimPaint;
+
+        public LayoutParams() {
+            super(MATCH_PARENT, MATCH_PARENT);
+        }
+
+        public LayoutParams(int width, int height) {
+            super(width, height);
+        }
+
+        public LayoutParams(android.view.ViewGroup.LayoutParams source) {
+            super(source);
+        }
+
+        public LayoutParams(MarginLayoutParams source) {
+            super(source);
+        }
+
+        public LayoutParams(LayoutParams source) {
+            super(source);
+            this.weight = source.weight;
+        }
+
+        public LayoutParams(Context c, AttributeSet attrs) {
+            super(c, attrs);
+
+            final TypedArray a = c.obtainStyledAttributes(attrs, ATTRS);
+            this.weight = a.getFloat(0, 0);
+            a.recycle();
+        }
+
+    }
+
+    static class SavedState extends AbsSavedState {
+        public static final Creator<SavedState> CREATOR = ParcelableCompat.newCreator(
+                new ParcelableCompatCreatorCallbacks<SavedState>() {
+                    @Override
+                    public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                        return new SavedState(in, loader);
+                    }
+
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                });
+        boolean isOpen;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        SavedState(Parcel in, ClassLoader loader) {
+            super(in, loader);
+            isOpen = in.readInt() != 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(isOpen ? 1 : 0);
+        }
+    }
+
+    static class SlidingPanelLayoutImplBase implements SlidingPanelLayoutImpl {
+        @Override
+        public void invalidateChildRegion(BGASwipeBackLayout parent, View child) {
+            ViewCompat.postInvalidateOnAnimation(parent, child.getLeft(), child.getTop(),
+                    child.getRight(), child.getBottom());
+        }
+    }
+
+    static class SlidingPanelLayoutImplJB extends SlidingPanelLayoutImplBase {
+        /*
+         * Private API hacks! Nasty! Bad!
+         *
+         * In Jellybean, some optimizations in the hardware UI renderer
+         * prevent a changed Paint on a View using a hardware layer from having
+         * the intended effect. This twiddles some internal bits on the view to force
+         * it to recreate the display list.
+         */
+        private Method mGetDisplayList;
+        private Field mRecreateDisplayList;
+
+        SlidingPanelLayoutImplJB() {
+            try {
+                mGetDisplayList = View.class.getDeclaredMethod("getDisplayList", (Class[]) null);
+            } catch (NoSuchMethodException e) {
+                Log.e(TAG, "Couldn't fetch getDisplayList method; dimming won't work right.", e);
+            }
+            try {
+                mRecreateDisplayList = View.class.getDeclaredField("mRecreateDisplayList");
+                mRecreateDisplayList.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                Log.e(TAG, "Couldn't fetch mRecreateDisplayList field; dimming will be slow.", e);
+            }
+        }
+
+        @Override
+        public void invalidateChildRegion(BGASwipeBackLayout parent, View child) {
+            if (mGetDisplayList != null && mRecreateDisplayList != null) {
+                try {
+                    mRecreateDisplayList.setBoolean(child, true);
+                    mGetDisplayList.invoke(child, (Object[]) null);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error refreshing display list state", e);
+                }
+            } else {
+                // Slow path. REALLY slow path. Let's hope we don't get here.
+                child.invalidate();
+                return;
+            }
+            super.invalidateChildRegion(parent, child);
+        }
+    }
+
+    static class SlidingPanelLayoutImplJBMR1 extends SlidingPanelLayoutImplBase {
+        @Override
+        public void invalidateChildRegion(BGASwipeBackLayout parent, View child) {
+            ViewCompat.setLayerPaint(child, ((LayoutParams) child.getLayoutParams()).dimPaint);
+        }
+    }
+
     private class DragHelperCallback extends ViewDragHelper.Callback {
 
         DragHelperCallback() {
@@ -1583,156 +1716,6 @@ public class BGASwipeBackLayout extends ViewGroup {
         }
     }
 
-    public static class LayoutParams extends ViewGroup.MarginLayoutParams {
-        private static final int[] ATTRS = new int[]{
-                android.R.attr.layout_weight
-        };
-
-        /**
-         * The weighted proportion of how much of the leftover space
-         * this child should consume after measurement.
-         */
-        public float weight = 0;
-
-        /**
-         * True if this pane is the slideable pane in the layout.
-         */
-        boolean slideable;
-
-        /**
-         * True if this view should be drawn dimmed
-         * when it's been offset from its default position.
-         */
-        boolean dimWhenOffset;
-
-        Paint dimPaint;
-
-        public LayoutParams() {
-            super(MATCH_PARENT, MATCH_PARENT);
-        }
-
-        public LayoutParams(int width, int height) {
-            super(width, height);
-        }
-
-        public LayoutParams(android.view.ViewGroup.LayoutParams source) {
-            super(source);
-        }
-
-        public LayoutParams(MarginLayoutParams source) {
-            super(source);
-        }
-
-        public LayoutParams(LayoutParams source) {
-            super(source);
-            this.weight = source.weight;
-        }
-
-        public LayoutParams(Context c, AttributeSet attrs) {
-            super(c, attrs);
-
-            final TypedArray a = c.obtainStyledAttributes(attrs, ATTRS);
-            this.weight = a.getFloat(0, 0);
-            a.recycle();
-        }
-
-    }
-
-    static class SavedState extends AbsSavedState {
-        boolean isOpen;
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        SavedState(Parcel in, ClassLoader loader) {
-            super(in, loader);
-            isOpen = in.readInt() != 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt(isOpen ? 1 : 0);
-        }
-
-        public static final Creator<SavedState> CREATOR = ParcelableCompat.newCreator(
-                new ParcelableCompatCreatorCallbacks<SavedState>() {
-                    @Override
-                    public SavedState createFromParcel(Parcel in, ClassLoader loader) {
-                        return new SavedState(in, loader);
-                    }
-
-                    @Override
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                });
-    }
-
-    interface SlidingPanelLayoutImpl {
-        void invalidateChildRegion(BGASwipeBackLayout parent, View child);
-    }
-
-    static class SlidingPanelLayoutImplBase implements SlidingPanelLayoutImpl {
-        @Override
-        public void invalidateChildRegion(BGASwipeBackLayout parent, View child) {
-            ViewCompat.postInvalidateOnAnimation(parent, child.getLeft(), child.getTop(),
-                    child.getRight(), child.getBottom());
-        }
-    }
-
-    static class SlidingPanelLayoutImplJB extends SlidingPanelLayoutImplBase {
-        /*
-         * Private API hacks! Nasty! Bad!
-         *
-         * In Jellybean, some optimizations in the hardware UI renderer
-         * prevent a changed Paint on a View using a hardware layer from having
-         * the intended effect. This twiddles some internal bits on the view to force
-         * it to recreate the display list.
-         */
-        private Method mGetDisplayList;
-        private Field mRecreateDisplayList;
-
-        SlidingPanelLayoutImplJB() {
-            try {
-                mGetDisplayList = View.class.getDeclaredMethod("getDisplayList", (Class[]) null);
-            } catch (NoSuchMethodException e) {
-                Log.e(TAG, "Couldn't fetch getDisplayList method; dimming won't work right.", e);
-            }
-            try {
-                mRecreateDisplayList = View.class.getDeclaredField("mRecreateDisplayList");
-                mRecreateDisplayList.setAccessible(true);
-            } catch (NoSuchFieldException e) {
-                Log.e(TAG, "Couldn't fetch mRecreateDisplayList field; dimming will be slow.", e);
-            }
-        }
-
-        @Override
-        public void invalidateChildRegion(BGASwipeBackLayout parent, View child) {
-            if (mGetDisplayList != null && mRecreateDisplayList != null) {
-                try {
-                    mRecreateDisplayList.setBoolean(child, true);
-                    mGetDisplayList.invoke(child, (Object[]) null);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error refreshing display list state", e);
-                }
-            } else {
-                // Slow path. REALLY slow path. Let's hope we don't get here.
-                child.invalidate();
-                return;
-            }
-            super.invalidateChildRegion(parent, child);
-        }
-    }
-
-    static class SlidingPanelLayoutImplJBMR1 extends SlidingPanelLayoutImplBase {
-        @Override
-        public void invalidateChildRegion(BGASwipeBackLayout parent, View child) {
-            ViewCompat.setLayerPaint(child, ((LayoutParams) child.getLayoutParams()).dimPaint);
-        }
-    }
-
     class AccessibilityDelegate extends AccessibilityDelegateCompat {
         private final Rect mTmpRect = new Rect();
 
@@ -1774,7 +1757,7 @@ public class BGASwipeBackLayout extends ViewGroup {
 
         @Override
         public boolean onRequestSendAccessibilityEvent(ViewGroup host, View child,
-                AccessibilityEvent event) {
+                                                       AccessibilityEvent event) {
             if (!filter(child)) {
                 return super.onRequestSendAccessibilityEvent(host, child, event);
             }
@@ -1791,7 +1774,7 @@ public class BGASwipeBackLayout extends ViewGroup {
          * Leave it private here as it's not general-purpose useful.
          */
         private void copyNodeInfoNoChildren(AccessibilityNodeInfoCompat dest,
-                AccessibilityNodeInfoCompat src) {
+                                            AccessibilityNodeInfoCompat src) {
             final Rect rect = mTmpRect;
 
             src.getBoundsInParent(rect);
@@ -1834,9 +1817,5 @@ public class BGASwipeBackLayout extends ViewGroup {
             }
             mPostedRunnables.remove(this);
         }
-    }
-
-    boolean isLayoutRtlSupport() {
-        return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
     }
 }

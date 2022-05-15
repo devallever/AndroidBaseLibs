@@ -72,7 +72,13 @@ object AssetsHelper {
         )
     }
 
-    fun toScaleBitmap(resource: Resources, packageName: String, resId: Int, requestWith: Int, requestHeight: Int): Bitmap? {
+    fun toScaleBitmap(
+        resource: Resources,
+        packageName: String,
+        resId: Int,
+        requestWith: Int,
+        requestHeight: Int
+    ): Bitmap? {
         val key = "${packageName}_${resId}_bitmap_scale"
         val sourceBitmap = toBitmap(
             resource,
@@ -88,7 +94,12 @@ object AssetsHelper {
     }
 
 
-    private fun scaleBitmap(key: String, sourceBitmap: Bitmap, requestWith: Int, requestHeight: Int): Bitmap? {
+    private fun scaleBitmap(
+        key: String,
+        sourceBitmap: Bitmap,
+        requestWith: Int,
+        requestHeight: Int
+    ): Bitmap? {
         var scaleBitmap = mAssetsRes[key]
         if (scaleBitmap is Bitmap && !scaleBitmap.isRecycled) {
             return scaleBitmap
@@ -99,10 +110,12 @@ object AssetsHelper {
         val scaleWith = requestWith / bitmapWidth
         val scaleHeight = requestHeight / bitmapHeight
 
-        scaleBitmap = Bitmap.createScaledBitmap(sourceBitmap,
-                (bitmapWidth * scaleWith).toInt(),
-                (bitmapHeight * scaleHeight).toInt(),
-                true)
+        scaleBitmap = Bitmap.createScaledBitmap(
+            sourceBitmap,
+            (bitmapWidth * scaleWith).toInt(),
+            (bitmapHeight * scaleHeight).toInt(),
+            true
+        )
         if (scaleBitmap != null) {
             mAssetsRes[key] = scaleBitmap
         }

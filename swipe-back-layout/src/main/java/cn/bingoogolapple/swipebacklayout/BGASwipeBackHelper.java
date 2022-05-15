@@ -21,10 +21,10 @@ import android.app.Application;
 import android.content.Intent;
 import android.view.View;
 
-import java.util.List;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
+
+import java.util.List;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -35,6 +35,17 @@ public class BGASwipeBackHelper {
     private Activity mActivity;
     private Delegate mDelegate;
     private BGASwipeBackLayout mSwipeBackLayout;
+
+    /**
+     * @param activity
+     * @param delegate
+     */
+    public BGASwipeBackHelper(Activity activity, Delegate delegate) {
+        mActivity = activity;
+        mDelegate = delegate;
+
+        initSwipeBackFinish();
+    }
 
     /**
      * 必须在 Application 的 onCreate 方法中调用
@@ -49,14 +60,24 @@ public class BGASwipeBackHelper {
     }
 
     /**
-     * @param activity
-     * @param delegate
+     * 执行跳转到下一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
      */
-    public BGASwipeBackHelper(Activity activity, Delegate delegate) {
-        mActivity = activity;
-        mDelegate = delegate;
+    public static void executeForwardAnim(Activity activity) {
+        activity.overridePendingTransition(R.anim.bga_sbl_activity_forward_enter, R.anim.bga_sbl_activity_forward_exit);
+    }
 
-        initSwipeBackFinish();
+    /**
+     * 执行回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
+     */
+    public static void executeBackwardAnim(Activity activity) {
+        activity.overridePendingTransition(R.anim.bga_sbl_activity_backward_enter, R.anim.bga_sbl_activity_backward_exit);
+    }
+
+    /**
+     * 执行滑动返回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
+     */
+    public static void executeSwipeBackAnim(Activity activity) {
+        activity.overridePendingTransition(R.anim.bga_sbl_activity_swipeback_enter, R.anim.bga_sbl_activity_swipeback_exit);
     }
 
     /**
@@ -223,27 +244,6 @@ public class BGASwipeBackHelper {
      */
     public void executeSwipeBackAnim() {
         executeSwipeBackAnim(mActivity);
-    }
-
-    /**
-     * 执行跳转到下一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
-     */
-    public static void executeForwardAnim(Activity activity) {
-        activity.overridePendingTransition(R.anim.bga_sbl_activity_forward_enter, R.anim.bga_sbl_activity_forward_exit);
-    }
-
-    /**
-     * 执行回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
-     */
-    public static void executeBackwardAnim(Activity activity) {
-        activity.overridePendingTransition(R.anim.bga_sbl_activity_backward_enter, R.anim.bga_sbl_activity_backward_exit);
-    }
-
-    /**
-     * 执行滑动返回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
-     */
-    public static void executeSwipeBackAnim(Activity activity) {
-        activity.overridePendingTransition(R.anim.bga_sbl_activity_swipeback_enter, R.anim.bga_sbl_activity_swipeback_exit);
     }
 
     /**

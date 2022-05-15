@@ -19,10 +19,11 @@ package cn.bingoogolapple.swipebacklayout;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.SurfaceView;
 import android.view.View;
 import android.webkit.WebView;
+
+import androidx.annotation.Nullable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,11 +40,11 @@ class BGASwipeBackManager implements Application.ActivityLifecycleCallbacks {
     private Stack<Activity> mActivityStack = new Stack<>();
     private Set<Class<? extends View>> mProblemViewClassSet = new HashSet<>();
 
-    public static BGASwipeBackManager getInstance() {
-        return sInstance;
+    private BGASwipeBackManager() {
     }
 
-    private BGASwipeBackManager() {
+    public static BGASwipeBackManager getInstance() {
+        return sInstance;
     }
 
     public void init(Application application, List<Class<? extends View>> problemViewClassList) {

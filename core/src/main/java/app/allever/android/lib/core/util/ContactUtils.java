@@ -47,7 +47,7 @@ public class ContactUtils {
         return contacts;
     }
 
-    public static class ContactBean{
+    public static class ContactBean {
         public String mobile;
         public String name;
 

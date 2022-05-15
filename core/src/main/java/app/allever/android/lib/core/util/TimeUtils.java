@@ -233,15 +233,15 @@ public class TimeUtils {
             return "5分钟前";
         }
         //30分钟-1小时前发布的显示：30分钟前；
-        if (delta < 1L*ONE_HOUR) {
+        if (delta < 1L * ONE_HOUR) {
             return "30分钟前";
         }
         //1~2小时内发布的显示：1小时前；
-        if (delta < 2L*ONE_HOUR) {
+        if (delta < 2L * ONE_HOUR) {
             return "1小时前";
         }
         //2~3小时内发布的显示：2小时前；
-        if (delta < 3L*ONE_HOUR) {
+        if (delta < 3L * ONE_HOUR) {
             return "2小时前";
         }
 
@@ -254,15 +254,15 @@ public class TimeUtils {
             return TimeUtils.formatTime(date.getTime(), TimeUtils.FORMAT_MM_dd);
         }
         //1天，显示：1天前；
-        if (delta < 1L*ONE_DAY) {
+        if (delta < 1L * ONE_DAY) {
             return "1天前";
         }
         //2天前 ~ 7天内 发的，显示：7天前；
-        if (delta < 7L*ONE_DAY) {
+        if (delta < 7L * ONE_DAY) {
             return "7天前";
         }
         //7天前 ~ 1个月内 发的，显示：1月前；
-        if (delta < 30L*ONE_DAY) {
+        if (delta < 30L * ONE_DAY) {
             return "1个月前";
         }
         //1个月后发的统一显示：1年前；

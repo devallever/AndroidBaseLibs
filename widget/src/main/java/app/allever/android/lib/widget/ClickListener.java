@@ -6,8 +6,6 @@ import app.allever.android.lib.core.ext.LoggerKt;
 
 
 /**
- *
- *
  * @author allever
  */
 public abstract class ClickListener implements View.OnClickListener {
@@ -17,7 +15,6 @@ public abstract class ClickListener implements View.OnClickListener {
     private long lastTime;
 
     /**
-     *
      * @param v
      */
     public abstract void click(View v);
@@ -44,6 +41,7 @@ public abstract class ClickListener implements View.OnClickListener {
 
     /**
      * 设置时间间隔， 默认1秒
+     *
      * @return
      */
     protected long getTimeInterval() {

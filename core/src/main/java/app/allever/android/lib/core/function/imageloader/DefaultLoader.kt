@@ -1,9 +1,7 @@
 package app.allever.android.lib.core.function.imageloader
 
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.widget.ImageView
-import app.allever.android.lib.core.util.BitmapUtils
 import java.io.File
 
 /**

@@ -7,7 +7,7 @@ import okio.Buffer
 import java.io.IOException
 import java.nio.charset.Charset
 
-class GlobalInterceptor: Interceptor {
+class GlobalInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val requestBuilder = originalRequest.newBuilder()
@@ -22,7 +22,7 @@ class GlobalInterceptor: Interceptor {
         if (BuildConfig.DEBUG) {
             loge("LogInterceptor", "请求链接= " + request.url())
             request.headers().toMultimap().map {
-                loge("LogInterceptor", "请求头= ${it.key}: ${it.value}" )
+                loge("LogInterceptor", "请求头= ${it.key}: ${it.value}")
             }
             loge("LogInterceptor", "请求体= " + getRequestInfo(request))
             loge("LogInterceptor", "请求结果= $responseBodyString")

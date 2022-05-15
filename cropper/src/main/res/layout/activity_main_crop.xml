@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scrollview"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CropMainActivity">
@@ -20,7 +19,7 @@
             android:layout_gravity="center"
             android:text="@string/title"
             android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <com.edmodo.cropper.CropImageView
             android:id="@+id/CropImageView"
@@ -29,7 +28,7 @@
             android:layout_marginTop="@dimen/content_padding"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/butterfly"/>
+            android:src="@drawable/butterfly" />
 
         <LinearLayout
             android:id="@+id/fixedAspectRatioLayout"
@@ -45,7 +44,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
-                android:text="@string/fixedAspectRatio"/>
+                android:text="@string/fixedAspectRatio" />
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -56,7 +55,7 @@
                     android:id="@+id/fixedAspectRatioToggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|start"/>
+                    android:layout_gravity="center_vertical|start" />
 
             </FrameLayout>
 
@@ -75,7 +74,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="@string/aspectRatioXHeader"/>
+                android:text="@string/aspectRatioXHeader" />
 
             <TextView
                 android:id="@+id/aspectRatioX"
@@ -84,7 +83,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="start"
-                tools:text="10"/>
+                tools:text="10" />
 
         </LinearLayout>
 
@@ -93,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="100"
-            android:progress="10"/>
+            android:progress="10" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,7 +107,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="@string/aspectRatioYHeader"/>
+                android:text="@string/aspectRatioYHeader" />
 
             <TextView
                 android:id="@+id/aspectRatioY"
@@ -117,7 +116,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="start"
-                tools:text="10"/>
+                tools:text="10" />
 
         </LinearLayout>
 
@@ -126,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="100"
-            android:progress="10"/>
+            android:progress="10" />
 
         <LinearLayout
             android:id="@+id/showGuidelinesLayout"
@@ -142,7 +141,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="@string/showGuidelines"/>
+                android:text="@string/showGuidelines" />
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -155,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:entries="@array/showGuidelinesArray"
-                    android:gravity="start"/>
+                    android:gravity="start" />
 
             </FrameLayout>
 
@@ -170,7 +169,7 @@
             android:minWidth="120dp"
             android:text="@string/crop"
             android:textColor="#33B5E5"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/croppedImageView"
@@ -179,7 +178,7 @@
             android:layout_marginTop="@dimen/content_padding"
             android:adjustViewBounds="true"
             android:contentDescription="@string/croppedImageDesc"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside" />
 
     </LinearLayout>
 

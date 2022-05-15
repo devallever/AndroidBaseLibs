@@ -7,9 +7,8 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import app.allever.android.lib.core.R
 import app.allever.android.lib.core.app.App
-import app.allever.android.lib.core.ext.*
+import app.allever.android.lib.core.ext.toast
 import java.io.File
 
 object ShareHelper {

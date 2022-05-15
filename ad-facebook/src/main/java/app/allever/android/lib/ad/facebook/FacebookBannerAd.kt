@@ -7,7 +7,7 @@ import app.allever.android.lib.core.function.ad.chain.AdChainListener
 import app.allever.android.lib.core.function.ad.chain.IAd
 import com.facebook.ads.*
 
-class FacebookBannerAd: IAd() {
+class FacebookBannerAd : IAd() {
 
     private var bannerAd: AdView? = null
 

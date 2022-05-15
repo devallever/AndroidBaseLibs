@@ -4,9 +4,14 @@ import android.view.ViewGroup
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.ad.ADType
 
-class AdEngine(private val adName: String, adConfigBean: AdConfig.AdConfigBean?, private val container: ViewGroup?) {
+class AdEngine(
+    private val adName: String,
+    adConfigBean: AdConfig.AdConfigBean?,
+    private val container: ViewGroup?
+) {
 
     private var mAdType: String? = ""
+
     //广告链
     private var adChainList = mutableListOf<AdConfig.AdConfigBean.ChainBean>()
 

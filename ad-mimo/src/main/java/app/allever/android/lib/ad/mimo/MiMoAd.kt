@@ -10,7 +10,7 @@ import com.xiaomi.ad.common.pojo.AdType
 /***
  * 米盟通用Ad
  */
-open class MiMoAd(private val adType: AdType): BaseAd() {
+open class MiMoAd(private val adType: AdType) : BaseAd() {
 
     private var mAdWorker: IAdWorker? = null
 

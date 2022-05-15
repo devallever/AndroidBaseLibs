@@ -1,14 +1,14 @@
 /*
- * Copyright 2013, Edmodo, Inc. 
+ * Copyright 2013, Edmodo, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License.
  * You may obtain a copy of the License in the LICENSE file, or at:
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" 
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language 
- * governing permissions and limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package com.edmodo.cropper.util;
@@ -37,7 +37,6 @@ public class HandleUtil {
      * @param right        the x-coordinate of the right bound
      * @param bottom       the y-coordinate of the bottom bound
      * @param targetRadius the target radius in pixels
-     *
      * @return the Handle that was pressed; null if no Handle was pressed
      */
     public static Handle getPressedHandle(float x,
@@ -181,7 +180,6 @@ public class HandleUtil {
      * @param handleXEnd   the right x-coordinate of the horizontal bar handle
      * @param handleY      the y-coordinate of the horizontal bar handle
      * @param targetRadius the target radius in pixels
-     *
      * @return true if the touch point is in the target touch zone; false otherwise
      */
     private static boolean isInHorizontalTargetZone(float x,
@@ -204,7 +202,6 @@ public class HandleUtil {
      * @param handleYStart the top y-coordinate of the vertical bar handle
      * @param handleYEnd   the bottom y-coordinate of the vertical bar handle
      * @param targetRadius the target radius in pixels
-     *
      * @return true if the touch point is in the target touch zone; false otherwise
      */
     private static boolean isInVerticalTargetZone(float x,

@@ -3,7 +3,6 @@ package app.allever.android.lib.network.cache
 import android.os.Parcelable
 import app.allever.android.lib.core.app.App
 import com.tencent.mmkv.MMKV
-import java.lang.reflect.Type
 
 object HttpCacheManager {
 

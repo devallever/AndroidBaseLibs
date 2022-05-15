@@ -1,6 +1,5 @@
 package app.allever.android.lib.ad.amazon
 
-import android.util.Log
 import android.view.ViewGroup
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
@@ -9,7 +8,7 @@ import app.allever.android.lib.core.function.ad.BaseAd
 import com.amazon.device.ads.*
 
 
-class AmazonBanner: BaseAd() {
+class AmazonBanner : BaseAd() {
 
     private var adView: AdLayout? = null // The ad view used to load and display the ad.
 

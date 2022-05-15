@@ -1,7 +1,5 @@
-
 package app.allever.androd.lib.cropper;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;

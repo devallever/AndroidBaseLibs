@@ -7,7 +7,7 @@ import app.allever.android.lib.core.function.ad.AdManager
 import app.allever.android.lib.core.function.ad.BaseAd
 import com.amazon.device.ads.AdRegistration
 
-object AmazonAdHelper: AdManager() {
+object AmazonAdHelper : AdManager() {
     /***
      * appId 就是appkey
      */

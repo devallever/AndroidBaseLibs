@@ -22,7 +22,7 @@ public class SoUtils {
                 eabi = SoUtils.ARM64_V8A;
             } else if (os_cpuabi.contains(SoUtils.ARMEABI_V7A)) {
                 eabi = SoUtils.ARMEABI_V7A;
-            } else if (os_cpuabi.contains(SoUtils.ARMEABI)){
+            } else if (os_cpuabi.contains(SoUtils.ARMEABI)) {
                 eabi = SoUtils.ARMEABI;
             }
         } catch (Exception e) {

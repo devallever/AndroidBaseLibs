@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.ad.chain.AdChainListener
-import app.allever.android.lib.core.function.ad.widget.BannerLayout
 import app.allever.android.lib.core.function.ad.chain.IAd
+import app.allever.android.lib.core.function.ad.widget.BannerLayout
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
-class AdMobBannerAd: IAd() {
+class AdMobBannerAd : IAd() {
     private var mBannerView: AdView? = null
     override fun load(adPosition: String?, container: ViewGroup?, adListener: AdChainListener?) {
 
@@ -46,7 +46,7 @@ class AdMobBannerAd: IAd() {
                 } else {
                     container?.addView(mBannerView)
                 }
-                
+
                 container?.visibility = View.VISIBLE
                 adListener?.onLoaded(this@AdMobBannerAd)
             }

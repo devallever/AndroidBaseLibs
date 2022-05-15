@@ -5,7 +5,7 @@ import app.allever.android.lib.core.function.ad.chain.AdChainListener
 import app.allever.android.lib.core.function.ad.chain.IAd
 import com.miui.zeus.mimo.sdk.ad.IRewardVideoAdWorker
 
-class MiMoVideoAd: IAd() {
+class MiMoVideoAd : IAd() {
 
     private var mAdWorker: IRewardVideoAdWorker? = null
 

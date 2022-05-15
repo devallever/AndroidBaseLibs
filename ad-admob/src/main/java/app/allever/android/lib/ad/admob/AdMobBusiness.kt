@@ -55,7 +55,7 @@ object AdMobBusiness : IAdBusiness() {
         return reqBuild.build()
     }
 
-    internal fun logError(errorCode:  Int) {
+    internal fun logError(errorCode: Int) {
         when (errorCode) {
             0 -> {
                 log("内部错误")

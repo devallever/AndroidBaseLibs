@@ -37,7 +37,7 @@ object TimeHelper {
     /**
      * 将毫秒格式化成 00:00:00
      */
-    fun formatTime(time: Long) : String{
+    fun formatTime(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("HH:mm:ss")
         return simpleDateFormat.format(time)
     }
@@ -45,7 +45,7 @@ object TimeHelper {
     /**
      * 将毫秒格式化成 00:00:00
      */
-    fun formatTimeYYYY_MM_DD_HH_MM_SS(time: Long) : String{
+    fun formatTimeYYYY_MM_DD_HH_MM_SS(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return simpleDateFormat.format(time)
     }

@@ -11,7 +11,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
-class AdMobVideoAd: IAd() {
+class AdMobVideoAd : IAd() {
 
     private var rewardedAd: RewardedAd? = null
     private var mAdListener: AdChainListener? = null

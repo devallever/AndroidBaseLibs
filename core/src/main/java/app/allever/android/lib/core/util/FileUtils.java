@@ -50,7 +50,20 @@ import app.allever.android.lib.core.app.App;
 
 public class FileUtils {
 
+    public static final String GOSHARE_MEDIA_FILE_SAVE_DIR = Environment.getExternalStorageDirectory() + "/ZEROSMS/.goshare/";
     private static final String LOG_TAG = "FileUtil";
+
+//    public static String getFilterCachePath(String fileName) {
+//        return FILTER_CACHE_PATH + File.separator + fileName;
+//    }
+    private static final String SCHEME_FILE = "file";
+    private static final String[] IMAGE_FILE_EXT = {"jpg", "jpeg", "gif", "png", "bmp"};
+    //--------------------------------------------------------------------------------------------------------------
+    private static final String LINE_SEP = System.getProperty("line.separator");
+
+    private FileUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     /**
      * 获取压缩包中的单个文件InputStream
@@ -67,10 +80,6 @@ public class FileUtils {
 
         return zipFile.getInputStream(zipEntry);
     }
-
-//    public static String getFilterCachePath(String fileName) {
-//        return FILTER_CACHE_PATH + File.separator + fileName;
-//    }
 
     /**
      * 导出ZIP文件的注释
@@ -137,9 +146,6 @@ public class FileUtils {
         Log.w(LOG_TAG, "ZIP comment NOT found!");
         return null;
     }
-
-
-
 
     /**
      * 删除指定文件夹中的所有文件
@@ -215,7 +221,6 @@ public class FileUtils {
         }
     }
 
-
     public static void copyFile(File sourceFile, File targetFile) throws IOException {
         // 新建文件输入流并对它进行缓冲
         FileInputStream input = new FileInputStream(sourceFile);
@@ -241,27 +246,6 @@ public class FileUtils {
         output.close();
         input.close();
     }
-
-    /***
-     * 读取assets目录的文本文件
-     * @param path 路径
-     * @return 文本内容
-     */
-    private String readAssetsTextFile(Context context, String path) {
-        String result = "";
-
-        if (checkExist(path)) return result;
-
-        try {
-            AssetManager assetManager = context.getAssets();
-            //path不可能为null
-            result = readInputStream(assetManager.open(path), "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
 
     /**
      * 复制asset文件到指定目录
@@ -314,7 +298,6 @@ public class FileUtils {
         }
     }
 
-
     /**
      * 删除指定的路径的文件
      *
@@ -366,7 +349,6 @@ public class FileUtils {
         }
     }
 
-
     /**
      * 判断SD卡是否可用
      *
@@ -380,7 +362,6 @@ public class FileUtils {
             return false;
         }
     }
-
 
     /**
      * 调用媒体扫描服务扫描整个外部存储器</br>
@@ -424,10 +405,6 @@ public class FileUtils {
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
     }
 
-
-    private static final String SCHEME_FILE = "file";
-    private static final String[] IMAGE_FILE_EXT = {"jpg", "jpeg", "gif", "png", "bmp"};
-
     /**
      * 判断某URI地址是不是非图像文件的地址
      *
@@ -463,7 +440,6 @@ public class FileUtils {
 
         return true;
     }
-
 
     /**
      * 保存数据到指定文件
@@ -765,9 +741,6 @@ public class FileUtils {
         return src;
     }
 
-    public static final String GOSHARE_MEDIA_FILE_SAVE_DIR = Environment.getExternalStorageDirectory() + "/ZEROSMS/.goshare/";
-
-
     public static boolean isExistsFile(String fileName) {
         if (fileName == null) {
             return false;
@@ -798,6 +771,17 @@ public class FileUtils {
         }
     }
 
+//    /**
+//     * 获取文件的名称
+//     *
+//     * @param pathName
+//     * @return
+//     */
+//    public static String getFileName(String pathName) {
+//        if (TextUtils.isEmpty(pathName)) return null;
+//        String name = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.length());
+//        return name;
+//    }
 
     // String.format("%.2f", Float.valueOf(size)/1024/1024);
     public static String formetFileSize(long fileS) {// 转换文件大小
@@ -814,18 +798,6 @@ public class FileUtils {
         }
         return fileSizeString;
     }
-
-//    /**
-//     * 获取文件的名称
-//     *
-//     * @param pathName
-//     * @return
-//     */
-//    public static String getFileName(String pathName) {
-//        if (TextUtils.isEmpty(pathName)) return null;
-//        String name = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.length());
-//        return name;
-//    }
 
     /**
      * 获取父文件的路径
@@ -893,9 +865,6 @@ public class FileUtils {
         }
     }
 
-
-
-
     public static boolean inputStream2File(InputStream ins, File outFile) {
         try {
             OutputStream outStream = new FileOutputStream(outFile);
@@ -915,6 +884,7 @@ public class FileUtils {
 
     /**
      * 根据URI获取文件真实路径（兼容多张机型）
+     *
      * @param context
      * @param uri
      * @return
@@ -973,7 +943,7 @@ public class FileUtils {
             } else if (isDownloadsDocument(uri)) { // DownloadsProvider
                 Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(documentId));
                 filePath = getDataColumn(context, contentUri, null, null);
-            }else if (isExternalStorageDocument(uri)) {
+            } else if (isExternalStorageDocument(uri)) {
                 // ExternalStorageProvider
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -981,7 +951,7 @@ public class FileUtils {
                 if ("primary".equalsIgnoreCase(type)) {
                     filePath = Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-            }else {
+            } else {
                 //Log.e("路径错误");
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
@@ -1047,13 +1017,6 @@ public class FileUtils {
      */
     private static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    //--------------------------------------------------------------------------------------------------------------
-    private static final String LINE_SEP = System.getProperty("line.separator");
-
-    private FileUtils() {
-        throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     /**
@@ -1819,7 +1782,6 @@ public class FileUtils {
         return listFilesInDirWithFilter(dir, filter, isRecursive, null);
     }
 
-
     /**
      * Return the files that satisfy the filter in directory.
      *
@@ -2458,6 +2420,26 @@ public class FileUtils {
             availableSize = statFs.getAvailableBlocks();
         }
         return blockSize * availableSize;
+    }
+
+    /***
+     * 读取assets目录的文本文件
+     * @param path 路径
+     * @return 文本内容
+     */
+    private String readAssetsTextFile(Context context, String path) {
+        String result = "";
+
+        if (checkExist(path)) return result;
+
+        try {
+            AssetManager assetManager = context.getAssets();
+            //path不可能为null
+            result = readInputStream(assetManager.open(path), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////////////

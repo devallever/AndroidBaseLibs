@@ -6,12 +6,9 @@ import android.graphics.Matrix;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-
-import app.allever.android.lib.core.app.App;
 
 public class BitmapUtils {
 

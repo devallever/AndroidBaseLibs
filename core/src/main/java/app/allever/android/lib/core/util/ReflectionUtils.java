@@ -1,7 +1,5 @@
 package app.allever.android.lib.core.util;
 
-import android.util.Log;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -88,7 +86,7 @@ public class ReflectionUtils {
             Constructor con = clz.getConstructor(classParam);
             //调用构造方法并创建实例
             return con.newInstance(paramValues);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

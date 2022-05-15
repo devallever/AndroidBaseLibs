@@ -39,15 +39,15 @@ public class SpanUtils {
     private static SpanUtils SpanManager;
     private Builder builder;
 
+    private SpanUtils() {
+    }
+
     public static synchronized SpanUtils getInstance(String text) {
         if (null == SpanManager) {
             SpanManager = new SpanUtils();
         }
         SpanManager.setText(text);
         return SpanManager;
-    }
-
-    private SpanUtils() {
     }
 
     /**
@@ -248,17 +248,16 @@ public class SpanUtils {
         return builder.spannable;
     }
 
+    public interface OnTextClickedListener {
+        void onTextClicked(View view);
+    }
+
     private static class Builder {
         public SpannableString spannable;
 
         public Builder(String text) {
             this.spannable = new SpannableString(text);
         }
-    }
-
-
-    public interface OnTextClickedListener {
-        void onTextClicked(View view);
     }
 
     private static class CenterAlignImageSpan extends ImageSpan {

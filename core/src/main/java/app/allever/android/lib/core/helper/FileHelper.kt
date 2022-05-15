@@ -19,7 +19,7 @@ object FileHelper {
     fun getFileName(path: String?): String {
         var fileName = "Unknown"
         val array = path?.split("/")
-        if (array?.isNotEmpty() == true){
+        if (array?.isNotEmpty() == true) {
             fileName = array[array.size - 1]
         }
         return fileName

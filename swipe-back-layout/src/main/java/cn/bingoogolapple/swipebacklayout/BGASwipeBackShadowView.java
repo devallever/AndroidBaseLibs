@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import java.lang.ref.WeakReference;
-
 import androidx.annotation.DrawableRes;
 import androidx.core.view.ViewCompat;
+
+import java.lang.ref.WeakReference;
 
 /**
  * 作者:王浩 邮件:wanghao76@meituan.com

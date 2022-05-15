@@ -7,7 +7,7 @@ import app.allever.android.lib.core.function.ad.AdListener
 import app.allever.android.lib.core.function.ad.BaseAd
 import com.amazon.device.ads.*
 
-class AmazonInsert: BaseAd() {
+class AmazonInsert : BaseAd() {
 
     private var interstitialAd: InterstitialAd? = null
 

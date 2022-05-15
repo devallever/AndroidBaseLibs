@@ -7,13 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 object RVDragHelper {
-    fun <T> bind(recyclerView: RecyclerView?, data: MutableList<T>, dragStateCallback: DragStateCallback? = null) {
-            val itemTouchHelper = ItemTouchHelper(
-                ItemHelperCallback(/*data,*/
-                    dragStateCallback
-                )
+    fun <T> bind(
+        recyclerView: RecyclerView?,
+        data: MutableList<T>,
+        dragStateCallback: DragStateCallback? = null
+    ) {
+        val itemTouchHelper = ItemTouchHelper(
+            ItemHelperCallback(/*data,*/
+                dragStateCallback
             )
-            itemTouchHelper.attachToRecyclerView(recyclerView)
+        )
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     interface DragStateCallback {
@@ -25,7 +29,8 @@ object RVDragHelper {
         fun onDragEnd(holder: RecyclerView.ViewHolder, from: Int, to: Int)
     }
 
-    class ItemHelperCallback/*<T>*/(/*val datas: MutableList<T>, */val dragStateCallback: DragStateCallback? = null) : ItemTouchHelper.Callback() {
+    class ItemHelperCallback/*<T>*/(/*val datas: MutableList<T>, */val dragStateCallback: DragStateCallback? = null) :
+        ItemTouchHelper.Callback() {
         companion object {
             private val TAG = RVDragHelper.ItemHelperCallback::class.java.simpleName
             private const val ANIM_DURATION = 100L
@@ -34,7 +39,10 @@ object RVDragHelper {
         private var recordFrom: Int = -1
         private var recordTo: Int = -1
 
-        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
             //允许上下左右的拖动
             val dragFlags = if (dragStateCallback?.allowDrag(recyclerView, viewHolder) == false) {
                 0
@@ -45,10 +53,14 @@ object RVDragHelper {
             return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
         }
 
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
             val from = viewHolder.adapterPosition
             val to = target.adapterPosition
-            val datas = dragStateCallback?.getData() ?:return false
+            val datas = dragStateCallback?.getData() ?: return false
             if (to >= datas.size) {
                 return false
             }
@@ -66,8 +78,8 @@ object RVDragHelper {
 
             recyclerView.adapter?.notifyItemMoved(from, to)
             dragStateCallback?.onItemRangeMoved(from, to)
-            recordFrom =  from
-            recordTo =  to
+            recordFrom = from
+            recordTo = to
             return true
         }
 
@@ -81,7 +93,8 @@ object RVDragHelper {
                     ANIM_DURATION
                 val pvh2 = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.2f)
                 val pvh3 = PropertyValuesHolder.ofFloat("scaleY", 1f, 1.2f)
-                ObjectAnimator.ofPropertyValuesHolder(viewHolder.itemView, pvh2, pvh3).setDuration(duration).start()
+                ObjectAnimator.ofPropertyValuesHolder(viewHolder.itemView, pvh2, pvh3)
+                    .setDuration(duration).start()
                 dragStateCallback?.onDragStart()
             }
             super.onSelectedChanged(viewHolder, actionState)
@@ -93,9 +106,10 @@ object RVDragHelper {
                     ANIM_DURATION
                 val pvh2 = PropertyValuesHolder.ofFloat("scaleX", 1.2f, 1f)
                 val pvh3 = PropertyValuesHolder.ofFloat("scaleY", 1.2f, 1f)
-                ObjectAnimator.ofPropertyValuesHolder(viewHolder.itemView, pvh2, pvh3).setDuration(duration).start()
+                ObjectAnimator.ofPropertyValuesHolder(viewHolder.itemView, pvh2, pvh3)
+                    .setDuration(duration).start()
                 recyclerView.adapter?.notifyDataSetChanged()
-                dragStateCallback?.onDragEnd(viewHolder,recordFrom ,recordTo)
+                dragStateCallback?.onDragEnd(viewHolder, recordFrom, recordTo)
             }
             super.clearView(recyclerView, viewHolder)
         }

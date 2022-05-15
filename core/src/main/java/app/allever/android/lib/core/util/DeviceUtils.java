@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
@@ -20,7 +21,8 @@ import java.util.Locale;
 import app.allever.android.lib.core.helper.ActivityHelper;
 
 public class DeviceUtils {
-    private DeviceUtils(){}
+    private DeviceUtils() {
+    }
 
     /***
      * 是否存在NavigationBar
@@ -28,7 +30,7 @@ public class DeviceUtils {
      * @return
      */
     public static boolean checkDeviceHasNavigationBar(Context context) {
-        if (context == null){
+        if (context == null) {
             return false;
         }
 
@@ -54,13 +56,23 @@ public class DeviceUtils {
     }
 
     public static int getNavigationBarHeight(Context context) {
-        if (context == null){
+        if (context == null) {
             return 0;
         }
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
+    }
+
+    /**
+     * 获取AndroidId
+     *
+     * @param context
+     * @return
+     */
+    public static String getAndroidId(Context context) {
+        return Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     public String getDeviceId() {
@@ -74,6 +86,15 @@ public class DeviceUtils {
         return buffer.toString();
     }
 
+    public String getPhoneInfo() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(android.os.Build.MODEL);
+        buffer.append("_");
+        buffer.append(android.os.Build.DEVICE);
+        buffer.append("_");
+        buffer.append(Build.BRAND);
+        return buffer.toString();
+    }
 
     /**
      * 获取MAC地址

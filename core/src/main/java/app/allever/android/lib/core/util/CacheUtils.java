@@ -9,12 +9,14 @@ import java.math.BigDecimal;
 
 /**
  * 缓存工具
+ *
  * @Author jerry
  * @date 2020.03.04
- * */
+ */
 public class CacheUtils {
     /**
      * 需要查下缓存大小
+     *
      * @param context
      * @return
      * @throws Exception
@@ -26,7 +28,7 @@ public class CacheUtils {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 cacheSize += getFolderSize(context.getExternalCacheDir());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return getFormatSize(cacheSize);
@@ -34,6 +36,7 @@ public class CacheUtils {
 
     /**
      * 清空缓存
+     *
      * @param context
      */
     public static void clearAllCache(Context context) {
@@ -43,6 +46,7 @@ public class CacheUtils {
         }
 
     }
+
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
@@ -55,6 +59,7 @@ public class CacheUtils {
         }
         return dir.delete();
     }
+
     /**
      * * 清除本应用内部缓存(/data/data/com.xxx.xxx/cache) * *
      *
@@ -114,11 +119,12 @@ public class CacheUtils {
             deleteFilesByDirectory(context.getExternalCacheDir());
         }
     }
+
     /**
      * * 清除自定义路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除 * *
      *
      * @param filePath
-     * */
+     */
     public static void cleanCustomCache(String filePath) {
         deleteFilesByDirectory(new File(filePath));
     }
@@ -209,6 +215,7 @@ public class CacheUtils {
             }
         }
     }
+
     /**
      * 格式化单位
      *

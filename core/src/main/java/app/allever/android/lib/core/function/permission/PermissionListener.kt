@@ -22,7 +22,7 @@ interface PermissionListener {
     /**
      * 自定义跳转弹窗，否则使用默认的
      */
-    fun getSettingDialog(): Dialog?{
+    fun getSettingDialog(): Dialog? {
         return null
     }
 

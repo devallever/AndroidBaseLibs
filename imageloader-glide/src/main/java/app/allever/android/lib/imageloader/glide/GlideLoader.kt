@@ -25,7 +25,8 @@ object GlideLoader : ILoader {
         if (!ImageLoader.checkCanLoad(imageView)) {
             return
         }
-        Glide.with(imageView.context).asBitmap().load(resource).error(errorResId).placeholder(placeholder)
+        Glide.with(imageView.context).asBitmap().load(resource).error(errorResId)
+            .placeholder(placeholder)
             .into(imageView)
     }
 }

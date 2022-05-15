@@ -16,7 +16,7 @@ import cn.bingoogolapple.swipebacklayout.BGAKeyboardUtil
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
 import java.lang.ref.WeakReference
 
-abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delegate{
+abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delegate {
 
 
     protected lateinit var mSwipeBackHelper: BGASwipeBackHelper
@@ -30,7 +30,6 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
     protected val mainCoroutine by lazy {
         CoroutineHelper.mainCoroutine
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

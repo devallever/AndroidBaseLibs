@@ -37,7 +37,7 @@ public class CommonUtils {
     }
 
 
-    public static void openInGooglePlay(Context context, String uriString){
+    public static void openInGooglePlay(Context context, String uriString) {
         openAppInPlay(context, uriString, "com.android.vending");
     }
 
@@ -61,7 +61,7 @@ public class CommonUtils {
         return false;
     }
 
-    public static String getPackeName(String pkg){
+    public static String getPackeName(String pkg) {
         String str = pkg.replace(".", "");
         return str;
     }

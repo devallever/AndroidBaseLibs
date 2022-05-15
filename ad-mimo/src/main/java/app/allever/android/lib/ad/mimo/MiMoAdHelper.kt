@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import app.allever.android.lib.ad.mimo.MiMoConstants.XIAO_MI_APP_KEY
 import app.allever.android.lib.ad.mimo.MiMoConstants.XIAO_MI_APP_TOKEN
-import app.allever.android.lib.ad.mimo.MiMoDownload
 import app.allever.android.lib.core.BuildConfig
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
@@ -21,7 +20,7 @@ import com.miui.zeus.mimo.sdk.listener.MimoAdListener
 import com.miui.zeus.mimo.sdk.listener.MimoRewardVideoListener
 import com.xiaomi.ad.common.pojo.AdType
 
-object MiMoAdHelper: AdManager() {
+object MiMoAdHelper : AdManager() {
 
     override fun init(context: Context, appId: String, appKey: String, appToken: String) {
         // 如果担心sdk自升级会影响开发者自身app的稳定性可以关闭，

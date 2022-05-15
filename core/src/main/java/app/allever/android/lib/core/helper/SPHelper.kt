@@ -10,6 +10,7 @@ object SPHelper {
 
     /** SharedPreferences 文件名 */
     private val SP_FILE_NAME = "default_sp_name"
+
     /** SharedPreferences 对象 */
     private val sharedPref = App.context.getSharedPreferences(SP_FILE_NAME, Context.MODE_PRIVATE)
 

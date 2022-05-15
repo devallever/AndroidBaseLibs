@@ -18,7 +18,6 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -28,45 +27,6 @@ import app.allever.android.lib.core.app.App;
 
 public class KeyboardUtils {
 
-    static class HideRunnable implements Runnable {
-
-        private WeakReference<EditText> mEditTextWeakRef;
-        private InputMethodManager mInputMethodManager;
-
-        public HideRunnable(InputMethodManager inputMethodManager, EditText editTextWeakRef) {
-            mInputMethodManager = inputMethodManager;
-            mEditTextWeakRef = new WeakReference<>(editTextWeakRef);
-        }
-
-        @Override
-        public void run() {
-            final EditText editText = mEditTextWeakRef.get();
-            if (null != editText) {
-                mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-            }
-        }
-    }
-
-    static class ShowRunnable implements Runnable {
-
-        private WeakReference<EditText> mEditTextWeakRef;
-        private InputMethodManager mInputMethodManager;
-
-        public ShowRunnable(InputMethodManager inputMethodManager, EditText editTextWeakRef) {
-            mInputMethodManager = inputMethodManager;
-            mEditTextWeakRef = new WeakReference<>(editTextWeakRef);
-        }
-
-        @Override
-        public void run() {
-            final EditText editText = mEditTextWeakRef.get();
-            if (null != editText) {
-                mInputMethodManager.showSoftInput(editText, 0);
-            }
-        }
-    }
-
-    //---------
     /**
      * 打开软键盘
      */
@@ -90,6 +50,8 @@ public class KeyboardUtils {
                 .getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
+
+    //---------
 
     /**
      * 关闭软键盘
@@ -118,8 +80,6 @@ public class KeyboardUtils {
         }
         return false;
     }
-
-    //---------
 
     /**
      * 关闭虚拟键盘
@@ -154,6 +114,8 @@ public class KeyboardUtils {
             imm.hideSoftInputFromWindow(ediText.getWindowToken(), 0);
         }
     }
+
+    //---------
 
     /**
      * 打开虚拟键盘
@@ -263,6 +225,44 @@ public class KeyboardUtils {
                 viewTreeObserver.addOnGlobalFocusChangeListener(cleaner);
             }
         });
+    }
+
+    static class HideRunnable implements Runnable {
+
+        private WeakReference<EditText> mEditTextWeakRef;
+        private InputMethodManager mInputMethodManager;
+
+        public HideRunnable(InputMethodManager inputMethodManager, EditText editTextWeakRef) {
+            mInputMethodManager = inputMethodManager;
+            mEditTextWeakRef = new WeakReference<>(editTextWeakRef);
+        }
+
+        @Override
+        public void run() {
+            final EditText editText = mEditTextWeakRef.get();
+            if (null != editText) {
+                mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            }
+        }
+    }
+
+    static class ShowRunnable implements Runnable {
+
+        private WeakReference<EditText> mEditTextWeakRef;
+        private InputMethodManager mInputMethodManager;
+
+        public ShowRunnable(InputMethodManager inputMethodManager, EditText editTextWeakRef) {
+            mInputMethodManager = inputMethodManager;
+            mEditTextWeakRef = new WeakReference<>(editTextWeakRef);
+        }
+
+        @Override
+        public void run() {
+            final EditText editText = mEditTextWeakRef.get();
+            if (null != editText) {
+                mInputMethodManager.showSoftInput(editText, 0);
+            }
+        }
     }
 
     static class ReferenceCleaner
@@ -422,6 +422,11 @@ public class KeyboardUtils {
             });
         }
 
+        public static void setListener(Activity activity, OnSoftKeyboardChangeListener onSoftKeyboardChangeListener) {
+            SoftKeyboardListener softKeyboardListener = new SoftKeyboardListener(activity);
+            softKeyboardListener.setOnSoftKeyboardChangeListener(onSoftKeyboardChangeListener);
+        }
+
         private void setOnSoftKeyboardChangeListener(OnSoftKeyboardChangeListener onSoftKeyboardChangeListener) {
             this.mOnSoftKeyboardChangeListener = onSoftKeyboardChangeListener;
         }
@@ -430,11 +435,6 @@ public class KeyboardUtils {
             void show(int height);
 
             void hide(int height);
-        }
-
-        public static void setListener(Activity activity, OnSoftKeyboardChangeListener onSoftKeyboardChangeListener) {
-            SoftKeyboardListener softKeyboardListener = new SoftKeyboardListener(activity);
-            softKeyboardListener.setOnSoftKeyboardChangeListener(onSoftKeyboardChangeListener);
         }
     }
 }

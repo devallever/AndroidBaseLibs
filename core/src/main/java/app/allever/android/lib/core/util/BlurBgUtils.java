@@ -24,7 +24,7 @@ public class BlurBgUtils {
     private View mRoot;
     private MutableLiveData<Bitmap> mBitMapData = new MutableLiveData<>();
 
-    public static BlurBgUtils getUtils(){
+    public static BlurBgUtils getUtils() {
         if (null == utils) {
             utils = new BlurBgUtils();
         }
@@ -33,14 +33,16 @@ public class BlurBgUtils {
 
     /**
      * 设置页面需要高斯模糊的view
+     *
      * @param view
      */
-    public void setRootBg(View view){
+    public void setRootBg(View view) {
         mRoot = view;
     }
 
     /**
      * 把view转为bitmap
+     *
      * @param view
      * @return
      */
@@ -65,30 +67,31 @@ public class BlurBgUtils {
     /**
      * 开始创建bitmap并保存到bitmap
      */
-    public void createImageBg(){
+    public void createImageBg() {
         mBitMapData.setValue(createBitmapFromView(mRoot));
     }
 
     /**
      * 注册数据回调
+     *
      * @param mOwner
      * @param observer
      */
-    public void register(LifecycleOwner mOwner, Observer<Bitmap> observer){
-        mBitMapData.observe(mOwner,observer);
+    public void register(LifecycleOwner mOwner, Observer<Bitmap> observer) {
+        mBitMapData.observe(mOwner, observer);
     }
 
     /**
      * 清除view
      */
-    public void clearView(){
+    public void clearView() {
         mRoot = null;
     }
 
     /**
      * 清除bitmap
      */
-    public void clear(){
+    public void clear() {
         Bitmap value = mBitMapData.getValue();
         value.recycle();
         mBitMapData.setValue(null);

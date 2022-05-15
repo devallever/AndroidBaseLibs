@@ -5,7 +5,7 @@ import android.os.Parcelable
 /**
  * 数据存储
  */
-object DataStore: IDataStore {
+object DataStore : IDataStore {
     private var mDataStore: IDataStore = DefaultStore()
 
     fun init(dataStore: IDataStore) {

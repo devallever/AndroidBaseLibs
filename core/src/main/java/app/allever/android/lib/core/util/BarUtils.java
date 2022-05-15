@@ -29,11 +29,9 @@ import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-
 import java.lang.reflect.Method;
 
 import app.allever.android.lib.core.app.App;
-import app.allever.android.lib.core.helper.BarHelper;
 
 /**
  * <pre>

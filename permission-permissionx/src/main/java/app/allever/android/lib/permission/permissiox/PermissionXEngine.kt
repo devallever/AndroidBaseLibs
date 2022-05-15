@@ -26,7 +26,11 @@ class PermissionXEngine : IPermissionEngine {
         request(context, listener, *permissions)
     }
 
-    private fun request(context: Context, listener: PermissionListener, vararg permissions: String) {
+    private fun request(
+        context: Context,
+        listener: PermissionListener,
+        vararg permissions: String
+    ) {
         val permissionMediator = if (context is FragmentActivity) {
             PermissionX.init(context)
         } else {
@@ -42,7 +46,11 @@ class PermissionXEngine : IPermissionEngine {
                     log("同意了所有权限")
                     listener.onAllGranted()
                 } else {
-                    if (PermissionCompat.hasAlwaysDeniedPermission(ActivityHelper.getTopActivity()!!, deniedList)) {
+                    if (PermissionCompat.hasAlwaysDeniedPermission(
+                            ActivityHelper.getTopActivity()!!,
+                            deniedList
+                        )
+                    ) {
                         permissions.map {
                             log("总是拒绝权限：$it")
                         }

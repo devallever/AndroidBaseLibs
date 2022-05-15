@@ -7,7 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,7 +38,7 @@ import app.allever.android.lib.core.util.constant.TimeConstants;
  */
 public final class ConvertUtils {
 
-    private static final int    BUFFER_SIZE      = 8192;
+    private static final int BUFFER_SIZE = 8192;
     private static final char[] HEX_DIGITS_UPPER =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final char[] HEX_DIGITS_LOWER =
@@ -565,14 +564,6 @@ public final class ConvertUtils {
     }
 
     /**
-     * Output stream to input stream.
-     */
-    public ByteArrayInputStream output2InputStream(final OutputStream out) {
-        if (out == null) return null;
-        return new ByteArrayInputStream(((ByteArrayOutputStream) out).toByteArray());
-    }
-
-    /**
      * Input stream to bytes.
      */
     public static byte[] inputStream2Bytes(final InputStream is) {
@@ -725,6 +716,20 @@ public final class ConvertUtils {
     }
 
     /**
+     * Value of px to value of sp.
+     */
+//    public static int px2sp(final float pxValue) {
+//        return UtilsBridge.px2sp(pxValue);
+//    }
+    private static String getSafeCharset(String charsetName) {
+        String cn = charsetName;
+        if (StringUtils.isSpace(charsetName) || !Charset.isSupported(charsetName)) {
+            cn = "UTF-8";
+        }
+        return cn;
+    }
+
+    /**
      * Value of dp to value of px.
      */
 //    public static int dp2px(final float dpValue) {
@@ -746,17 +751,10 @@ public final class ConvertUtils {
 //    }
 
     /**
-     * Value of px to value of sp.
+     * Output stream to input stream.
      */
-//    public static int px2sp(final float pxValue) {
-//        return UtilsBridge.px2sp(pxValue);
-//    }
-
-    private static String getSafeCharset(String charsetName) {
-        String cn = charsetName;
-        if (StringUtils.isSpace(charsetName) || !Charset.isSupported(charsetName)) {
-            cn = "UTF-8";
-        }
-        return cn;
+    public ByteArrayInputStream output2InputStream(final OutputStream out) {
+        if (out == null) return null;
+        return new ByteArrayInputStream(((ByteArrayOutputStream) out).toByteArray());
     }
 }

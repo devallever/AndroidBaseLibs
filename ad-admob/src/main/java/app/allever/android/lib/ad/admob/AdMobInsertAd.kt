@@ -8,7 +8,7 @@ import app.allever.android.lib.core.function.ad.chain.IAd
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 
-class AdMobInsertAd: IAd() {
+class AdMobInsertAd : IAd() {
 
     private var interstitialAd: InterstitialAd? = null
 

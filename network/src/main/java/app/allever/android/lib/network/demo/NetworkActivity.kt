@@ -18,7 +18,7 @@ class NetworkActivity : AbstractActivity() {
 
         HttpConfig.baseUrl("https://www.wanandroid.com/")
             .interceptor(GlobalInterceptor())
-            .header("KEY","VALUE")
+            .header("KEY", "VALUE")
         HttpConfig.baseUrl("https://www.wanandroid.com/")
 
         tvResult = findViewById<TextView>(R.id.tvResult)

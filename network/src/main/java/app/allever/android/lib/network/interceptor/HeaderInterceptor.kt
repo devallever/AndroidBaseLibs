@@ -12,13 +12,13 @@ class HeaderInterceptor : Interceptor {
         val requestBuilder = originalRequest.newBuilder()
         requestBuilder.addHeader("Accept-Encoding", "gzip")
         requestBuilder.addHeader("Accept", "application/json")
-        requestBuilder .addHeader("Content-Type", "application/json; charset=utf-8")
+        requestBuilder.addHeader("Content-Type", "application/json; charset=utf-8")
 
         HttpConfig.headers.map {
             requestBuilder.addHeader(it.key, it.value)
         }
 
-        requestBuilder .method(originalRequest.method(), originalRequest.body())
+        requestBuilder.method(originalRequest.method(), originalRequest.body())
 
         val request = requestBuilder.build()
         val response = chain.proceed(request)

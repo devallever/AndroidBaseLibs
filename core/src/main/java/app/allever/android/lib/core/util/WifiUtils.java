@@ -47,7 +47,7 @@ public class WifiUtils {
         String ssid = "";
 //        String ssid ="unknown id";
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O||Build.VERSION.SDK_INT==Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O || Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
 
             WifiManager mWifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
@@ -59,14 +59,14 @@ public class WifiUtils {
             } else {
                 return info.getSSID().replace("\"", "");
             }
-        } else if (Build.VERSION.SDK_INT==Build.VERSION_CODES.O_MR1){
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1) {
 
             ConnectivityManager connManager = (ConnectivityManager) mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             assert connManager != null;
             NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
             if (networkInfo.isConnected()) {
-                if (networkInfo.getExtraInfo()!=null){
-                    return networkInfo.getExtraInfo().replace("\"","");
+                if (networkInfo.getExtraInfo() != null) {
+                    return networkInfo.getExtraInfo().replace("\"", "");
                 }
             }
         }
@@ -93,7 +93,7 @@ public class WifiUtils {
             }
         }
         if (ssid.contains("\"")) {
-            ssid = ssid.replace("\"","");
+            ssid = ssid.replace("\"", "");
         }
         return ssid;
     }
@@ -178,6 +178,7 @@ public class WifiUtils {
     /**
      * Android  6.0 之前（不包括6.0）
      * 必须的权限  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+     *
      * @param context
      * @return
      */
@@ -209,6 +210,7 @@ public class WifiUtils {
 
     /**
      * Android 6.0（包括） - Android 7.0（不包括）
+     *
      * @return
      */
     private static String getMacAddress() {
@@ -225,6 +227,7 @@ public class WifiUtils {
     /**
      * 遍历循环所有的网络接口，找到接口是 wlan0
      * 必须的权限 <uses-permission android:name="android.permission.INTERNET" />
+     *
      * @return
      */
     private static String getMacFromHardware() {
@@ -256,12 +259,10 @@ public class WifiUtils {
 
 
     /**
-     * @Title: getNetWorkState
-     *
-     * @Description: 获取当前网络状态
-     *
      * @param context
      * @return int
+     * @Title: getNetWorkState
+     * @Description: 获取当前网络状态
      */
     public static int getNetWorkState(Context context) {
         final int network_none = -1;// 没有连接网络
@@ -289,20 +290,18 @@ public class WifiUtils {
     }
 
     /**
-     * @Title: getIpAddress
-     *
-     * @Description: 获取设备ip地址
-     *
      * @return String
+     * @Title: getIpAddress
+     * @Description: 获取设备ip地址
      */
     public static String getIpAddress() {
         try {
             for (Enumeration<NetworkInterface> enNetI = NetworkInterface.getNetworkInterfaces(); enNetI
-                    .hasMoreElements();) {
+                    .hasMoreElements(); ) {
                 NetworkInterface netI = enNetI.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = netI.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = netI.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (inetAddress instanceof Inet4Address &&!inetAddress.isLoopbackAddress()) {
+                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress()) {
                         return inetAddress.getHostAddress();
                     }
                 }

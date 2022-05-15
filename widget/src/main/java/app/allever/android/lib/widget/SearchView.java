@@ -100,9 +100,9 @@ public class SearchView extends LinearLayout {
         });
     }
 
-    public void  hideKeyboard() {
+    public void hideKeyboard() {
         InputMethodManager inputMethodManager =
-                (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager.isActive()) {
             inputMethodManager.hideSoftInputFromWindow(
                     getWindowToken(), 0

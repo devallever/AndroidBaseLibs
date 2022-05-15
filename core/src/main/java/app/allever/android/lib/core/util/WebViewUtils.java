@@ -1,4 +1,3 @@
-
 package app.allever.android.lib.core.util;
 
 import android.os.Build;

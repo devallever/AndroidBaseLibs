@@ -4,7 +4,7 @@ import android.app.Activity
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 
-object ImageLoader: ILoader {
+object ImageLoader : ILoader {
 
     private lateinit var mLoaderEngine: ILoader
 

@@ -17,14 +17,17 @@ import java.lang.ref.WeakReference;
  */
 public class CompressImageUtils {
 
-    private Context mContent;
-    private OnImageCallBack onImageCallBack;
     private static CompressImageUtils compressImageManager;
     private static WeakReference<Context> contextWeakReference;
+    private Context mContent;
+    private OnImageCallBack onImageCallBack;
     private int quality = 100;
     private int width = 0;
     private int height = 0;
     private String TAG = CompressImageUtils.class.getSimpleName();
+
+    private CompressImageUtils() {
+    }
 
     public static CompressImageUtils getInstance(Context mContent, OnImageCallBack onImageCallBack) {
         if (null == compressImageManager) {
@@ -33,9 +36,6 @@ public class CompressImageUtils {
         contextWeakReference = new WeakReference<>(mContent);
         compressImageManager.setContextAndOnImageCallBack(contextWeakReference.get(), onImageCallBack);
         return compressImageManager;
-    }
-
-    private CompressImageUtils() {
     }
 
     /**

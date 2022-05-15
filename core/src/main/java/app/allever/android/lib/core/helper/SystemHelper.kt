@@ -23,8 +23,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import app.allever.android.lib.core.app.App
-import app.allever.android.lib.core.ext.log
-import java.lang.StringBuilder
 
 object SystemHelper {
 
@@ -197,7 +195,7 @@ object SystemHelper {
             )
         val msg = appInfo.metaData.getString(key)
         log("$key - $msg")
-        return msg?:""
+        return msg ?: ""
     }
 
     /**
@@ -232,7 +230,7 @@ object SystemHelper {
             "bright"
         )
         //点亮屏幕
-        wl.acquire(10*60*1000L /*10 minutes*/)
+        wl.acquire(10 * 60 * 1000L /*10 minutes*/)
         //释放
         wl.release()
     }
@@ -240,10 +238,10 @@ object SystemHelper {
     /**
      * 是否忽略电池优化
      */
-    fun isOpenPowerOptimize(context: Context):Boolean{
+    fun isOpenPowerOptimize(context: Context): Boolean {
         val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager?
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            powerManager?.isIgnoringBatteryOptimizations(context.packageName)?:false
+            powerManager?.isIgnoringBatteryOptimizations(context.packageName) ?: false
         } else {
             true
         }
@@ -290,9 +288,6 @@ object SystemHelper {
             intent.setData(uri);
             context.startActivity(intent);
         }
-
-
-
 
 
 //        val localIntent = Intent()
@@ -373,8 +368,10 @@ object SystemHelper {
 
         var autoBrightness = false
         try {
-            autoBrightness = Settings.System.getInt(contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+            autoBrightness = Settings.System.getInt(
+                contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS_MODE
+            ) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
         } catch (e: Settings.SettingNotFoundException) {
 
         }
@@ -392,8 +389,10 @@ object SystemHelper {
     fun getBrightness(context: Context): Int {
         var brightness = 200
         try {
-            brightness = Settings.System.getInt(context.contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS)
+            brightness = Settings.System.getInt(
+                context.contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS
+            )
         } catch (e: Settings.SettingNotFoundException) {
         }
 
@@ -408,7 +407,11 @@ object SystemHelper {
      * @param mode
      */
     fun setBrightnessMode(context: Context, mode: Int) {
-        Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, mode)
+        Settings.System.putInt(
+            context.contentResolver,
+            Settings.System.SCREEN_BRIGHTNESS_MODE,
+            mode
+        )
     }
 
     /**
@@ -428,8 +431,10 @@ object SystemHelper {
     fun saveBrightness(resolver: ContentResolver, brightness: Int) {
         val uri = Settings.System
             .getUriFor("screen_brightness")
-        Settings.System.putInt(resolver, "screen_brightness",
-            brightness)
+        Settings.System.putInt(
+            resolver, "screen_brightness",
+            brightness
+        )
         resolver.notifyChange(uri, null)
     }
 
@@ -457,18 +462,22 @@ object SystemHelper {
      */
     fun showAppDetails(context: Context, packageName: String) {
         val mSCHEME = "package"
+
         /**
          * 调用系统InstalledAppDetails界面所需的Extra名称(用于Android 2.1及之前版本)
          */
         val appPkgName21 = "com.android.settings.ApplicationPkgName"
+
         /**
          * 调用系统InstalledAppDetails界面所需的Extra名称(用于Android 2.2)
          */
         val appPkgName22 = "pkg"
+
         /**
          * InstalledAppDetails所在包名
          */
         val aPPDefaultPackageName = "com.android.settings"
+
         /**
          * InstalledAppDetails类名
          */

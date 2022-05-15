@@ -13,7 +13,7 @@ import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 
-class AdMobNativeAd(var adType: String): IAd() {
+class AdMobNativeAd(var adType: String) : IAd() {
 
     private var nativeAdView: TemplateView? = null
     private var unifiedNativeAd: UnifiedNativeAd? = null
@@ -65,7 +65,7 @@ class AdMobNativeAd(var adType: String): IAd() {
         } else {
             LayoutInflater.from(App.context).inflate(R.layout.native_ad_small_layout, container)
         }
-        
+
         nativeAdView = root.findViewById(R.id.templateView)
         val styles = NativeTemplateStyle.Builder().build()
         nativeAdView?.setStyles(styles)
