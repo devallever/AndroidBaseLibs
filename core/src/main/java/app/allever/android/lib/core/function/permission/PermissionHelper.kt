@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.text.TextUtils
+import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -48,26 +49,25 @@ object PermissionHelper : IPermissionEngine {
         mEngine.handlePermissionResult(requestCode, permissions, grantResults)
     }
 
-    fun hasPermission(vararg permissions: String): Boolean =
-        PermissionCompat.hasPermission(App.context, *permissions)
+    fun hasPermissionOrigin(vararg permissions: String): Boolean =
+        hasPermissionOrigin(App.context, *permissions)
 
 
-    fun hasAlwaysDeny(vararg permissions: String): Boolean =
-        PermissionCompat.hasAlwaysDeniedPermission(
+    fun hasAlwaysDenyOrigin(vararg permissions: String): Boolean =
+        hasAlwaysDeniedPermissionOrigin(
             ActivityHelper.getTopActivity() as FragmentActivity,
             *permissions
         )
 
-    @Deprecated("")
     fun gotoSetting() {
         PermissionUtil.GoToSetting(ActivityHelper.getTopActivity())
     }
 
-    private fun hasPermission(context: Context, vararg permissions: String): Boolean {
-        return hasPermission(context, Arrays.asList(*permissions))
+    fun hasPermissionOrigin(context: Context, vararg permissions: String): Boolean {
+        return hasPermissionOrigin(context, Arrays.asList(*permissions))
     }
 
-    private fun hasPermission(context: Context, permissions: List<String>): Boolean {
+    private fun hasPermissionOrigin(context: Context, permissions: List<String>): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true
         }
@@ -89,11 +89,11 @@ object PermissionHelper : IPermissionEngine {
         return true
     }
 
-    fun hasAlwaysDeniedPermission(activity: Activity, vararg deniedPermissions: String): Boolean {
-        return hasAlwaysDeniedPermission(activity, Arrays.asList(*deniedPermissions))
+    fun hasAlwaysDeniedPermissionOrigin(activity: Activity, vararg deniedPermissions: String): Boolean {
+        return hasAlwaysDeniedPermissionOrigin(activity, Arrays.asList(*deniedPermissions))
     }
 
-    fun hasAlwaysDeniedPermission(activity: Activity, deniedPermissions: List<String>): Boolean {
+    fun hasAlwaysDeniedPermissionOrigin(activity: Activity, deniedPermissions: List<String>): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return false
         }
@@ -109,5 +109,9 @@ object PermissionHelper : IPermissionEngine {
             }
         }
         return false
+    }
+
+    fun requestPermissionOrigin(activity: Activity, requestCode: Int, vararg permissions: String) {
+        ActivityCompat.requestPermissions(activity, permissions, requestCode)
     }
 }

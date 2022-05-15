@@ -46,7 +46,7 @@ class PermissionXEngine : IPermissionEngine {
                     log("同意了所有权限")
                     listener.onAllGranted()
                 } else {
-                    if (PermissionCompat.hasAlwaysDeniedPermission(
+                    if (PermissionHelper.hasAlwaysDeniedPermissionOrigin(
                             ActivityHelper.getTopActivity()!!,
                             deniedList
                         )

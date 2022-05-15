@@ -21,17 +21,17 @@ object DefaultPermissionEngine : IPermissionEngine {
         val requestTask = Runnable {
             when (context) {
                 is Activity -> {
-                    PermissionCompat.requestPermission(context, RC_CODE, *permissions)
+                    PermissionHelper.requestPermissionOrigin(context, RC_CODE, *permissions)
                 }
                 is Fragment -> {
-                    PermissionCompat.requestPermission(
+                    PermissionHelper.requestPermissionOrigin(
                         context.requireActivity(),
                         RC_CODE,
                         *permissions
                     )
                 }
                 else -> {
-                    PermissionCompat.requestPermission(
+                    PermissionHelper.requestPermissionOrigin(
                         ActivityHelper.getTopActivity()!!,
                         RC_CODE,
                         *permissions
@@ -54,7 +54,7 @@ object DefaultPermissionEngine : IPermissionEngine {
     override fun requestPermission(listener: PermissionListener, vararg permissions: String) {
 
         val requestTask = Runnable {
-            PermissionCompat.requestPermission(
+            PermissionHelper.requestPermissionOrigin(
                 ActivityHelper.getTopActivity()!!,
                 RC_CODE,
                 *permissions
@@ -76,7 +76,7 @@ object DefaultPermissionEngine : IPermissionEngine {
     }
 
     override fun jumpSetting(context: Context, requestCode: Int) {
-        PermissionUtil.GoToSetting(ActivityHelper.getTopActivity())
+        PermissionHelper.gotoSetting()
     }
 
     override fun handlePermissionResult(
@@ -84,11 +84,11 @@ object DefaultPermissionEngine : IPermissionEngine {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (PermissionCompat.hasPermission(ActivityHelper.getTopActivity()!!, *permissions)) {
+        if (PermissionHelper.hasPermissionOrigin(ActivityHelper.getTopActivity()!!, *permissions)) {
             mPermissionListener?.onAllGranted()
         } else {
 
-            if (PermissionHelper.hasAlwaysDeny(*permissions)) {
+            if (PermissionHelper.hasAlwaysDenyOrigin(*permissions)) {
                 //总是拒绝
                 mPermissionListener?.alwaysDenied(permissions.toMutableList())
 
@@ -103,7 +103,7 @@ object DefaultPermissionEngine : IPermissionEngine {
                 //拒绝
                 val deniedList = mutableListOf<String>()
                 permissions.map {
-                    if (!PermissionCompat.hasPermission(ActivityHelper.getTopActivity()!!, it)) {
+                    if (!PermissionHelper.hasPermissionOrigin(ActivityHelper.getTopActivity()!!, it)) {
                         deniedList.add(it)
                     }
                     log("拒绝权限：$it")
