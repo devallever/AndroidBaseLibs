@@ -35,5 +35,5 @@ dependencies {
     implementation project(path: ':core')
 
     //数据存储-MMKV: https://github.com/Tencent/MMKV
-    implementation "com.tencent:mmkv-static:$MmkvVersion"
+    implementation "com.tencent:mmkv-static:1.2.12"
 }

@@ -1,4 +1,6 @@
-package app.allever.android.lib.network;
+package app.allever.android.lib.network
+
+import java.lang.Exception
 
 /**
  * @ClassName RsThrowable
@@ -7,18 +9,16 @@ package app.allever.android.lib.network;
  * @Date 2020/5/4 0:17
  * @Version 1.0
  */
-public class ResultThrowable extends Exception {
+class ResultThrowable : Exception {
+    var code: Int
+    override var message: String? = null
 
-    public int code;
-    public String message;
-
-    public ResultThrowable(Throwable cause, int code) {
-        super(cause);
-        this.code = code;
+    constructor(cause: Throwable?, code: Int) : super(cause) {
+        this.code = code
     }
 
-    public ResultThrowable(int code, String message) {
-        this.code = code;
-        this.message = message;
+    constructor(code: Int, message: String?) {
+        this.code = code
+        this.message = message
     }
 }

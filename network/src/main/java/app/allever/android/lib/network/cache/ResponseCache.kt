@@ -4,7 +4,7 @@ import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.helper.NetworkHelper
 import app.allever.android.lib.network.GsonHelper.toJson
-import app.allever.android.lib.network.HttpDataUtils
+import app.allever.android.lib.network.ReflectionHelper
 import app.allever.android.lib.network.cache.HttpCacheManager.getCacheTime
 import app.allever.android.lib.network.cache.HttpCacheManager.getStringCache
 import app.allever.android.lib.network.cache.HttpCacheManager.putCache
@@ -42,7 +42,7 @@ abstract class ResponseCache<T : NetResponse<*>> {
             val cacheString = getStringCache(cacheKey())
             val response = Gson().fromJson(
                 cacheString,
-                HttpDataUtils.getGenericType(this::class.java, 0)
+                ReflectionHelper.getGenericType(this::class.java, 0)
             ) as? T
             response.let {
                 log("获取缓存: $cacheString")

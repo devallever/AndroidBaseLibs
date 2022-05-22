@@ -66,14 +66,14 @@ abstract class NetworkHandler {
                 responseCache?.cacheResponse(response)
             }
             return response
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             loge(e.message)
             val exception = ExceptionHandle.handleException(e)
             val response = responseClz?.newInstance()
             log("responseClz = ${response?.javaClass?.simpleName}")
             if (response is NetResponse<*>) {
-                response.setData(exception.code, exception.message, null)
+                response.setData(exception.code, exception.message ?: "", null)
             }
             return response as? T?
         }

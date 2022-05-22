@@ -57,8 +57,9 @@ class DefaultRetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
             return
         }
         val exception = ExceptionHandle.handleException(t)
-        val defaultNetResponse = DefaultNetResponse<DATA>(exception.code, exception.message)
-        callback.onFail(defaultNetResponse)
+        val defaultNetResponse =
+            exception.message?.let { DefaultNetResponse<DATA>(exception.code, it) }
+        defaultNetResponse?.let { callback.onFail(it) }
     }
 
     override fun onResponse(call: Call<R>, response: Response<R>) {

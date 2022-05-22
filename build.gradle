@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.2"
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,13 +20,9 @@ task clean(type: Delete) {
 
 ext {
     // 版本号相关
-    compileSdkVersion = 30
-    targetSdkVersion = 30
+    compileSdkVersion = 31
+    targetSdkVersion = 31
     minSdkVersion = 21
     versionName = '1.0.0'
     versionCode = 1
-
-    //第三方库
-    MmkvVersion = '1.2.12'
-    GlideVersion = '4.9.0'
 }

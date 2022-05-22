@@ -1,18 +1,15 @@
-package app.allever.android.lib.network;
+package app.allever.android.lib.network
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
-import app.allever.android.lib.core.helper.LogHelper;
+import app.allever.android.lib.core.helper.LogHelper.e
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 /**
  * 反射工具类
  *
  * @author Administrator
  */
-public class HttpDataUtils {
-
+object ReflectionHelper {
     /**
      * 通过反射设置某一个对象的某一个参数的值
      *
@@ -21,19 +18,17 @@ public class HttpDataUtils {
      * @param fieldName
      * @return
      */
-    public static boolean setValue(Object obj, Object value, String fieldName) {
+    operator fun setValue(obj: Any, value: Any?, fieldName: String?): Boolean {
         try {
-            Class aClass = obj.getClass();
-            Field field = aClass.getDeclaredField(fieldName);
-            if (null != field) {
-                field.setAccessible(true);
-                field.set(obj, value);
-            }
-            return true;
-        } catch (Exception e) {
-            LogHelper.INSTANCE.e("set value error:" + e.getMessage());
+            val aClass: Class<*> = obj.javaClass
+            val field = aClass.getDeclaredField(fieldName)
+            field.isAccessible = true
+            field[obj] = value
+            return true
+        } catch (e: Exception) {
+            e("set value error:" + e.message)
         }
-        return false;
+        return false
     }
 
     /**
@@ -43,18 +38,16 @@ public class HttpDataUtils {
      * @param fieldName
      * @return
      */
-    public static Object getValue(Object obj, String fieldName) {
+    fun getValue(obj: Any, fieldName: String?): Any? {
         try {
-            Class aClass = obj.getClass();
-            Field field = aClass.getDeclaredField(fieldName);
-            if (null != field) {
-                field.setAccessible(true);
-                return field.get(obj);
-            }
-        } catch (Exception e) {
-            LogHelper.INSTANCE.e("get value error:" + e.getMessage());
+            val aClass: Class<*> = obj.javaClass
+            val field = aClass.getDeclaredField(fieldName)
+            field.isAccessible = true
+            return field[obj]
+        } catch (e: Exception) {
+            e("get value error:" + e.message)
         }
-        return null;
+        return null
     }
 
     /**
@@ -64,9 +57,8 @@ public class HttpDataUtils {
      * @param position
      * @return
      */
-    public static Type getGenericType(Class clz, int position) {
-        ParameterizedType pt = (ParameterizedType) clz.getGenericSuperclass();
-        return pt.getActualTypeArguments()[position];
+    fun getGenericType(clz: Class<*>, position: Int): Type {
+        val pt = clz.genericSuperclass as ParameterizedType
+        return pt.actualTypeArguments[position]
     }
-
 }

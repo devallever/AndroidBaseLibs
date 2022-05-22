@@ -50,7 +50,7 @@ class AndPermissionEngine : IPermissionEngine {
                 }
                 .onDenied {
                     //判断是否总是拒绝
-                    if (PermissionHelper.hasAlwaysDeniedPermission(
+                    if (PermissionHelper.hasAlwaysDeniedPermissionOrigin(
                             ActivityHelper.getTopActivity()!!,
                             it
                         )

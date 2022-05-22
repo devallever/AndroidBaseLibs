@@ -3,6 +3,8 @@ package app.allever.android.lib.network.demo
 import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.network.BuildConfig
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import java.io.IOException
 import java.nio.charset.Charset
@@ -14,23 +16,21 @@ class GlobalInterceptor : Interceptor {
             .addHeader("Accept-Encoding", "gzip")
             .addHeader("Accept", "application/json")
             .addHeader("Content-Type", "application/json; charset=utf-8")
-            .method(originalRequest.method(), originalRequest.body())
+            .method(originalRequest.method, originalRequest.body)
         val request = requestBuilder.build()
         val response = chain.proceed(request)
-        val responseBody = response.body()
+        val responseBody = response.body
         val responseBodyString = if (responseBody == null) "null" else responseBody.string()
         if (BuildConfig.DEBUG) {
-            loge("LogInterceptor", "请求链接= " + request.url())
-            request.headers().toMultimap().map {
+            loge("LogInterceptor", "请求链接= " + request.url)
+            request.headers.toMultimap().map {
                 loge("LogInterceptor", "请求头= ${it.key}: ${it.value}")
             }
             loge("LogInterceptor", "请求体= " + getRequestInfo(request))
             loge("LogInterceptor", "请求结果= $responseBodyString")
         }
-        val body = ResponseBody.create(
-            if (responseBody == null) MediaType.parse("application/json") else responseBody.contentType(),
-            responseBodyString.toByteArray()
-        )
+        val body = responseBodyString.toByteArray()
+            .toResponseBody(if (responseBody == null) "application/json".toMediaTypeOrNull() else responseBody.contentType())
         return response.newBuilder().body(body).build()
     }
 
@@ -39,12 +39,12 @@ class GlobalInterceptor : Interceptor {
      *
      * @param request 请求的对象
      */
-    private fun getRequestInfo(request: Request?): String? {
+    private fun getRequestInfo(request: Request?): String {
         var str = ""
         if (request == null) {
             return str
         }
-        val requestBody = request.body() ?: return str
+        val requestBody = request.body ?: return str
         try {
             val bufferedSink = Buffer()
             requestBody.writeTo(bufferedSink)

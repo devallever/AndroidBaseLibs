@@ -33,15 +33,15 @@ android {
 
 dependencies {
 
-    api 'androidx.core:core-ktx:1.3.2'
-    api 'androidx.appcompat:appcompat:1.2.0'
-    api 'com.google.android.material:material:1.3.0'
+    api 'androidx.core:core-ktx:1.7.0'
+    api 'androidx.appcompat:appcompat:1.3.1'
+    api 'com.google.android.material:material:1.4.0'
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     //如何解决“无法访问androidx.activity.contextaware.ContextAware‘”?”
-    api "androidx.activity:activity-ktx:1.2.2"
+    api "androidx.activity:activity-ktx:1.2.3"
 
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
 
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     //ViewModel

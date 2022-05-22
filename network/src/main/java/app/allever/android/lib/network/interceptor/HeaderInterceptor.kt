@@ -2,9 +2,10 @@ package app.allever.android.lib.network.interceptor
 
 import app.allever.android.lib.network.HttpConfig
 import okhttp3.Interceptor
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 
 class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -18,17 +19,15 @@ class HeaderInterceptor : Interceptor {
             requestBuilder.addHeader(it.key, it.value)
         }
 
-        requestBuilder.method(originalRequest.method(), originalRequest.body())
+        requestBuilder.method(originalRequest.method, originalRequest.body)
 
         val request = requestBuilder.build()
         val response = chain.proceed(request)
-        val responseBody = response.body()
+        val responseBody = response.body
 
-        val responseBodyString = if (responseBody == null) "null" else responseBody.string()
-        val body = ResponseBody.create(
-            if (responseBody == null) MediaType.parse("application/json") else responseBody.contentType(),
-            responseBodyString.toByteArray()
-        )
+        val responseBodyString = responseBody?.string() ?: "null"
+        val body = responseBodyString.toByteArray()
+            .toResponseBody(if (responseBody == null) "application/json".toMediaTypeOrNull() else responseBody.contentType())
         return response.newBuilder().body(body).build()
     }
 }
