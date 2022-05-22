@@ -1,7 +1,9 @@
 package app.allever.android.lib.network.demo
 
+import app.allever.android.lib.core.function.network.NetworkHandler
+import app.allever.android.lib.core.function.network.ResponseCallback
 import app.allever.android.lib.network.*
-import app.allever.android.lib.network.cache.ResponseCache
+import app.allever.android.lib.core.function.network.cache.ResponseCache
 import kotlinx.coroutines.delay
 
 object NetRepository : NetworkHandler() {

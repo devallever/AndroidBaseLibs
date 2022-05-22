@@ -1,4 +1,4 @@
-package app.allever.android.lib.network.response
+package app.allever.android.lib.core.function.network.response
 
 abstract class NetResponse<DATA> {
     var data: DATA? = null

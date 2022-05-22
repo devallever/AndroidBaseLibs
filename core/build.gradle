@@ -47,9 +47,17 @@ dependencies {
     //ViewModel
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     //activity-ktx
-    api 'androidx.activity:activity-ktx:1.2.3'
+    api 'androidx.activity:activity-ktx:1.2.4'
 
     //https://github.com/bingoogolapple/BGASwipeBackLayout-Android
 //    implementation 'com.github.bingoogolapple:BGASwipeBackLayout-Android:2.0.2'
     api project(path: ':swipe-back-layout')
+
+    //数据存储-MMKV: https://github.com/Tencent/MMKV
+    implementation "com.tencent:mmkv-static:1.2.12"
+
+    api "com.google.code.gson:gson:2.8.5"
+
+    api 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    api 'com.squareup.okhttp3:okhttp:4.9.3'
 }

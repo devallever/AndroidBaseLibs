@@ -1,7 +1,7 @@
-package app.allever.android.lib.network.interceptor
+package app.allever.android.lib.core.function.network.interceptor
 
+import app.allever.android.lib.core.BuildConfig
 import app.allever.android.lib.core.ext.log
-import app.allever.android.lib.network.BuildConfig
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody

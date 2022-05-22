@@ -1,6 +1,6 @@
-package app.allever.android.lib.network
+package app.allever.android.lib.core.function.network
 
-import app.allever.android.lib.network.response.NetResponse
+import app.allever.android.lib.core.function.network.response.NetResponse
 
 interface ResponseCallback<DATA> {
     fun onSuccess(response: NetResponse<DATA>)

@@ -1,4 +1,4 @@
-package app.allever.android.lib.network.interceptor
+package app.allever.android.lib.core.function.network.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

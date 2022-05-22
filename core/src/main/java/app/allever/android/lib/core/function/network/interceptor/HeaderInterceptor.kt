@@ -1,10 +1,9 @@
-package app.allever.android.lib.network.interceptor
+package app.allever.android.lib.core.function.network.interceptor
 
-import app.allever.android.lib.network.HttpConfig
+import app.allever.android.lib.core.function.network.HttpConfig
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Response
-import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 
 class HeaderInterceptor : Interceptor {

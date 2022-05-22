@@ -5,8 +5,8 @@ import android.view.View
 import android.widget.TextView
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.toast
-import app.allever.android.lib.network.GsonHelper
-import app.allever.android.lib.network.HttpConfig
+import app.allever.android.lib.core.helper.GsonHelper
+import app.allever.android.lib.core.function.network.HttpConfig
 import app.allever.android.lib.network.R
 import kotlinx.coroutines.launch
 

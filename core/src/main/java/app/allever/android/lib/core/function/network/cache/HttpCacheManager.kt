@@ -1,4 +1,4 @@
-package app.allever.android.lib.network.cache
+package app.allever.android.lib.core.function.network.cache
 
 import android.os.Parcelable
 import app.allever.android.lib.core.app.App

@@ -1,4 +1,4 @@
-package app.allever.android.lib.network.interceptor
+package app.allever.android.lib.core.function.network.interceptor
 
 import app.allever.android.lib.core.ext.loge
 import okhttp3.logging.HttpLoggingInterceptor

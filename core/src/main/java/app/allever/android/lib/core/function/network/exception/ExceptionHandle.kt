@@ -1,7 +1,8 @@
-package app.allever.android.lib.network
+package app.allever.android.lib.core.function.network.exception
 
 import android.net.ParseException
 import androidx.annotation.StringRes
+import app.allever.android.lib.core.R
 import app.allever.android.lib.core.app.App
 import com.google.gson.JsonParseException
 import com.google.gson.stream.MalformedJsonException

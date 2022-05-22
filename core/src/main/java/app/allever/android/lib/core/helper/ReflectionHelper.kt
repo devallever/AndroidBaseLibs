@@ -1,4 +1,4 @@
-package app.allever.android.lib.network
+package app.allever.android.lib.core.helper
 
 import app.allever.android.lib.core.helper.LogHelper.e
 import java.lang.reflect.ParameterizedType

@@ -1,4 +1,4 @@
-package app.allever.android.lib.network.response
+package app.allever.android.lib.core.function.network.response
 
 class DefaultNetResponse<DATA>(private var code: Int, private var msg: String) :
     NetResponse<DATA>() {

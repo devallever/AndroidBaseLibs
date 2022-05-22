@@ -11,11 +11,11 @@ import java.util.List;
 
 import app.allever.android.lib.core.base.AbstractActivity;
 import app.allever.android.lib.core.helper.LogHelper;
-import app.allever.android.lib.network.GsonHelper;
-import app.allever.android.lib.network.HttpConfig;
+import app.allever.android.lib.core.helper.GsonHelper;
+import app.allever.android.lib.core.function.network.HttpConfig;
 import app.allever.android.lib.network.R;
-import app.allever.android.lib.network.ResponseCallback;
-import app.allever.android.lib.network.response.NetResponse;
+import app.allever.android.lib.core.function.network.ResponseCallback;
+import app.allever.android.lib.core.function.network.response.NetResponse;
 
 /**
  * @author allever

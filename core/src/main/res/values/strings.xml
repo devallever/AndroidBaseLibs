@@ -8,4 +8,20 @@
     <string name="permission_permission_go">Go</string>
     <string name="permission_permission_need_some_permission">Need Some permissions, please set manually</string>
     <string name="permission_permission_warm_tips">Warm Tips:</string>
+
+    <string name="app_name">HttpModel</string>
+    <string name="re_register">重新登录</string>
+    <string name="request_failed">请求失败</string>
+    <string name="next_action_prompt">下一操作提示</string>
+    <string name="interface_does_not_exist">接口不存在</string>
+    <string name="network_unavailable">网络不可用</string>
+    <string name="server_unavailable">服务器不可用</string>
+    <string name="network_error">网络错误</string>
+    <string name="parsing_error">解析错误</string>
+    <string name="connection_failed">连接失败</string>
+    <string name="certificate_verification_failed">证书验证失败</string>
+    <string name="connection_timed_out">连接超时</string>
+    <string name="host_address_unknown">主机地址未知</string>
+    <string name="unknown_mistake">未知错误</string>
+
 </resources>

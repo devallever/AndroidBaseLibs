@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.allever.android.lib.network;
+package app.allever.android.lib.core.function.network.exception;
 
 import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
-import app.allever.android.lib.network.demo.BaseResponse;
+import app.allever.android.lib.core.function.network.response.NetResponse;
 
 
 /** Exception for an unexpected, non-2xx HTTP response. */
 public class HttpException extends RuntimeException {
-    private static String getMessage(BaseResponse<?> response) {
+    private static String getMessage(NetResponse<?> response) {
         Objects.requireNonNull(response, "response == null");
         return "HTTP " + response.getCode() + " " + response.getMsg();
     }
 
-    private final transient BaseResponse<?> response;
+    private final transient NetResponse<?> response;
 
-    public HttpException(BaseResponse<?> response) {
+    public HttpException(NetResponse<?> response) {
         super(getMessage(response));
         this.response = response;
     }
@@ -48,7 +48,7 @@ public class HttpException extends RuntimeException {
 
     /** The full HTTP response. This may be null if the exception was serialized. */
     public @Nullable
-    BaseResponse<?> response() {
+    NetResponse<?> response() {
         return response;
     }
 }

@@ -1,4 +1,4 @@
-package app.allever.android.lib.network
+package app.allever.android.lib.core.function.network
 
 import okhttp3.Interceptor
 
@@ -23,7 +23,7 @@ object HttpConfig {
     }
 
     fun baseUrl(baseUrl: String): HttpConfig {
-        this.baseUrl = baseUrl
+        HttpConfig.baseUrl = baseUrl
         return this
     }
 

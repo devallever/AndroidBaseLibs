@@ -1,9 +1,10 @@
 package app.allever.android.lib.network
 
 import app.allever.android.lib.core.app.App
-import app.allever.android.lib.network.interceptor.HeaderInterceptor
-import app.allever.android.lib.network.interceptor.HttpInterceptor
-import app.allever.android.lib.network.interceptor.LoggerInterceptor
+import app.allever.android.lib.core.function.network.HttpConfig
+import app.allever.android.lib.core.function.network.interceptor.HeaderInterceptor
+import app.allever.android.lib.core.function.network.interceptor.HttpInterceptor
+import app.allever.android.lib.core.function.network.interceptor.LoggerInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

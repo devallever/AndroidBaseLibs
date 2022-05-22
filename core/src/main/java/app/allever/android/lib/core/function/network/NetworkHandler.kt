@@ -1,17 +1,17 @@
-package app.allever.android.lib.network
+package app.allever.android.lib.core.function.network
 
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.helper.NetworkHelper
-import app.allever.android.lib.network.cache.ResponseCache
-import app.allever.android.lib.network.demo.BaseResponse
-import app.allever.android.lib.network.response.NetResponse
+import app.allever.android.lib.core.function.network.cache.ResponseCache
+import app.allever.android.lib.core.function.network.exception.ExceptionHandle
+import app.allever.android.lib.core.function.network.exception.HttpException
+import app.allever.android.lib.core.helper.GsonHelper
+import app.allever.android.lib.core.function.network.response.NetResponse
 
 abstract class NetworkHandler {
-
-
     @Deprecated("Java调用直接用回调就好了")
     inline fun <T : NetResponse<*>> requestForJava(block: () -> T): T? {
         val result: T
@@ -28,12 +28,12 @@ abstract class NetworkHandler {
     inline fun <T : NetResponse<*>> request(block: () -> T): Result<T> {
         return try {
             val response = block()
-            if (HttpCode.isSuccessCode(response.getCode())) {
+            if (isSuccessCode(response.getCode())) {
                 Result.success(response)
             } else {
                 Result.failure(
                     HttpException(
-                        response as BaseResponse<*>
+                        response as NetResponse<*>
                     )
                 )
             }
@@ -66,7 +66,7 @@ abstract class NetworkHandler {
             }
 
             val response = block()
-            if (HttpCode.isSuccessCode(response.getCode())) {
+            if (isSuccessCode(response.getCode())) {
                 responseCache?.cacheResponse(response)
             }
             return response
@@ -135,5 +135,9 @@ abstract class NetworkHandler {
 
     fun <DATA> getJson(result: Result<DATA>): String {
         return GsonHelper.toJson(result.getOrNull())
+    }
+
+    fun isSuccessCode(code: Int): Boolean {
+        return code == HttpConfig.successCode
     }
 }
