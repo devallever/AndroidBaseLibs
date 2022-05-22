@@ -7,7 +7,6 @@ import com.google.gson.JsonParseException
 import com.google.gson.stream.MalformedJsonException
 import org.apache.http.conn.ConnectTimeoutException
 import org.json.JSONException
-import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -26,7 +25,7 @@ object ExceptionHandle {
         val ex: ResultThrowable
         return if (e is HttpException) {
             ex = ResultThrowable(e, ERROR.HTTP_ERROR)
-            when (e.code()) {
+            when (e.response()?.getCode()) {
                 FORBIDDEN -> ex.message = getStringRes(R.string.request_failed)
                 NEXT_FOUND -> ex.message = getStringRes(R.string.next_action_prompt)
                 NOT_FOUND -> ex.message = getStringRes(R.string.interface_does_not_exist)

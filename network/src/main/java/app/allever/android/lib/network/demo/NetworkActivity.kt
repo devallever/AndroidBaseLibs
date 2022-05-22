@@ -31,7 +31,7 @@ class NetworkActivity : AbstractActivity() {
     private fun send() {
         mainCoroutine.launch {
             val result = NetRepository.getBanner(BannerResponseCache())
-            result?.let {
+            result.let {
                 tvResult.text = GsonHelper.toJson(it)
             }
         }

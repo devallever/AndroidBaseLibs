@@ -1,12 +1,12 @@
 package app.allever.android.lib.network
 
-//import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.helper.NetworkHelper
 import app.allever.android.lib.network.cache.ResponseCache
+import app.allever.android.lib.network.demo.BaseResponse
 import app.allever.android.lib.network.response.NetResponse
 
 abstract class NetworkHandler {
@@ -31,7 +31,11 @@ abstract class NetworkHandler {
             if (HttpCode.isSuccessCode(response.getCode())) {
                 Result.success(response)
             } else {
-                Result.failure(HttpException(response))
+                Result.failure(
+                    HttpException(
+                        response as BaseResponse<*>
+                    )
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -125,7 +129,7 @@ abstract class NetworkHandler {
 
     fun <T> showMessageIfFail(result: Result<T>) {
         if (result.isFailure) {
-            toast((result.exceptionOrNull() as? HttpException)?.response?.getMsg())
+            toast((result.exceptionOrNull() as? HttpException)?.response()?.getMsg())
         }
     }
 

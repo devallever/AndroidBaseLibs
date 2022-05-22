@@ -1,9 +1,6 @@
 package app.allever.android.lib.network.demo
 
-import app.allever.android.lib.network.ApiService
-import app.allever.android.lib.network.DefaultRetrofitCallback
-import app.allever.android.lib.network.NetworkHandler
-import app.allever.android.lib.network.ResponseCallback
+import app.allever.android.lib.network.*
 import app.allever.android.lib.network.cache.ResponseCache
 import kotlinx.coroutines.delay
 
@@ -22,7 +19,7 @@ object NetRepository : NetworkHandler() {
 
     suspend fun getBanner(responseCache: ResponseCache<*>? = null) =
         request(BaseResponse::class.java, responseCache) {
-            wanAndroidApi.getBanner()
+            getData()
         }
 
     suspend fun test(): String {
@@ -44,4 +41,10 @@ object NetRepository : NetworkHandler() {
             wanAndroidApi.getBannerCall().enqueue(DefaultRetrofitCallback(responseCache, callback))
         }
     }
+
+    suspend fun getData(): BaseResponse<List<BannerData>> {
+        val response = BaseResponse<List<BannerData>>()
+        return response
+    }
+
 }

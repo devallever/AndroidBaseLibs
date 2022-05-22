@@ -12,6 +12,7 @@ object HttpConfig {
 
     val headers = mutableMapOf<String, String>()
 
+
     fun build(): HttpConfig {
         return this
     }
@@ -40,5 +41,4 @@ object HttpConfig {
         headers[key] = value
         return this
     }
-
 }
