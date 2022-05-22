@@ -4,12 +4,13 @@ import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.loge
 import app.allever.android.lib.core.ext.toast
-import app.allever.android.lib.core.helper.NetworkHelper
 import app.allever.android.lib.core.function.network.cache.ResponseCache
 import app.allever.android.lib.core.function.network.exception.ExceptionHandle
 import app.allever.android.lib.core.function.network.exception.HttpException
-import app.allever.android.lib.core.helper.GsonHelper
+import app.allever.android.lib.core.function.network.response.DefaultNetResponse
 import app.allever.android.lib.core.function.network.response.NetResponse
+import app.allever.android.lib.core.helper.GsonHelper
+import app.allever.android.lib.core.helper.NetworkHelper
 
 abstract class NetworkHandler {
     @Deprecated("Java调用直接用回调就好了")
@@ -139,5 +140,36 @@ abstract class NetworkHandler {
 
     fun isSuccessCode(code: Int): Boolean {
         return code == HttpConfig.successCode
+    }
+
+    protected fun <DATA, R : NetResponse<DATA>> handleSuccessCallback(
+        responseCache: ResponseCache<*>? = null,
+        requestResult: R?,
+        callback: ResponseCallback<DATA>?
+    ) {
+        if (callback == null) {
+            return
+        }
+        if (requestResult == null) {
+            val defaultResponse = DefaultNetResponse<DATA>(-1, "没有返回数据")
+            callback.onFail(defaultResponse)
+            return
+        }
+
+        callback.onSuccess(requestResult)
+
+        if (isSuccessCode(requestResult.getCode())) {
+            responseCache?.cacheResponse(requestResult)
+        }
+    }
+
+    protected open fun <DATA> handleFailCallback(callback: ResponseCallback<DATA>?, t: Throwable?) {
+        if (callback == null) {
+            return
+        }
+        val exception = ExceptionHandle.handleException(t)
+        val defaultNetResponse =
+            exception.message?.let { DefaultNetResponse<DATA>(exception.code, it) }
+        defaultNetResponse?.let { callback.onFail(it) }
     }
 }

@@ -1,4 +1,4 @@
-package app.allever.android.lib.network
+package app.allever.android.lib.network.demo
 
 import app.allever.android.lib.core.function.network.HttpConfig
 

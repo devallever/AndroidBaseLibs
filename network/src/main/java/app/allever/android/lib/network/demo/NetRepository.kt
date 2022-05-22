@@ -32,7 +32,7 @@ object NetRepository : NetworkHandler() {
 
     @Deprecated("不使用缓存")
     fun getBannerCall(callback: ResponseCallback<List<BannerData>>) {
-        wanAndroidApi.getBannerCall().enqueue(DefaultRetrofitCallback(callback))
+        wanAndroidApi.getBannerCall().enqueue(RetrofitCallback(callback))
     }
 
     fun getBannerCall(
@@ -40,7 +40,7 @@ object NetRepository : NetworkHandler() {
         callback: ResponseCallback<List<BannerData>>
     ) {
         enqueue(responseCache, callback) {
-            wanAndroidApi.getBannerCall().enqueue(DefaultRetrofitCallback(responseCache, callback))
+            wanAndroidApi.getBannerCall().enqueue(RetrofitCallback(responseCache, callback))
         }
     }
 
