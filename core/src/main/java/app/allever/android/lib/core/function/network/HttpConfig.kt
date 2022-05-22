@@ -41,4 +41,8 @@ object HttpConfig {
         headers[key] = value
         return this
     }
+
+    fun init(httpConfig: IHttpConfig) {
+        httpConfig.init()
+    }
 }

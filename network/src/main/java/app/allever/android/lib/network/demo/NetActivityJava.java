@@ -13,6 +13,7 @@ import app.allever.android.lib.core.base.AbstractActivity;
 import app.allever.android.lib.core.helper.LogHelper;
 import app.allever.android.lib.core.helper.GsonHelper;
 import app.allever.android.lib.core.function.network.HttpConfig;
+import app.allever.android.lib.network.ApiService;
 import app.allever.android.lib.network.R;
 import app.allever.android.lib.core.function.network.ResponseCallback;
 import app.allever.android.lib.core.function.network.response.NetResponse;
@@ -29,7 +30,8 @@ public class NetActivityJava extends AbstractActivity {
         TextView textView = findViewById(R.id.tvResult);
 
         HttpConfig.INSTANCE.baseUrl("https://www.wanandroid.com/")
-                .successCode(0);
+                .successCode(0)
+                .init(ApiService.INSTANCE);
 
         findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override

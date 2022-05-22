@@ -7,6 +7,7 @@ import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.helper.GsonHelper
 import app.allever.android.lib.core.function.network.HttpConfig
+import app.allever.android.lib.network.ApiService
 import app.allever.android.lib.network.R
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,7 @@ class NetworkActivity : AbstractActivity() {
         HttpConfig.baseUrl("https://www.wanandroid.com/")
             .interceptor(GlobalInterceptor())
             .header("KEY", "VALUE")
-        HttpConfig.baseUrl("https://www.wanandroid.com/")
+            .init(ApiService)
 
         tvResult = findViewById<TextView>(R.id.tvResult)
         findViewById<View>(R.id.btnSend).setOnClickListener {

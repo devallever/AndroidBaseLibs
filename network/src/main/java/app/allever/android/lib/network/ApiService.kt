@@ -2,6 +2,7 @@ package app.allever.android.lib.network
 
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.function.network.HttpConfig
+import app.allever.android.lib.core.function.network.IHttpConfig
 import app.allever.android.lib.core.function.network.interceptor.HeaderInterceptor
 import app.allever.android.lib.core.function.network.interceptor.HttpInterceptor
 import app.allever.android.lib.core.function.network.interceptor.LoggerInterceptor
@@ -13,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 
-object ApiService {
+object ApiService : IHttpConfig{
     private val mRetrofit by lazy {
 
         val builder = OkHttpClient.Builder()
@@ -49,6 +50,10 @@ object ApiService {
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
+    }
+
+    override fun init() {
+        mRetrofit
     }
 
     fun <T> get(apiServiceClass: Class<T>): T = mRetrofit.create(apiServiceClass)
