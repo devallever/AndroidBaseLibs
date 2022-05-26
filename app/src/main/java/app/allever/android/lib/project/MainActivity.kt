@@ -9,7 +9,9 @@ import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetActivityJava
+import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
+import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
 class MainActivity : AbstractActivity() {
@@ -23,6 +25,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnNetwork))
         RippleHelper.addRippleView(findViewById(R.id.btnCenterDialog))
         RippleHelper.addRippleView(findViewById(R.id.btnPermission))
+        RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -35,7 +38,7 @@ class MainActivity : AbstractActivity() {
         }
 
         findViewById<View>(R.id.btnNetwork).setOnClickListener {
-            ActivityHelper.startActivity(NetActivityJava::class.java)
+            ActivityHelper.startActivity(NetworkActivity::class.java)
         }
 
         findViewById<View>(R.id.btnBottomDialog).setOnClickListener {
@@ -48,6 +51,10 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.btnPermission).setOnClickListener {
             ActivityHelper.startActivity(AndPermissionActivity::class.java)
+        }
+
+        findViewById<View>(R.id.btnRefreshRV).setOnClickListener {
+            ActivityHelper.startActivity(RefreshRVActivity::class.java)
         }
 
         ImageView(this).load("")

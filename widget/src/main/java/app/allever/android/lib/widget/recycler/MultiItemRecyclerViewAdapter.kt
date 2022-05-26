@@ -2,6 +2,7 @@ package app.allever.android.lib.widget.recycler
 
 import android.content.Context
 import android.view.ViewGroup
+import de.hdodenhof.circleimageview.CircleImageView
 
 /**
  * @author allever
@@ -11,6 +12,9 @@ abstract class MultiItemRecyclerViewAdapter<T>(
     protected var mMultiItemTypeSupport: MultiItemTypeSupport<T>
 ) : BaseRecyclerViewAdapter<T>(context, -1, datas) {
 
+    fun s() {
+//        Bas
+    }
     override fun getItemViewType(position: Int): Int {
         return mMultiItemTypeSupport.getItemViewType(position, mData[position])
     }

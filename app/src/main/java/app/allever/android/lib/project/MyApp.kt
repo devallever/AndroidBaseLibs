@@ -8,6 +8,7 @@ import app.allever.android.lib.core.function.permission.PermissionHelper
 import app.allever.android.lib.core.helper.ExecutorHelper
 import app.allever.android.lib.imageloader.glide.GlideLoader
 import app.allever.android.lib.store.mmkv.MMKVStore
+import app.allever.android.lib.widget.Widget
 
 class MyApp : App() {
     override fun init() {
@@ -15,6 +16,7 @@ class MyApp : App() {
             DataStore.init(MMKVStore)
             ImageLoader.init(GlideLoader)
             PermissionHelper.init(DefaultPermissionEngine)
+            Widget.init(this)
         }
     }
 }
