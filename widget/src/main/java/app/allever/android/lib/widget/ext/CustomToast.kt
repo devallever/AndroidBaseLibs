@@ -9,13 +9,13 @@ object CustomToast {
 }
 
 fun customToast(msg: String?) {
-    App.mainHandler.post { CustomToast.builder().text(msg).show() }
+    App.mainHandler.post { CustomToast.builder().text(msg?:"").show() }
 }
 
 fun customToastLong(msg: String?) {
-    App.mainHandler.post { CustomToast.builder().duration(Toast.LENGTH_LONG).text(msg).show() }
+    App.mainHandler.post { CustomToast.builder().duration(Toast.LENGTH_LONG).text(msg?:"").show() }
 }
 
 fun customToast(onlyDebug: Boolean, msg: String?) {
-    App.mainHandler.post { CustomToast.builder().text(msg).onlyDebug(onlyDebug).show() }
+    App.mainHandler.post { CustomToast.builder().text(msg?:"").onlyDebug(onlyDebug).show() }
 }

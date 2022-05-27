@@ -1,5 +1,6 @@
 package app.allever.android.lib.widget.recycler
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -130,6 +131,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
      * 加载更多调用该方法
      * @param list 追加数据
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun loadMoreData(list: MutableList<Item>) {
         refreshRVAdapter?.adapter?.data?.addAll(list)
         refreshRVAdapter?.adapter?.notifyDataSetChanged()
