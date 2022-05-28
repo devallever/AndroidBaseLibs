@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     private var mListener: Listener? = null
     private var mPreLoadCount: Int = 5
     private var mIsPreLoading = false
+    private var mEnablePreload = true
 
     init {
         LayoutInflater.from(context).inflate(R.layout.refresh_recycler_view, this)
@@ -65,6 +67,11 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
                 if (layoutManager is LinearLayoutManager) {
                     // 如果列表正在往上滚动，并且表项最后可见表项索引值 等于 预加载阈值
                     if (dy > 0 && layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1 - mPreLoadCount) {
+
+                        if (!mEnablePreload) {
+                            return
+                        }
+
                         //
                         if (mIsPreLoading) {
                             return
@@ -101,7 +108,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         emptyResId: Int = R.layout.rv_empty_view,
         preLoadCount: Int = 5,
         listener: Listener? = null,
-    ) {
+    ): RefreshRecyclerView<Item> {
         recyclerView?.layoutManager = layoutManager ?: LinearLayoutManager(context)
         recyclerView?.adapter = refreshRVAdapter.adapter
         header?.let {
@@ -117,8 +124,58 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         this.mCurrentPage = 0
         this.mListener?.loadData(mCurrentPage)
         this.mPreLoadCount = preLoadCount
+        return this
     }
 
+    fun layoutManager(layoutManager: RecyclerView.LayoutManager): RefreshRecyclerView<Item> {
+        recyclerView?.layoutManager = layoutManager
+        return this
+    }
+
+    fun header(header: RefreshHeader): RefreshRecyclerView<Item> {
+        refreshLayout?.setRefreshHeader(header)
+        return this
+    }
+
+    fun footer(footer: RefreshFooter): RefreshRecyclerView<Item> {
+        refreshLayout?.setRefreshFooter(footer)
+        return this
+    }
+
+    fun enableRefresh(enable: Boolean): RefreshRecyclerView<Item> {
+        refreshLayout?.setEnableRefresh(enable)
+        return this
+    }
+
+    fun enableLoadMore(enable: Boolean): RefreshRecyclerView<Item> {
+        refreshLayout?.setEnableLoadMore(enable)
+        return this
+    }
+
+    fun emptyView(layoutId: Int): RefreshRecyclerView<Item> {
+        refreshRVAdapter?.adapter?.setEmptyView(layoutId)
+        return this
+    }
+
+    fun emptyView(view: View): RefreshRecyclerView<Item> {
+        refreshRVAdapter?.adapter?.setEmptyView(view)
+        return this
+    }
+
+    fun preloadCount(preloadCount: Int): RefreshRecyclerView<Item> {
+        mPreLoadCount = preloadCount
+        return this
+    }
+
+    fun enablePreload(enable: Boolean): RefreshRecyclerView<Item> {
+        mEnablePreload = enable
+        return this
+    }
+
+    fun listener(listener: Listener?): RefreshRecyclerView<Item> {
+        mListener = listener
+        return this
+    }
 
     interface Listener {
         /**
