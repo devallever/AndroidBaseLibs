@@ -3,6 +3,7 @@ package app.allever.android.lib.widget.demo
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
+import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.demo.adapter.UserItemAdapter
 import app.allever.android.lib.widget.demo.adapter.bean.UserItem
@@ -40,6 +41,12 @@ class RefreshRVActivity : AbstractActivity() {
                 return fetchUser(currentPage, isLoadMore)
             }
         })
+            .enableViewPager(true)
+            .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
+                override fun onPageChanged(position: Int, item: UserItem) {
+                    toast("position = $position, item = $item")
+                }
+            })
     }
 
     fun loadUser(page: Int, isLoadMore: Boolean) {

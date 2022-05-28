@@ -20,7 +20,6 @@ fun toast(resId: Int) {
 fun toast(msg: String?) {
     msg ?: return
     HandlerHelper.mainHandler.post {
-        mToast.setText(msg)
-        mToast.show()
+        Toast.makeText(App.context, msg, Toast.LENGTH_SHORT).show()
     }
 }

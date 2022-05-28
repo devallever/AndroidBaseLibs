@@ -6,9 +6,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.widget.R
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -44,6 +45,10 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     private val job = Job()
     private var coroutineScope = CoroutineScope(Dispatchers.Main + job)
 
+    private var mEnableViewPager = false
+    private var mLastSwitchPagerPosition = 0
+    private var mPageChangeListener: PageChangeListener<Item>? = null
+
     init {
         LayoutInflater.from(context).inflate(R.layout.refresh_recycler_view, this)
         initView()
@@ -66,6 +71,29 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         }
 
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+//                log("newState = $newState")
+                if (newState == SCROLL_STATE_IDLE) {
+                    when (val layoutManager = recyclerView.layoutManager) {
+                        is LinearLayoutManager -> {
+                            val position = layoutManager.findLastVisibleItemPosition()
+                            if (position == mLastSwitchPagerPosition) {
+                                return
+                            }
+//                            log("page position = $position")
+//                            toast("position = $position")
+//                            Toast.makeText(context, "position = $position", Toast.LENGTH_SHORT).show()
+                            mLastSwitchPagerPosition = position
+                            if (mEnableViewPager) {
+                                refreshRVAdapter?.adapter?.data?.get(position)
+                                    ?.let { mPageChangeListener?.onPageChanged(position, it) }
+                            }
+                        }
+                    }
+                }
+            }
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 // 获取 LayoutManger
@@ -134,11 +162,15 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         footer: RefreshFooter? = null,
         layoutManager: RecyclerView.LayoutManager? = null,
         emptyResId: Int = R.layout.rv_empty_view,
-        preLoadCount: Int = 5
-
+        preLoadCount: Int = 5,
+        enableViewPager: Boolean = false,
+        pageChangeListener: PageChangeListener<Item>? = null
     ): RefreshRecyclerView<Item> {
         recyclerView?.layoutManager = layoutManager ?: LinearLayoutManager(context)
         recyclerView?.adapter = refreshRVAdapter.adapter
+        mEnableViewPager = enableViewPager
+        enableViewPager(enableViewPager)
+
         header?.let {
             refreshLayout?.setRefreshHeader(header)
         }
@@ -154,6 +186,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         coroutineScope.launch {
             handleLoadOrRefresh(false)
         }
+        mPageChangeListener = pageChangeListener
         return this
     }
 
@@ -202,9 +235,17 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         return this
     }
 
-    fun listener(listener: Listener<Item>?): RefreshRecyclerView<Item> {
-        mListener = listener
+    fun enableViewPager(enable: Boolean): RefreshRecyclerView<Item> {
+        mEnableViewPager = enable
+        if (enable) {
+            val pagerSnapHelper = PagerSnapHelper()
+            pagerSnapHelper.attachToRecyclerView(recyclerView)
+        }
         return this
+    }
+
+    fun pageChangeListener(listener: PageChangeListener<Item>) {
+        mPageChangeListener = listener
     }
 
     interface Listener<Item> {
@@ -212,15 +253,20 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
          * @param currentPage 加载第n页数据
          */
         fun loadData(currentPage: Int, isLoadMore: Boolean = true) {}
+
+        /**
+         * 协程方式获取数据，优先协程 -> loadMore
+         */
         suspend fun fetchData(
             currentPage: Int,
             isLoadMore: Boolean
         ): MutableList<Item> {
             return mutableListOf()
         }
-//        suspend fun <Item> fetchRefreshData(): MutableList<Item>{
-//            return mutableListOf()
-//        }
+    }
+
+    interface PageChangeListener<Item> {
+        fun onPageChanged(position: Int, item: Item)
     }
 
     /**
