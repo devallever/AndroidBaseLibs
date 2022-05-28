@@ -4,8 +4,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 open class RefreshRVAdapter<Item, VH : BaseViewHolder>() {
-    var adapter: BaseQuickAdapter<Item, VH>? = null
-    var refreshRV: RefreshRecyclerView<Item>? = null
+    lateinit var adapter: BaseQuickAdapter<Item, VH>
+    lateinit var refreshRV: RefreshRecyclerView<Item>
 
     constructor(adapter: BaseQuickAdapter<Item, VH>) : this() {
         this.adapter = adapter

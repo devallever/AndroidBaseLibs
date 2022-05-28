@@ -10,8 +10,10 @@ import app.allever.android.lib.widget.recycler.RefreshRVAdapter
 import app.allever.android.lib.widget.recycler.RefreshRecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RefreshRVActivity : AbstractActivity() {
     private val mAdapter: RefreshRVAdapter<UserItem, BaseViewHolder> by lazy {
@@ -26,30 +28,48 @@ class RefreshRVActivity : AbstractActivity() {
 
     private fun initView() {
         mAdapter.bindRv(findViewById(R.id.refreshRV))
-        mAdapter.refreshRV?.setAdapter(
-            refreshRVAdapter = mAdapter,
-            listener = object : RefreshRecyclerView.Listener {
-                override fun loadData(currentPage: Int) {
-                    loadUser(currentPage)
-                }
-            })
+        mAdapter.refreshRV.setAdapter(mAdapter, object : RefreshRecyclerView.Listener<UserItem> {
+            override fun loadData(currentPage: Int, isLoadMore: Boolean) {
+                loadUser(currentPage, isLoadMore)
+            }
+
+            override suspend fun fetchData(
+                currentPage: Int,
+                isLoadMore: Boolean
+            ): MutableList<UserItem> {
+                return fetchUser(currentPage, isLoadMore)
+            }
+        })
     }
 
-    fun loadUser(page: Int = 0) {
+    fun loadUser(page: Int, isLoadMore: Boolean) {
         lifecycleScope.launch {
             delay(1000)
             val list = mutableListOf<UserItem>()
-            for (i in 0..10) {
+            for (i in 0..9) {
                 val user = UserItem()
-                user.nickname = "$i"
+                user.nickname = "${i + page * 10}"
                 user.id = i
                 list.add(user)
             }
-            if (page == 0) {
-                mAdapter.refreshRV?.refreshData(list)
+            if (isLoadMore) {
+                mAdapter.refreshRV.loadMoreData(list)
             } else {
-                mAdapter.refreshRV?.loadMoreData(list)
+                mAdapter.refreshRV.refreshData(list)
             }
         }
     }
+
+    suspend fun fetchUser(page: Int, isLoadMore: Boolean): MutableList<UserItem> =
+        withContext(Dispatchers.IO) {
+            delay(1000)
+            val list = mutableListOf<UserItem>()
+            for (i in 0..9) {
+                val user = UserItem()
+                user.nickname = "${i + page * 10}"
+                user.id = i
+                list.add(user)
+            }
+            list
+        }
 }

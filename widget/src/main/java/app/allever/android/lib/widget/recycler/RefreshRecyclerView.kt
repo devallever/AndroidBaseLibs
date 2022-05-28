@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.allever.android.lib.core.ext.log
@@ -14,6 +15,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.api.RefreshHeader
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * 下拉刷新/上拉加载/预加载的RecyclerView
@@ -27,13 +32,17 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     var recyclerView: RecyclerView? = null
     var refreshLayout: SmartRefreshLayout? = null
     var refreshRVAdapter: RefreshRVAdapter<Item, BaseViewHolder>? = null
-    var list = mutableListOf<Item>()
+    private var list = mutableListOf<Item>()
 
     private var mCurrentPage = 0
-    private var mListener: Listener? = null
+    private var mListener: Listener<Item>? = null
     private var mPreLoadCount: Int = 5
     private var mIsPreLoading = false
     private var mEnablePreload = true
+
+
+    private val job = Job()
+    private var coroutineScope = CoroutineScope(Dispatchers.Main + job)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.refresh_recycler_view, this)
@@ -49,13 +58,11 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         recyclerView = findViewById(R.id.recyclerView)
         refreshLayout = findViewById(R.id.smartRefreshLayout)
         refreshLayout?.setOnLoadMoreListener {
-            mCurrentPage++
-            mListener?.loadData(mCurrentPage)
+            handleLoadOrRefresh(true)
         }
 
         refreshLayout?.setOnRefreshListener {
-            mCurrentPage = 0
-            mListener?.loadData(mCurrentPage)
+            handleLoadOrRefresh(false)
         }
 
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -77,10 +84,9 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
                             return
                         }
 
-                        mCurrentPage++
 //                        toast("预加载")
                         log("预加载第 $mCurrentPage 页")
-                        mListener?.loadData(mCurrentPage)
+                        handleLoadOrRefresh(true)
                         mIsPreLoading = true
                         postDelayed({
                             mIsPreLoading = false
@@ -89,6 +95,27 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
                 }
             }
         })
+    }
+
+    private fun handleLoadOrRefresh(isLoadMore: Boolean) {
+        if (isLoadMore) {
+            mCurrentPage++
+        } else {
+            mCurrentPage = 0
+        }
+
+        coroutineScope.launch {
+            val data = mListener?.fetchData(mCurrentPage, isLoadMore)
+            if (data?.isNotEmpty() == true) {
+                if (isLoadMore) {
+                    loadMoreData(data)
+                } else {
+                    refreshData(data)
+                }
+            } else {
+                mListener?.loadData(mCurrentPage, isLoadMore)
+            }
+        }
     }
 
     /***
@@ -102,12 +129,13 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
      */
     fun setAdapter(
         refreshRVAdapter: RefreshRVAdapter<Item, BaseViewHolder>,
+        listener: Listener<Item>?,
         header: RefreshHeader? = null,
         footer: RefreshFooter? = null,
         layoutManager: RecyclerView.LayoutManager? = null,
         emptyResId: Int = R.layout.rv_empty_view,
-        preLoadCount: Int = 5,
-        listener: Listener? = null,
+        preLoadCount: Int = 5
+
     ): RefreshRecyclerView<Item> {
         recyclerView?.layoutManager = layoutManager ?: LinearLayoutManager(context)
         recyclerView?.adapter = refreshRVAdapter.adapter
@@ -117,13 +145,15 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         footer?.let {
             refreshLayout?.setRefreshFooter(footer)
         }
-        refreshRVAdapter.adapter?.setList(list)
-        refreshRVAdapter.adapter?.setEmptyView(emptyResId)
+        refreshRVAdapter.adapter.setList(list)
+        refreshRVAdapter.adapter.setEmptyView(emptyResId)
         this.refreshRVAdapter = refreshRVAdapter
         this.mListener = listener
         this.mCurrentPage = 0
-        this.mListener?.loadData(mCurrentPage)
         this.mPreLoadCount = preLoadCount
+        coroutineScope.launch {
+            handleLoadOrRefresh(false)
+        }
         return this
     }
 
@@ -172,16 +202,25 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         return this
     }
 
-    fun listener(listener: Listener?): RefreshRecyclerView<Item> {
+    fun listener(listener: Listener<Item>?): RefreshRecyclerView<Item> {
         mListener = listener
         return this
     }
 
-    interface Listener {
+    interface Listener<Item> {
         /**
          * @param currentPage 加载第n页数据
          */
-        fun loadData(currentPage: Int) {}
+        fun loadData(currentPage: Int, isLoadMore: Boolean = true) {}
+        suspend fun fetchData(
+            currentPage: Int,
+            isLoadMore: Boolean
+        ): MutableList<Item> {
+            return mutableListOf()
+        }
+//        suspend fun <Item> fetchRefreshData(): MutableList<Item>{
+//            return mutableListOf()
+//        }
     }
 
     /**
@@ -202,6 +241,11 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     fun refreshData(list: MutableList<Item>) {
         refreshRVAdapter?.adapter?.setList(list)
         refreshLayout?.finishRefresh(true)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        job.cancel()
     }
 
     private fun log(msg: String) {
