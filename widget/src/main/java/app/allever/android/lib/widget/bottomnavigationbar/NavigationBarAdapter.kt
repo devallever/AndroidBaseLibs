@@ -3,12 +3,12 @@ package app.allever.android.lib.widget.bottomnavigationbar
 import android.view.View
 import com.chad.library.adapter.base.BaseProviderMultiAdapter
 
-class NavigationBarAdapter() :
+class NavigationBarAdapter(private val mConfig: BottomNavigationBar.Config) :
     BaseProviderMultiAdapter<NavigationBarItem>() {
 
     init {
-        addItemProvider(ImageItemProvider())
-        addItemProvider(ImageTextItemProvider())
+        addItemProvider(ImageItemProvider(mConfig))
+        addItemProvider(ImageTextItemProvider(mConfig))
     }
 
     override fun getItemType(data: List<NavigationBarItem>, position: Int): Int {
@@ -18,11 +18,11 @@ class NavigationBarAdapter() :
     override fun setOnItemClick(v: View, position: Int) {
         super.setOnItemClick(v, position)
         if (data[position].itemType != NavigationBarItem.TYPE_IMG) {
-            handleSwitch(position)
+            handleSwitchItem(position)
         }
     }
 
-    private fun handleSwitch(position: Int) {
+    fun handleSwitchItem(position: Int) {
         data.map {
             it.select = false
         }

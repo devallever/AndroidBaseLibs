@@ -1,10 +1,14 @@
 package app.allever.android.lib.widget.demo
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.widget.R
+import app.allever.android.lib.widget.bottomnavigationbar.BottomNavigationBar
+import app.allever.android.lib.widget.bottomnavigationbar.NavigationBarItem
 import app.allever.android.lib.widget.demo.adapter.UserItemAdapter
 import app.allever.android.lib.widget.demo.adapter.bean.UserItem
 import app.allever.android.lib.widget.recycler.RefreshRVAdapter
@@ -21,13 +25,17 @@ class RefreshRVActivity : AbstractActivity() {
         RefreshRVAdapter(UserItemAdapter() as BaseQuickAdapter<UserItem, BaseViewHolder>)
     }
 
+    private lateinit var bottomNavigationBar: BottomNavigationBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_refresh_recycler_view)
         initView()
+        initBottomNavigationData()
     }
 
     private fun initView() {
+        bottomNavigationBar = findViewById(R.id.bottomNavigationBar)
         mAdapter.bindRv(findViewById(R.id.refreshRV))
         mAdapter.refreshRV.setAdapter(mAdapter, object : RefreshRecyclerView.Listener<UserItem> {
             override fun loadData(currentPage: Int, isLoadMore: Boolean) {
@@ -47,6 +55,76 @@ class RefreshRVActivity : AbstractActivity() {
                     toast("position = $position, item = $item")
                 }
             })
+    }
+
+    private fun initBottomNavigationData() {
+        val mList = mutableListOf<NavigationBarItem>()
+        mList.add(
+            NavigationBarItem(
+                R.drawable.ic_chatroom_checked,
+                R.drawable.ic_chatroom_unchecked,
+                "1",
+                true,
+                0,
+                NavigationBarItem.TYPE_IMG_TEXT
+            )
+        )
+        mList.add(
+            NavigationBarItem(
+                R.drawable.ic_chatroom_checked,
+                R.drawable.ic_chatroom_unchecked,
+                "2",
+                false,
+                0,
+                NavigationBarItem.TYPE_IMG_TEXT
+            )
+        )
+        mList.add(
+            NavigationBarItem(
+                R.drawable.ic_chatroom_checked,
+                R.drawable.ic_chatroom_unchecked,
+                "3",
+                false,
+                0,
+                NavigationBarItem.TYPE_IMG
+            )
+        )
+        mList.add(
+            NavigationBarItem(
+                R.drawable.ic_chatroom_checked,
+                R.drawable.ic_chatroom_unchecked,
+                "4",
+                false,
+                0,
+                NavigationBarItem.TYPE_IMG_TEXT
+            )
+        )
+        mList.add(
+            NavigationBarItem(
+                R.drawable.ic_chatroom_checked,
+                R.drawable.ic_chatroom_unchecked,
+                "5",
+                false,
+                0,
+                NavigationBarItem.TYPE_IMG_TEXT
+            )
+        )
+
+        bottomNavigationBar.config()
+            .data(mList)
+            .selectColor(Color.parseColor("#cccccc"))
+            .unSelectColor(Color.parseColor("#000000"))
+            .itemClickListener(object : BottomNavigationBar.ItemClickListener<NavigationBarItem> {
+                override fun onItemClick(position: Int, item: NavigationBarItem) {
+                    toast(item.title)
+                }
+            })
+            .init()
+
+        App.mainHandler.postDelayed({
+            bottomNavigationBar.setUnreadCount(0, 3)
+            bottomNavigationBar.switchItem(1)
+        }, 1000)
     }
 
     fun loadUser(page: Int, isLoadMore: Boolean) {

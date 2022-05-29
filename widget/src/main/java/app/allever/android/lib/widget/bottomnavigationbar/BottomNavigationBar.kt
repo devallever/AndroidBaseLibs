@@ -6,90 +6,55 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import app.allever.android.lib.core.ext.log
-import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.BottomNavigationBarBinding
 
 class BottomNavigationBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    private val mList = mutableListOf<NavigationBarItem>()
     private lateinit var mBinding: BottomNavigationBarBinding
     private var mAdapter: NavigationBarAdapter? = null
 
-//    init {
-//        initView()
-//    }
+    private lateinit var config: Config
+    private var mItemClickListener: ItemClickListener<NavigationBarItem>? = null
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        initData()
+    fun config(): BottomNavigationBar {
+        config = Config()
+        return this
+    }
+
+    fun data(list: MutableList<NavigationBarItem>): BottomNavigationBar {
+        config.data.clear()
+        config.data.addAll(list)
+        return this
+    }
+
+    fun selectColor(color: Int): BottomNavigationBar {
+        config.selectColor = color
+        return this
+    }
+
+    fun unSelectColor(color: Int): BottomNavigationBar {
+        config.unSelectColor = color
+        return this
+    }
+
+    fun itemClickListener(itemClickListener: ItemClickListener<NavigationBarItem>): BottomNavigationBar {
+        mItemClickListener = itemClickListener
+        return this
+    }
+
+    fun init() {
         initView()
     }
 
+    fun setUnreadCount(position: Int, count: Int) {
+        config.data[position].unreadCount = count
+        mAdapter?.setData(position, config.data[position])
+    }
 
-    private fun initData() {
-        mList.add(
-            NavigationBarItem(
-                0,
-                0,
-                R.color.search_view_text_color,
-                R.color.cardview_shadow_start_color,
-                "1",
-                true,
-                0,
-                NavigationBarItem.TYPE_IMG_TEXT
-            )
-        )
-        mList.add(
-            NavigationBarItem(
-                0,
-                0,
-                R.color.search_view_text_color,
-                R.color.cardview_shadow_start_color,
-                "2",
-                false,
-                0,
-                NavigationBarItem.TYPE_IMG_TEXT
-            )
-        )
-        mList.add(
-            NavigationBarItem(
-                0,
-                0,
-                R.color.search_view_text_color,
-                R.color.cardview_shadow_start_color,
-                "3",
-                false,
-                0,
-                NavigationBarItem.TYPE_IMG
-            )
-        )
-        mList.add(
-            NavigationBarItem(
-                0,
-                0,
-                R.color.search_view_text_color,
-                R.color.cardview_shadow_start_color,
-                "4",
-                false,
-                0,
-                NavigationBarItem.TYPE_IMG_TEXT
-            )
-        )
-        mList.add(
-            NavigationBarItem(
-                0,
-                0,
-                R.color.search_view_text_color,
-                R.color.cardview_shadow_start_color,
-                "5",
-                false,
-                0,
-                NavigationBarItem.TYPE_IMG_TEXT
-            )
-        )
+    fun switchItem(position: Int) {
+        mAdapter?.handleSwitchItem(position)
     }
 
     private fun initView() {
@@ -99,13 +64,23 @@ class BottomNavigationBar @JvmOverloads constructor(
             this,
             true
         )
-        mAdapter = NavigationBarAdapter()
-        mBinding.recyclerView.layoutManager = GridLayoutManager(context, mList.size)
+        mAdapter = NavigationBarAdapter(config)
+        mBinding.recyclerView.layoutManager = GridLayoutManager(context, config.data.size)
         mBinding.recyclerView.adapter = mAdapter
-        mAdapter?.setList(mList)
+        mAdapter?.setList(config.data)
         mAdapter?.setOnItemClickListener { adapter, view, position ->
-            toast(mList[position].title)
+            mItemClickListener?.onItemClick(position, config.data[position])
         }
+    }
+
+    class Config {
+        var selectColor: Int = 0
+        var unSelectColor: Int = 0
+        var data: MutableList<NavigationBarItem> = mutableListOf()
+    }
+
+    interface ItemClickListener<Item> {
+        fun onItemClick(position: Int, item: Item)
     }
 
 }

@@ -8,9 +8,9 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/root">
+        android:layout_height="match_parent">
 
         <View
             android:id="@+id/centerView"
@@ -26,9 +26,9 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="4dp"
             android:src="@android:color/background_dark"
-            app:layout_constraintBottom_toTopOf="@+id/centerView"
+            app:layout_constraintBottom_toTopOf="@+id/tvText"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
@@ -38,28 +38,32 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:src="@android:color/background_dark"
             android:text="首页"
             android:textColor="#000000"
             android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/tvUnread"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="15dp"
-            android:background="#ff0000"
+            android:layout_marginLeft="0dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bottom_navi_bar_unread_count_bg"
+            android:gravity="center"
+            android:minWidth="16dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:src="@android:color/background_dark"
             android:text="1"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/centerView"
+            app:layout_constraintBottom_toBottomOf="@+id/ivIcon"
             app:layout_constraintLeft_toRightOf="@+id/centerView" />
 
 
