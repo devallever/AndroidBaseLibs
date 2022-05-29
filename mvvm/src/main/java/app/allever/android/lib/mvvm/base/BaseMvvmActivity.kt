@@ -42,10 +42,10 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
 
     private fun createVM(): VM {
         return ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <VM : ViewModel?> create(modelClass: Class<VM>): VM {
+            override fun <VM : ViewModel> create(modelClass: Class<VM>): VM {
                 return modelClass.getDeclaredConstructor().newInstance()
             }
-        }).get((this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
+        })[(this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>]
     }
 
     abstract fun getMvvmConfig(): MvvmConfig
