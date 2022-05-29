@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.BottomNavigationBarBinding
 
@@ -36,6 +37,41 @@ class BottomNavigationBar @JvmOverloads constructor(
 
     fun unSelectColor(color: Int): BottomNavigationBar {
         config.unSelectColor = color
+        return this
+    }
+
+    /**
+     * 设置字体大小
+     */
+    fun textSize(sp: Int): BottomNavigationBar {
+        config.textSize = sp
+        return this
+    }
+
+    /**
+     * 设置字体大小
+     */
+    fun singleTextSize(sp: Int): BottomNavigationBar {
+        config.singleTextSize = sp
+        return this
+    }
+
+    /**
+     * 设置图标大小
+     */
+    fun iconSize(dp: Int): BottomNavigationBar {
+        config.iconSize = DisplayHelper.dip2px(dp)
+        return this
+    }
+
+    fun singleIconSize(dp: Int) : BottomNavigationBar {
+        config.singleIconSize = DisplayHelper.dip2px(dp)
+        return this
+    }
+
+    fun backgroundColor(color: Int): BottomNavigationBar {
+        config.backgroundColor = color
+        setBackgroundColor(color)
         return this
     }
 
@@ -77,6 +113,11 @@ class BottomNavigationBar @JvmOverloads constructor(
         var selectColor: Int = 0
         var unSelectColor: Int = 0
         var data: MutableList<NavigationBarItem> = mutableListOf()
+        var textSize: Int = 0
+        var singleTextSize: Int = 0
+        var iconSize: Int = 0
+        var singleIconSize = 0
+        var backgroundColor = 0
     }
 
     interface ItemClickListener<Item> {

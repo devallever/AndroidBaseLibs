@@ -63,7 +63,7 @@ class RefreshRVActivity : AbstractActivity() {
             NavigationBarItem(
                 R.drawable.ic_chatroom_checked,
                 R.drawable.ic_chatroom_unchecked,
-                "1",
+                "聊天室",
                 true,
                 0,
                 NavigationBarItem.TYPE_TEXT
@@ -73,7 +73,7 @@ class RefreshRVActivity : AbstractActivity() {
             NavigationBarItem(
                 R.drawable.ic_chatroom_checked,
                 R.drawable.ic_chatroom_unchecked,
-                "2",
+                "私聊",
                 false,
                 0,
                 NavigationBarItem.TYPE_IMG_TEXT
@@ -93,7 +93,7 @@ class RefreshRVActivity : AbstractActivity() {
             NavigationBarItem(
                 R.drawable.ic_chatroom_checked,
                 R.drawable.ic_chatroom_unchecked,
-                "4",
+                "聊圈",
                 false,
                 100,
                 NavigationBarItem.TYPE_IMG_TEXT
@@ -103,7 +103,7 @@ class RefreshRVActivity : AbstractActivity() {
             NavigationBarItem(
                 R.drawable.ic_chatroom_checked,
                 R.drawable.ic_chatroom_unchecked,
-                "5",
+                "消息",
                 false,
                 0,
                 NavigationBarItem.TYPE_IMG_TEXT
@@ -112,11 +112,16 @@ class RefreshRVActivity : AbstractActivity() {
 
         bottomNavigationBar.config()
             .data(mList)
-            .selectColor(Color.parseColor("#cccccc"))
-            .unSelectColor(Color.parseColor("#000000"))
+            .selectColor(Color.parseColor("#ffffff"))
+            .unSelectColor(Color.parseColor("#cccccc"))
+            .textSize(12)//0就是默认，不改变
+            .singleTextSize(0)
+            .iconSize(0)
+            .singleIconSize(0)
+            .backgroundColor(Color.parseColor("#ff6c1e"))
             .itemClickListener(object : BottomNavigationBar.ItemClickListener<NavigationBarItem> {
                 override fun onItemClick(position: Int, item: NavigationBarItem) {
-                    toast(item.title)
+//                    toast(item.title)
                 }
             })
             .init()

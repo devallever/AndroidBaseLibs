@@ -1,11 +1,13 @@
 package app.allever.android.lib.widget.bottomnavigationbar
 
+import android.widget.TextView
 import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.widget.R
 import com.chad.library.adapter.base.provider.BaseItemProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class TextItemProvider(private var mConfig: BottomNavigationBar.Config) : BaseItemProvider<NavigationBarItem>() {
+class TextItemProvider(private var mConfig: BottomNavigationBar.Config) :
+    BaseItemProvider<NavigationBarItem>() {
     override val itemViewType: Int
         get() = NavigationBarItem.TYPE_TEXT
     override val layoutId: Int
@@ -13,6 +15,10 @@ class TextItemProvider(private var mConfig: BottomNavigationBar.Config) : BaseIt
 
     override fun convert(helper: BaseViewHolder, item: NavigationBarItem) {
         helper.setText(R.id.tvText, item.title)
+        val textSize = mConfig.singleTextSize.toFloat()
+        if (textSize > 0) {
+            helper.getView<TextView>(R.id.tvText).textSize = textSize
+        }
         val unreadCount = item.unreadCount
         val unreadCountText = if (unreadCount <= 99) {
             unreadCount.toString()

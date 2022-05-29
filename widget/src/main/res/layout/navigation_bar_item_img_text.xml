@@ -53,6 +53,7 @@
             android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginLeft="0dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/bottom_navi_bar_unread_count_bg"
             android:gravity="center"
@@ -63,8 +64,8 @@
             android:text="1"
             android:textColor="#ffffff"
             android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivIcon"
-            app:layout_constraintLeft_toRightOf="@+id/centerView" />
+            app:layout_constraintLeft_toRightOf="@+id/centerView"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
