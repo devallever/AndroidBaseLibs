@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -50,7 +51,7 @@ dependencies {
 //    implementation  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
 
     //RecyclerViewAdapter -
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 
     //Banner - https://github.com/youth5201314/banner
     implementation 'io.github.youth5201314:banner:2.2.2'
