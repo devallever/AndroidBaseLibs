@@ -9,6 +9,7 @@ class NavigationBarAdapter(private val mConfig: BottomNavigationBar.Config) :
     init {
         addItemProvider(ImageItemProvider(mConfig))
         addItemProvider(ImageTextItemProvider(mConfig))
+        addItemProvider(TextItemProvider(mConfig))
     }
 
     override fun getItemType(data: List<NavigationBarItem>, position: Int): Int {

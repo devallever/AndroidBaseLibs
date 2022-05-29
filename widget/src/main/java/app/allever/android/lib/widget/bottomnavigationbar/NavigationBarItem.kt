@@ -27,5 +27,6 @@ class NavigationBarItem() {
     companion object {
         const val TYPE_IMG_TEXT = 1
         const val TYPE_IMG = 2
+        const val TYPE_TEXT = 3
     }
 }

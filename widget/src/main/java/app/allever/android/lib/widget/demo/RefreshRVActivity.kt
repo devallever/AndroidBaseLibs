@@ -66,7 +66,7 @@ class RefreshRVActivity : AbstractActivity() {
                 "1",
                 true,
                 0,
-                NavigationBarItem.TYPE_IMG_TEXT
+                NavigationBarItem.TYPE_TEXT
             )
         )
         mList.add(
@@ -95,7 +95,7 @@ class RefreshRVActivity : AbstractActivity() {
                 R.drawable.ic_chatroom_unchecked,
                 "4",
                 false,
-                0,
+                100,
                 NavigationBarItem.TYPE_IMG_TEXT
             )
         )

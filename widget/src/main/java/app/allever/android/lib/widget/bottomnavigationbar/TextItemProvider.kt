@@ -5,11 +5,11 @@ import app.allever.android.lib.widget.R
 import com.chad.library.adapter.base.provider.BaseItemProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class ImageTextItemProvider(private var mConfig: BottomNavigationBar.Config) : BaseItemProvider<NavigationBarItem>() {
+class TextItemProvider(private var mConfig: BottomNavigationBar.Config) : BaseItemProvider<NavigationBarItem>() {
     override val itemViewType: Int
-        get() = NavigationBarItem.TYPE_IMG_TEXT
+        get() = NavigationBarItem.TYPE_TEXT
     override val layoutId: Int
-        get() = R.layout.navigation_bar_item_img_text
+        get() = R.layout.navigation_bar_item_text
 
     override fun convert(helper: BaseViewHolder, item: NavigationBarItem) {
         helper.setText(R.id.tvText, item.title)
@@ -20,12 +20,12 @@ class ImageTextItemProvider(private var mConfig: BottomNavigationBar.Config) : B
             "99+"
         }
         if (item.select) {
-            helper.setImageResource(R.id.ivIcon, (item.selectIcon))
+//            helper.setImageResource(R.id.ivIcon, (item.selectIcon))
             helper.setTextColor(
                 R.id.tvText, mConfig.selectColor
             )
         } else {
-            helper.setImageResource(R.id.ivIcon, (item.unSelectIcon))
+//            helper.setImageResource(R.id.ivIcon, (item.unSelectIcon))
             helper.setTextColor(
                 R.id.tvText, mConfig.unSelectColor
             )
@@ -34,4 +34,6 @@ class ImageTextItemProvider(private var mConfig: BottomNavigationBar.Config) : B
         ViewHelper.setVisible(helper.getView(R.id.tvUnread), item.unreadCount != 0)
         helper.setText(R.id.tvUnread, unreadCountText)
     }
+
+
 }
