@@ -54,11 +54,6 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         initView()
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        initView()
-    }
-
     private fun initView() {
         recyclerView = findViewById(R.id.recyclerView)
         refreshLayout = findViewById(R.id.smartRefreshLayout)
@@ -125,6 +120,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         })
     }
 
+    private var mIsDataSourceFromFetchData = false
     private fun handleLoadOrRefresh(isLoadMore: Boolean) {
         if (isLoadMore) {
             mCurrentPage++
@@ -135,6 +131,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         coroutineScope.launch {
             val data = mListener?.fetchData(mCurrentPage, isLoadMore)
             if (data?.isNotEmpty() == true) {
+                mIsDataSourceFromFetchData = true
                 if (isLoadMore) {
                     loadMoreData(data)
                 } else {
@@ -278,6 +275,9 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         refreshRVAdapter?.adapter?.data?.addAll(list)
         refreshRVAdapter?.adapter?.notifyDataSetChanged()
         refreshLayout?.finishLoadMore(true)
+        if (list.isEmpty() || mIsDataSourceFromFetchData) {
+            refreshLayout?.finishLoadMoreWithNoMoreData()
+        }
     }
 
     /**
