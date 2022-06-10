@@ -59,7 +59,7 @@ class RefreshRVActivity : AbstractActivity() {
 
         //新方式
         mAdapter.refreshRV.setAdapter(mAdapter)
-            .listener(object : RefreshRecyclerView.Listener<UserItem> {
+            .dataFetchListener(object : RefreshRecyclerView.DataFetchListener<UserItem> {
                 override fun loadData(currentPage: Int, isLoadMore: Boolean) {
                     loadUser(currentPage, isLoadMore)
                 }

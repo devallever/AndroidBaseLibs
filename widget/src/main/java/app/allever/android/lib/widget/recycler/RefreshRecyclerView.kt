@@ -36,7 +36,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     private var list = mutableListOf<Item>()
 
     private var mCurrentPage = 0
-    private var mListener: Listener<Item>? = null
+    private var mDataFetchListener: DataFetchListener<Item>? = null
     private var mPreLoadCount: Int = 5
     private var mIsPreLoading = false
     private var mEnablePreload = true
@@ -129,7 +129,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         }
 
         coroutineScope.launch {
-            val data = mListener?.fetchData(mCurrentPage, isLoadMore)
+            val data = mDataFetchListener?.fetchData(mCurrentPage, isLoadMore)
             if (data?.isNotEmpty() == true) {
                 mIsDataSourceFromFetchData = true
                 if (isLoadMore) {
@@ -138,7 +138,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
                     refreshData(data)
                 }
             } else {
-                mListener?.loadData(mCurrentPage, isLoadMore)
+                mDataFetchListener?.loadData(mCurrentPage, isLoadMore)
             }
         }
     }
@@ -154,7 +154,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         setAdapter(
             refreshRVAdapter = refreshRVAdapter,
             layoutManager = layoutManager,
-            listener = null,
+            dataFetchListener = null,
         )
         return this
     }
@@ -166,11 +166,11 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
      * @param layoutManager
      * @param emptyResId 空布局
      * @param preLoadCount 预加载阈值
-     * @param listener 刷新/加载监听器
+     * @param dataFetchListener 刷新/加载监听器
      */
     fun setAdapter(
         refreshRVAdapter: RefreshRVAdapter<Item, BaseViewHolder>,
-        listener: Listener<Item>?,
+        dataFetchListener: DataFetchListener<Item>?,
         layoutManager: RecyclerView.LayoutManager? = null,
         header: RefreshHeader? = null,
         footer: RefreshFooter? = null,
@@ -194,7 +194,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         refreshRVAdapter.adapter.setList(list)
         refreshRVAdapter.adapter.setEmptyView(emptyResId)
         this.refreshRVAdapter = refreshRVAdapter
-        this.mListener = listener
+        this.mDataFetchListener = dataFetchListener
         this.mCurrentPage = 0
         this.mPreLoadCount = preLoadCount
         coroutineScope.launch {
@@ -209,8 +209,8 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         return this
     }
 
-    fun listener(listener: Listener<Item>?): RefreshRecyclerView<Item> {
-        this.mListener = listener
+    fun dataFetchListener(dataFetchListener: DataFetchListener<Item>?): RefreshRecyclerView<Item> {
+        this.mDataFetchListener = dataFetchListener
         return this
     }
 
@@ -279,7 +279,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         }
     }
 
-    interface Listener<Item> {
+    interface DataFetchListener<Item> {
         /**
          * @param currentPage 加载第n页数据
          */
