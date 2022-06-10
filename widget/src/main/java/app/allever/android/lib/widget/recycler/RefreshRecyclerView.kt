@@ -145,6 +145,22 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
 
     /***
      * @param refreshRVAdapter
+     * @param layoutManager
+     */
+    fun setAdapter(
+        refreshRVAdapter: RefreshRVAdapter<Item, BaseViewHolder>,
+        layoutManager: RecyclerView.LayoutManager? = null
+    ): RefreshRecyclerView<Item> {
+        setAdapter(
+            refreshRVAdapter = refreshRVAdapter,
+            layoutManager = layoutManager,
+            listener = null,
+        )
+        return this
+    }
+
+    /***
+     * @param refreshRVAdapter
      * @param header 刷新头
      * @param footer 加载底部
      * @param layoutManager
@@ -155,13 +171,14 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     fun setAdapter(
         refreshRVAdapter: RefreshRVAdapter<Item, BaseViewHolder>,
         listener: Listener<Item>?,
+        layoutManager: RecyclerView.LayoutManager? = null,
         header: RefreshHeader? = null,
         footer: RefreshFooter? = null,
-        layoutManager: RecyclerView.LayoutManager? = null,
         emptyResId: Int = R.layout.rv_empty_view,
         preLoadCount: Int = 5,
         enableViewPager: Boolean = false,
-        pageChangeListener: PageChangeListener<Item>? = null
+        pageChangeListener: PageChangeListener<Item>? = null,
+        executeLoadData: Boolean = false
     ): RefreshRecyclerView<Item> {
         recyclerView?.layoutManager = layoutManager ?: LinearLayoutManager(context)
         recyclerView?.adapter = refreshRVAdapter.adapter
@@ -184,6 +201,16 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
             handleLoadOrRefresh(false)
         }
         mPageChangeListener = pageChangeListener
+        if (executeLoadData) {
+            coroutineScope.launch {
+                handleLoadOrRefresh(false)
+            }
+        }
+        return this
+    }
+
+    fun listener(listener: Listener<Item>?): RefreshRecyclerView<Item> {
+        this.mListener = listener
         return this
     }
 
@@ -241,8 +268,15 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         return this
     }
 
-    fun pageChangeListener(listener: PageChangeListener<Item>) {
+    fun pageChangeListener(listener: PageChangeListener<Item>): RefreshRecyclerView<Item> {
         mPageChangeListener = listener
+        return this
+    }
+
+    fun execute() {
+        coroutineScope.launch {
+            handleLoadOrRefresh(false)
+        }
     }
 
     interface Listener<Item> {

@@ -37,24 +37,47 @@ class RefreshRVActivity : AbstractActivity() {
     private fun initView() {
         bottomNavigationBar = findViewById(R.id.bottomNavigationBar)
         mAdapter.bindRv(findViewById(R.id.refreshRV))
-        mAdapter.refreshRV.setAdapter(mAdapter, object : RefreshRecyclerView.Listener<UserItem> {
-            override fun loadData(currentPage: Int, isLoadMore: Boolean) {
-                loadUser(currentPage, isLoadMore)
-            }
+//        mAdapter.refreshRV.setAdapter(mAdapter, object : RefreshRecyclerView.Listener<UserItem> {
+//            override fun loadData(currentPage: Int, isLoadMore: Boolean) {
+//                loadUser(currentPage, isLoadMore)
+//            }
+//
+//            override suspend fun fetchData(
+//                currentPage: Int,
+//                isLoadMore: Boolean
+//            ): MutableList<UserItem> {
+//                return fetchUser(currentPage, isLoadMore)
+//            }
+//        })
+//            .enableViewPager(true)
+//            .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
+//                override fun onPageChanged(position: Int, item: UserItem) {
+//                    toast("position = $position, item = $item")
+//                }
+//            })
 
-            override suspend fun fetchData(
-                currentPage: Int,
-                isLoadMore: Boolean
-            ): MutableList<UserItem> {
-                return fetchUser(currentPage, isLoadMore)
-            }
-        })
+
+        //新方式
+        mAdapter.refreshRV.setAdapter(mAdapter)
+            .listener(object : RefreshRecyclerView.Listener<UserItem> {
+                override fun loadData(currentPage: Int, isLoadMore: Boolean) {
+                    loadUser(currentPage, isLoadMore)
+                }
+
+                override suspend fun fetchData(
+                    currentPage: Int,
+                    isLoadMore: Boolean
+                ): MutableList<UserItem> {
+                    return fetchUser(currentPage, isLoadMore)
+                }
+            })
             .enableViewPager(true)
             .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
                 override fun onPageChanged(position: Int, item: UserItem) {
                     toast("position = $position, item = $item")
                 }
             })
+            .execute()
     }
 
     private fun initBottomNavigationData() {
