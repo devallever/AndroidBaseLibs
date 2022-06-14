@@ -64,3 +64,13 @@ fun ImageView.loadRound(any: Any, radius: Float = 8f, placeholder: Int? = defaul
     }
 }
 
+fun ImageView.loadBlur(any: Any, radius: Float = 10f, placeholder: Int? = defaultPlaceHolder) {
+    load(any) {
+        placeholder?.let {
+            placeholder(it)
+        }
+        crossfade(true)
+        transformations(BlurTransformation(context, radius))
+    }
+}
+

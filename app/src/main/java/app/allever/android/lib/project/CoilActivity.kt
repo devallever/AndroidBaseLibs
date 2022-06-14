@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.function.imageloader.coil.load
+import app.allever.android.lib.core.function.imageloader.coil.loadBlur
 import app.allever.android.lib.core.function.imageloader.coil.loadCircle
 import app.allever.android.lib.core.function.imageloader.coil.loadRound
 
@@ -18,5 +19,7 @@ class CoilActivity: AbstractActivity() {
         findViewById<ImageView>(R.id.iv2).loadCircle(url)
 
         findViewById<ImageView>(R.id.iv3).loadRound(url, 8f)
+
+        findViewById<ImageView>(R.id.iv4).loadBlur(url, 20f)
     }
 }
