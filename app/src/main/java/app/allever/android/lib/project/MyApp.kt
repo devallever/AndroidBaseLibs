@@ -3,6 +3,7 @@ package app.allever.android.lib.project
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.function.datastore.DataStore
 import app.allever.android.lib.core.function.imageloader.ImageLoader
+import app.allever.android.lib.core.function.imageloader.coil.initCoil
 import app.allever.android.lib.core.function.permission.DefaultPermissionEngine
 import app.allever.android.lib.core.function.permission.PermissionHelper
 import app.allever.android.lib.core.helper.ExecutorHelper
@@ -17,6 +18,8 @@ class MyApp : App() {
             ImageLoader.init(GlideLoader)
             PermissionHelper.init(DefaultPermissionEngine)
             Widget.init(this)
+
+            initCoil(R.mipmap.ic_launcher)
         }
     }
 }

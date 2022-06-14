@@ -2,13 +2,10 @@ package app.allever.android.lib.project
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import app.allever.android.lib.core.base.AbstractActivity
-import app.allever.android.lib.core.function.imageloader.load
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
-import app.allever.android.lib.network.demo.NetActivityJava
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
 import app.allever.android.lib.widget.demo.RefreshRVActivity
@@ -26,6 +23,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnCenterDialog))
         RippleHelper.addRippleView(findViewById(R.id.btnPermission))
         RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
+        RippleHelper.addRippleView(findViewById(R.id.btnCoil))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -57,7 +55,9 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(RefreshRVActivity::class.java)
         }
 
-        ImageView(this).load("")
+        findViewById<View>(R.id.btnCoil).setOnClickListener {
+            ActivityHelper.startActivity(CoilActivity::class.java)
+        }
 
     }
 
