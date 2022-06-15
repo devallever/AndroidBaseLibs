@@ -1,5 +1,6 @@
 package app.allever.android.lib.project
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import app.allever.android.lib.core.base.AbstractActivity
@@ -21,5 +22,7 @@ class CoilActivity: AbstractActivity() {
         findViewById<ImageView>(R.id.iv3).loadRound(url, 8f)
 
         findViewById<ImageView>(R.id.iv4).loadBlur(url, 20f)
+
+        findViewById<ImageView>(R.id.iv5).loadCircle(url, 2, Color.parseColor("#ff6c1e"))
     }
 }

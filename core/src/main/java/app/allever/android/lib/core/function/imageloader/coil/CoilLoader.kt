@@ -1,6 +1,7 @@
 package app.allever.android.lib.core.function.imageloader.coil
 
 import android.app.Application
+import android.graphics.Color
 import android.os.Build.VERSION.SDK_INT
 import android.widget.ImageView
 import app.allever.android.lib.core.helper.DisplayHelper
@@ -8,7 +9,6 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.load
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 
 fun Application.initCoil(placeholder: Int? = null) {
@@ -24,10 +24,6 @@ fun Application.initCoil(placeholder: Int? = null) {
         .build()
 }
 
-private val circleCropTransformation: CircleCropTransformation by lazy {
-    CircleCropTransformation()
-}
-
 private var defaultPlaceHolder: Int? = null
 
 fun ImageView.load(any: Any, placeholder: Int? = defaultPlaceHolder) {
@@ -39,14 +35,19 @@ fun ImageView.load(any: Any, placeholder: Int? = defaultPlaceHolder) {
     }
 }
 
-fun ImageView.loadCircle(any: Any, placeholder: Int? = defaultPlaceHolder) {
+fun ImageView.loadCircle(
+    any: Any,
+    borderWidth: Int = 0,
+    borderColor: Int = Color.parseColor("#00000000"),
+    placeholder: Int? = defaultPlaceHolder
+) {
 
     load(any) {
         placeholder?.let {
             placeholder(it)
         }
         crossfade(true)
-        transformations(circleCropTransformation)
+        transformations(BorderCircleTransformation(DisplayHelper.dip2px(borderWidth), borderColor))
     }
 }
 
