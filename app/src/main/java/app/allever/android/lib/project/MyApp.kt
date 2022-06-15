@@ -10,8 +10,9 @@ import app.allever.android.lib.core.helper.ExecutorHelper
 import app.allever.android.lib.imageloader.glide.GlideLoader
 import app.allever.android.lib.store.mmkv.MMKVStore
 import app.allever.android.lib.widget.Widget
+import coil.ImageLoaderFactory
 
-class MyApp : App() {
+class MyApp : App(),ImageLoaderFactory {
     override fun init() {
         ExecutorHelper.cacheExecutor.execute {
             DataStore.init(MMKVStore)
@@ -19,7 +20,8 @@ class MyApp : App() {
             PermissionHelper.init(DefaultPermissionEngine)
             Widget.init(this)
 
-            initCoil(R.mipmap.ic_launcher)
         }
     }
+
+    override fun newImageLoader() = initCoil(R.mipmap.ic_launcher)
 }

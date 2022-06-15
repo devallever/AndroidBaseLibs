@@ -67,7 +67,7 @@ dependencies {
     //coil-gif
     api "io.coil-kt:coil-gif:2.1.0"
     //coil-svg
-    //implementation("io.coil-kt:coil-svg:2.1.0")
+    api "io.coil-kt:coil-svg:2.1.0"
     //coil-video
-    //implementation("io.coil-kt:coil-video:2.1.0")
+    //api "io.coil-kt:coil-video:2.1.0"
 }

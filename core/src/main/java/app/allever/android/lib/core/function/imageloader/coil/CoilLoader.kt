@@ -1,26 +1,36 @@
 package app.allever.android.lib.core.function.imageloader.coil
 
 import android.app.Application
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
 import android.widget.ImageView
 import app.allever.android.lib.core.helper.DisplayHelper
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import coil.decode.SvgDecoder
+import coil.imageLoader
 import coil.load
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 
-fun Application.initCoil(placeholder: Int? = null) {
+fun Application.initCoil(placeholder: Int? = null): ImageLoader {
     defaultPlaceHolder = placeholder
-    ImageLoader.Builder(this)
+    return ImageLoader.Builder(this)
         .components {
             if (SDK_INT >= 28) {
                 add(ImageDecoderDecoder.Factory())
             } else {
                 add(GifDecoder.Factory())
             }
+
+            add(SvgDecoder.Factory())
+//            add(VideoFrameDecoder.Factory())
         }
+        .crossfade(true)
         .build()
 }
 
@@ -31,7 +41,6 @@ fun ImageView.load(any: Any, placeholder: Int? = defaultPlaceHolder) {
         placeholder?.let {
             placeholder(it)
         }
-        crossfade(true)
     }
 }
 
@@ -46,7 +55,6 @@ fun ImageView.loadCircle(
         placeholder?.let {
             placeholder(it)
         }
-        crossfade(true)
         transformations(BorderCircleTransformation(DisplayHelper.dip2px(borderWidth), borderColor))
     }
 }
@@ -56,7 +64,6 @@ fun ImageView.loadRound(any: Any, radius: Float = 8f, placeholder: Int? = defaul
         placeholder?.let {
             placeholder(it)
         }
-        crossfade(true)
         transformations(
             RoundedCornersTransformation(
                 radius = DisplayHelper.dip2px(radius).toFloat()
@@ -70,8 +77,28 @@ fun ImageView.loadBlur(any: Any, radius: Float = 10f, placeholder: Int? = defaul
         placeholder?.let {
             placeholder(it)
         }
-        crossfade(true)
         transformations(BlurTransformation(context, radius))
     }
+}
+
+fun Context.downloadImg(any: Any, block: (bitmap: Bitmap) -> Unit) {
+    val request = ImageRequest.Builder(this)
+        .data(any)
+        .target(
+            onStart = { placeholder ->
+                // Handle the placeholder drawable.
+            },
+            onSuccess = { result ->
+                // Handle the successful result.
+                val bitmapDrawable = result as BitmapDrawable
+                val bitmap = bitmapDrawable.bitmap
+                block(bitmap)
+            },
+            onError = { error ->
+                // Handle the error drawable.
+            }
+        )
+        .build()
+    imageLoader.enqueue(request)
 }
 

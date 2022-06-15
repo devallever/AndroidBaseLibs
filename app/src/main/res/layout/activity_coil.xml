@@ -19,22 +19,39 @@
                 android:id="@+id/iv2"
                 style="@style/coil_iv_style"
                 android:layout_width="160dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
             <ImageView
                 android:id="@+id/iv3"
                 style="@style/coil_iv_style"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp" />
 
             <ImageView
                 android:id="@+id/iv4"
-                style="@style/coil_iv_style"/>
+                style="@style/coil_iv_style" />
 
             <ImageView
                 android:id="@+id/iv5"
                 style="@style/coil_iv_style"
                 android:layout_width="160dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/iv6"
+                style="@style/coil_iv_style"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/iv7"
+                style="@style/coil_iv_style"
+                android:layout_width="160dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside" />
+
+            <ImageView
+                android:id="@+id/iv8"
+                style="@style/coil_iv_style" />
+
 
         </LinearLayout>
     </ScrollView>
