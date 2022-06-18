@@ -1,20 +1,13 @@
-package app.allever.android.lib.core.function.crash.compat;
+package app.allever.android.lib.core.function.crash.compat
 
-import android.os.Message;
+import android.os.Message
 
 /**
  * Created by wanjian on 2018/5/24.
  */
-
-public interface IActivityKiller {
-
-    void finishLaunchActivity(Message message);
-
-    void finishResumeActivity(Message message);
-
-    void finishPauseActivity(Message message);
-
-    void finishStopActivity(Message message);
-
-
+interface IActivityKiller {
+    fun finishLaunchActivity(message: Message)
+    fun finishResumeActivity(message: Message)
+    fun finishPauseActivity(message: Message)
+    fun finishStopActivity(message: Message)
 }

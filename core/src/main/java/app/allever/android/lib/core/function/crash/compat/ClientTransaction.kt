@@ -1,10 +1,8 @@
-package app.allever.android.lib.core.function.crash.compat;
+package app.allever.android.lib.core.function.crash.compat
 
-import android.os.IBinder;
+import android.os.IBinder
 
-public class ClientTransaction {
-
-    public IBinder getActivityToken() {
-        return null;
-    }
+class ClientTransaction {
+    val activityToken: IBinder?
+        get() = null
 }

@@ -1,80 +1,67 @@
-package app.allever.android.lib.core.function.crash.compat;
+package app.allever.android.lib.core.function.crash.compat
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.IBinder;
-import android.os.Message;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import app.allever.android.lib.core.function.crash.compat.IActivityKiller
+import android.os.IBinder
+import java.lang.Exception
+import kotlin.Throws
+import android.content.Intent
+import android.app.Activity
+import android.os.Message
 
 /**
  * Created by wanjian on 2018/5/24.
- * <p>
+ *
+ *
  */
-
-public class ActivityKillerV21_V23 implements IActivityKiller {
-
-
-    @Override
-    public void finishLaunchActivity(Message message) {
+class ActivityKillerV21_V23 : IActivityKiller {
+    override fun finishLaunchActivity(message: Message) {
         try {
-            Object activityClientRecord = message.obj;
-
-            Field tokenField = activityClientRecord.getClass().getDeclaredField("token");
-
-            tokenField.setAccessible(true);
-            IBinder binder = (IBinder) tokenField.get(activityClientRecord);
-            finish(binder);
-        } catch (Exception e) {
-            e.printStackTrace();
+            val activityClientRecord = message.obj
+            val tokenField = activityClientRecord.javaClass.getDeclaredField("token")
+            tokenField.isAccessible = true
+            val binder = tokenField[activityClientRecord] as IBinder
+            finish(binder)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-
-    @Override
-    public void finishResumeActivity(Message message) {
-
+    override fun finishResumeActivity(message: Message) {
         try {
-            finish((IBinder) message.obj);
-        } catch (Exception e) {
-            e.printStackTrace();
+            finish(message.obj as IBinder)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-
-    @Override
-    public void finishPauseActivity(Message message) {
-
+    override fun finishPauseActivity(message: Message) {
         try {
-            finish((IBinder) message.obj);
-        } catch (Exception e) {
-            e.printStackTrace();
+            finish(message.obj as IBinder)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    @Override
-    public void finishStopActivity(Message message) {
+    override fun finishStopActivity(message: Message) {
         try {
-            finish((IBinder) message.obj);
-        } catch (Exception e) {
-            e.printStackTrace();
+            finish(message.obj as IBinder)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-
-    private void finish(IBinder binder) throws Exception {
-
-        Class activityManagerNativeClass = Class.forName("android.app.ActivityManagerNative");
-
-        Method getDefaultMethod = activityManagerNativeClass.getDeclaredMethod("getDefault");
-
-        Object activityManager = getDefaultMethod.invoke(null);
-
-
-        Method finishActivityMethod = activityManager.getClass().getDeclaredMethod("finishActivity", IBinder.class, int.class, Intent.class, boolean.class);
-        finishActivityMethod.invoke(activityManager, binder, Activity.RESULT_CANCELED, null, false);
-
+    @Throws(Exception::class)
+    private fun finish(binder: IBinder) {
+        val activityManagerNativeClass = Class.forName("android.app.ActivityManagerNative")
+        val getDefaultMethod = activityManagerNativeClass.getDeclaredMethod("getDefault")
+        val activityManager = getDefaultMethod.invoke(null)
+        val finishActivityMethod = activityManager.javaClass.getDeclaredMethod(
+            "finishActivity",
+            IBinder::class.java,
+            Int::class.javaPrimitiveType,
+            Intent::class.java,
+            Boolean::class.javaPrimitiveType
+        )
+        finishActivityMethod.invoke(activityManager, binder, Activity.RESULT_CANCELED, null, false)
     }
-
 }

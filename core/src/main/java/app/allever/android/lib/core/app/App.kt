@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import app.allever.android.lib.core.BuildConfig
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.ext.toastDebug
 import app.allever.android.lib.core.function.crash.Cockroach
@@ -54,14 +53,14 @@ abstract class App : Application() {
 
     private val mExceptionHandler: ExceptionHandler by lazy {
         object : ExceptionHandler() {
-            override fun onUncaughtExceptionHappened(thread: Thread, throwable: Throwable) {
+            override fun onUncaughtExceptionHappened(thread: Thread?, throwable: Throwable?) {
                 logE("CrashHandler onUncaughtExceptionHappened")
                 logE("CrashHandler", "--->onUncaughtExceptionHappened:$thread<---")
-                toastDebug(throwable.message)
+                toastDebug(throwable?.message)
             }
 
-            override fun onBandageExceptionHappened(throwable: Throwable) {
-                toastDebug(throwable.message)
+            override fun onBandageExceptionHappened(throwable: Throwable?) {
+                toastDebug(throwable?.message)
                 logE("CrashHandler onBandageExceptionHappened")
 //                throwable.printStackTrace() //打印警告级别log，该throwable可能是最开始的bug导致的，无需关心
             }
@@ -71,7 +70,7 @@ abstract class App : Application() {
                 logE("CrashHandler onEnterSafeMode")
             }
 
-            override fun onMayBeBlackScreen(e: Throwable) {
+            override fun onMayBeBlackScreen(e: Throwable?) {
                 toastDebug("onMayBeBlackScreen")
                 logE("CrashHandler onMayBeBlackScreen")
 //                val thread: Thread = Looper.getMainLooper().getThread()
@@ -85,9 +84,9 @@ abstract class App : Application() {
     protected open fun crashHandler(): ExceptionHandler? = mExceptionHandler
 
     private fun initCrashHandler() {
-        if (BuildConfig.DEBUG) {
-            return
-        }
+//        if (BuildConfig.DEBUG) {
+//            return
+//        }
 
         Cockroach.install(this, crashHandler())
 
