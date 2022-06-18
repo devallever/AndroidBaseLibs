@@ -1,6 +1,6 @@
 package app.allever.android.lib.network.demo
 
-import app.allever.android.lib.core.ext.loge
+import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.network.BuildConfig
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -22,12 +22,12 @@ class GlobalInterceptor : Interceptor {
         val responseBody = response.body
         val responseBodyString = if (responseBody == null) "null" else responseBody.string()
         if (BuildConfig.DEBUG) {
-            loge("LogInterceptor", "请求链接= " + request.url)
+            logE("LogInterceptor", "请求链接= " + request.url)
             request.headers.toMultimap().map {
-                loge("LogInterceptor", "请求头= ${it.key}: ${it.value}")
+                logE("LogInterceptor", "请求头= ${it.key}: ${it.value}")
             }
-            loge("LogInterceptor", "请求体= " + getRequestInfo(request))
-            loge("LogInterceptor", "请求结果= $responseBodyString")
+            logE("LogInterceptor", "请求体= " + getRequestInfo(request))
+            logE("LogInterceptor", "请求结果= $responseBodyString")
         }
         val body = responseBodyString.toByteArray()
             .toResponseBody(if (responseBody == null) "application/json".toMediaTypeOrNull() else responseBody.contentType())

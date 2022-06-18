@@ -2,7 +2,7 @@ package app.allever.android.lib.core.function.network
 
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
-import app.allever.android.lib.core.ext.loge
+import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.function.network.cache.ResponseCache
 import app.allever.android.lib.core.function.network.exception.ExceptionHandle
@@ -40,7 +40,7 @@ abstract class NetworkHandler {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            loge(e.message)
+            logE(e.message)
             Result.failure(e)
         }
     }
@@ -73,7 +73,7 @@ abstract class NetworkHandler {
             return response
         } catch (e: Exception) {
             e.printStackTrace()
-            loge(e.message)
+            logE(e.message)
             val exception = ExceptionHandle.handleException(e)
             val response = responseClz?.newInstance()
             log("responseClz = ${response?.javaClass?.simpleName}")
@@ -123,7 +123,7 @@ abstract class NetworkHandler {
             return response
         } catch (e: Exception) {
             e.printStackTrace()
-            loge(e.message)
+            logE(e.message)
             return null
         }
     }

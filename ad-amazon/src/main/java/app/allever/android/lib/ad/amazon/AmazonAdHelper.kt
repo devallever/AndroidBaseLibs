@@ -2,7 +2,7 @@ package app.allever.android.lib.ad.amazon
 
 import android.content.Context
 import app.allever.android.lib.core.BuildConfig
-import app.allever.android.lib.core.ext.loge
+import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.function.ad.AdManager
 import app.allever.android.lib.core.function.ad.BaseAd
 import com.amazon.device.ads.AdRegistration
@@ -19,7 +19,7 @@ object AmazonAdHelper : AdManager() {
         try {
             AdRegistration.setAppKey(appId)
         } catch (e: IllegalArgumentException) {
-            loge("IllegalArgumentException thrown: $e")
+            logE("IllegalArgumentException thrown: $e")
             return
         }
     }

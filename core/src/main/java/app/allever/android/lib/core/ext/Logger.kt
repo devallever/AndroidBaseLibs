@@ -3,48 +3,43 @@ package app.allever.android.lib.core.ext
 import android.util.Log
 import app.allever.android.lib.core.BuildConfig
 
-object Logger {
-
-}
+class Logger
 
 private const val TAG = "ILogger"
 
-fun log(msg: String?) {
-    log(TAG, msg)
-}
-
-fun log(tag: String, msg: String?) {
-    Log.d(tag, msg ?: "")
-}
-
+@Deprecated("")
 fun debugD(msg: String?) {
     if (BuildConfig.DEBUG) {
         log(TAG, msg)
     }
 }
 
-fun debugD(tag: String, msg: String?) {
+fun log(msg: String?) {
+    log(TAG, msg)
+}
+
+fun log(tag: String, msg: String?) {
     if (BuildConfig.DEBUG) {
-        Log.d(tag, msg ?: "")
+        logReleaseD(tag, msg)
     }
 }
 
-fun loge(msg: String?) {
-    loge(TAG, msg)
+fun logE(msg: String?) {
+    logE(TAG, msg)
 }
 
-fun loge(tag: String, msg: String?) {
-    Log.e(tag, msg ?: "")
-}
-
-fun debugE(msg: String?) {
+fun logE(tag: String, msg: String?) {
     if (BuildConfig.DEBUG) {
-        loge(TAG, msg)
+        logReleaseE(tag, msg)
     }
 }
 
-fun debugE(tag: String, msg: String?) {
-    if (BuildConfig.DEBUG) {
-        Log.e(tag, msg ?: "")
-    }
+fun logReleaseD(tag: String? = TAG, msg: String?) {
+    msg ?: return
+    Log.d(tag ?: TAG, msg, null)
+}
+
+fun logReleaseE(tag: String? = TAG, msg: String?) {
+    msg ?: return
+    Log.e(tag ?: TAG, msg, null)
 }

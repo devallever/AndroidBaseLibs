@@ -1,7 +1,7 @@
 package app.allever.android.lib.widget
 
 import android.view.View
-import app.allever.android.lib.core.ext.debugD
+import app.allever.android.lib.core.ext.log
 
 /**
  * @author allever
@@ -16,7 +16,7 @@ abstract class ClickListener : View.OnClickListener {
 
     override fun onClick(v: View) {
         if (checkTime()) {
-            debugD("防止多次点击")
+            log("防止多次点击")
             return
         }
         click(v)

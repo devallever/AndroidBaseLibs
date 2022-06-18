@@ -52,8 +52,8 @@ public class AlarmUtils {
 //        Intent intent = new Intent(context, TimerTaskReceiver.class);
 //        intent.setAction(TimerTaskReceiver.ACTION_TIMER_TASK);
 
-        LoggerKt.debugD("setAlarm taskId = " + taskId);
-        LoggerKt.debugD("setAlarm switchType = " + switchType);
+        LoggerKt.log("setAlarm taskId = " + taskId);
+        LoggerKt.log("setAlarm switchType = " + switchType);
 
 //        intent.putExtra("taskId", taskId);
 //        intent.putExtra("switchType", switchType);
@@ -69,7 +69,7 @@ public class AlarmUtils {
 
         int alarmHour = sCalendar.get(Calendar.HOUR_OF_DAY);
         int alarmMin = sCalendar.get(Calendar.MINUTE);
-        LoggerKt.debugD("闹钟时间: " + alarmHour + ":" + alarmMin);
+        LoggerKt.log("闹钟时间: " + alarmHour + ":" + alarmMin);
         //间隔 intervalMillis
 //        alarmManager.setExact(AlarmManager.RTC_WAKEUP, sCalendar.getTimeInMillis(), pendingIntent);
 //        有延时0-2分钟
