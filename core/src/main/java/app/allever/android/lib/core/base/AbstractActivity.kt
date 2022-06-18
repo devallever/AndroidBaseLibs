@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import app.allever.android.lib.core.R
+import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.helper.ActivityHelper
@@ -152,6 +153,10 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
         } else {
             view.visibility = View.GONE
         }
+    }
+
+    protected fun postDelay(task: Runnable, delay: Long = 1000) {
+        App.mainHandler.postDelayed(task, delay)
     }
 
     override fun onRequestPermissionsResult(
