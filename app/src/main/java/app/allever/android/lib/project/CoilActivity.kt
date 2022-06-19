@@ -3,8 +3,10 @@ package app.allever.android.lib.project
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.function.imageloader.*
+import kotlinx.coroutines.launch
 
 class CoilActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +37,11 @@ class CoilActivity : AbstractActivity() {
 
         findViewById<ImageView>(R.id.iv5).loadCircle(url5, 2, Color.parseColor("#ff6c1e"))
 
-        downloadImg(url6) { _, bitmap ->
-            bitmap?.let {
-                findViewById<ImageView>(R.id.iv6).setImageBitmap(it)
+        lifecycleScope.launch {
+            downloadImg(url6) { _, bitmap ->
+                bitmap?.let {
+                    findViewById<ImageView>(R.id.iv6).setImageBitmap(it)
+                }
             }
         }
 

@@ -16,6 +16,7 @@ import app.allever.android.lib.core.util.FileUtils
 import app.allever.android.lib.core.util.MD5
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 object ImageLoader {
@@ -48,7 +49,7 @@ object ImageLoader {
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine.load(it ?: resource, imageView, errorResId, placeholder)
-            it ?: downloadInternal(resource)
+            downloadInternal(it, resource)
         }
     }
 
@@ -70,7 +71,7 @@ object ImageLoader {
                 errorResId,
                 placeholder
             )
-            it ?: downloadInternal(resource)
+            downloadInternal(it, resource)
         }
     }
 
@@ -84,15 +85,14 @@ object ImageLoader {
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
-            it ?: downloadInternal(resource)
+            downloadInternal(it, resource)
         }
     }
-
 
     fun loadGif(resource: Any, imageView: ImageView) {
         loadInternal(resource, true) {
             mLoaderEngine.loadGif(it ?: resource, imageView)
-            it ?: downloadInternal(resource)
+            downloadInternal(it, resource)
         }
     }
 
@@ -104,55 +104,51 @@ object ImageLoader {
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine.loadBlur(it ?: resource, imageView, radius)
-            it ?: downloadInternal(resource)
+            downloadInternal(it, resource)
         }
     }
 
-    fun download(url: String, block: ((success: Boolean, bitmap: Bitmap?) -> Unit)? = null) {
-        CoroutineHelper.threadCoroutine.launch {
-            val file = getCache(url)
-            if (file != null) {
-                launch(Dispatchers.Main) {
-                    block?.let { it(true, BitmapFactory.decodeFile(file.absolutePath)) }
-                }
-            } else {
-                if (!mDownloadRequestSet.contains(url)) {
-                    mDownloadRequestSet.add(url)
-                    mLoaderEngine.download(url) { success, bitmap ->
-                        mDownloadRequestSet.remove(url)
-                        if (success) {
-                            val saveResult =
-                                BitmapUtils.saveBitmap2File(bitmap, getCacheFilePath(url))
-                            log("保存成功：${saveResult}")
-                        }
-                        App.mainHandler.post {
-                            block?.let { it(success, bitmap) }
-                        }
-                        //为啥子不执行?
-//                        CoroutineHelper.mainCoroutine.launch {
-//                            log("下载成功: bitmap = ${bitmap != null}")
-//                            block?.let { it(success, bitmap) }
-//                        }
-//                        launch(Dispatchers.Main) {
-//                            log("下载成功: bitmap = ${bitmap != null}")
-//                            block?.let { it(success, bitmap) }
-//                        }
+    suspend fun download(
+        url: String,
+        block: ((success: Boolean, bitmap: Bitmap?) -> Unit)? = null
+    ) {
+        val file = getCache(url)
+        if (file != null) {
+            block?.let { it(true, BitmapFactory.decodeFile(file.absolutePath)) }
+        } else {
+            if (!mDownloadRequestSet.contains(url)) {
+                mDownloadRequestSet.add(url)
+                mLoaderEngine.download(url) { success, bitmap ->
+                    mDownloadRequestSet.remove(url)
+                    CoroutineHelper.mainCoroutine.launch {
+                        saveCache(success, url, bitmap)
+                        block?.let { it(success, bitmap) }
                     }
                 }
             }
         }
     }
 
-    fun getCache(url: String): File? {
-        val file = File(getCacheFilePath(url))
-        if (file.exists()) {
-            return file
+    private suspend fun saveCache(success: Boolean, url: String, bitmap: Bitmap?) {
+        withContext(Dispatchers.IO) {
+            if (success) {
+                val saveResult =
+                    BitmapUtils.saveBitmap2File(bitmap, getCacheFilePath(url))
+                log("保存成功：${saveResult}")
+            }
         }
-        return null
     }
 
-    fun clearCache() {
-        CoroutineHelper.threadCoroutine.launch {
+    suspend fun getCache(url: String) = withContext(Dispatchers.IO) {
+        val file = File(getCacheFilePath(url))
+        if (file.exists()) {
+            return@withContext file
+        }
+        return@withContext null
+    }
+
+    suspend fun clearCache() {
+        withContext(Dispatchers.IO) {
             FileUtils.deleteAllInDir(mBuilder.cacheDir)
         }
     }
@@ -160,9 +156,11 @@ object ImageLoader {
     fun errorResId() = mBuilder.errorResId
     fun placeholder() = mBuilder.placeholder
 
-    private fun downloadInternal(resource: Any) {
+    private fun downloadInternal(file: File?, resource: Any) {
         if (resource is String && resource.startsWith("http")) {
-            download(resource, null)
+            file ?: CoroutineHelper.mainCoroutine.launch {
+                download(resource, null)
+            }
         }
     }
 
@@ -174,10 +172,12 @@ object ImageLoader {
         }
 
         //加载原图，那就读缓存
-        if (resource is String && resource.startsWith("http")) {
-            block(getCache(resource))
-        } else {
-            block(null)
+        CoroutineHelper.mainCoroutine.launch {
+            if (resource is String && resource.startsWith("http")) {
+                block(getCache(resource))
+            } else {
+                block(null)
+            }
         }
     }
 
