@@ -12,6 +12,7 @@ import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.core.util.BitmapUtils
+import app.allever.android.lib.core.util.FileUtils
 import app.allever.android.lib.core.util.MD5
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,16 +29,27 @@ object ImageLoader {
         mLoaderEngine = loaderEngine
         mBuilder = builder
         mLoaderEngine.init(context)
+        FileUtils.createDir(mBuilder.cacheDir)
     }
 
+    /**
+     * @param resource resource
+     * @param imageView imageView
+     * @param loadOrigin 是否加载原图
+     * @param errorResId errorResId
+     * @param placeholder placeholder
+     */
     fun load(
         resource: Any,
         imageView: ImageView,
+        loadOrigin: Boolean = false,
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        mLoaderEngine.load(resource, imageView, errorResId, placeholder)
-        downloadInternal(resource)
+        loadInternal(resource, loadOrigin) {
+            mLoaderEngine.load(it ?: resource, imageView, errorResId, placeholder)
+            it ?: downloadInternal(resource)
+        }
     }
 
     fun loadCircle(
@@ -45,40 +57,55 @@ object ImageLoader {
         imageView: ImageView,
         borderWidth: Int? = 0,
         borderColor: Int? = Color.parseColor("#00000000"),
+        loadOrigin: Boolean = false,
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        mLoaderEngine.loadCircle(
-            resource,
-            imageView,
-            borderWidth,
-            borderColor,
-            errorResId,
-            placeholder
-        )
-        downloadInternal(resource)
+        loadInternal(resource, loadOrigin) {
+            mLoaderEngine.loadCircle(
+                it ?: resource,
+                imageView,
+                borderWidth,
+                borderColor,
+                errorResId,
+                placeholder
+            )
+            it ?: downloadInternal(resource)
+        }
     }
 
     fun loadRound(
         resource: Any,
         imageView: ImageView,
         radius: Float? = DisplayHelper.dip2px(10).toFloat(),
+        loadOrigin: Boolean = false,
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        mLoaderEngine.loadRound(resource, imageView, radius, errorResId, placeholder)
-        downloadInternal(resource)
+        loadInternal(resource, loadOrigin) {
+            mLoaderEngine.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
+            it ?: downloadInternal(resource)
+        }
     }
 
 
     fun loadGif(resource: Any, imageView: ImageView) {
-        mLoaderEngine.loadGif(resource, imageView)
-        downloadInternal(resource)
+        loadInternal(resource, true) {
+            mLoaderEngine.loadGif(it ?: resource, imageView)
+            it ?: downloadInternal(resource)
+        }
     }
 
-    fun loadBlur(resource: Any, imageView: ImageView, radius: Float?) {
-        mLoaderEngine.loadBlur(resource, imageView, radius)
-        downloadInternal(resource)
+    fun loadBlur(
+        resource: Any,
+        imageView: ImageView,
+        radius: Float?,
+        loadOrigin: Boolean = false,
+    ) {
+        loadInternal(resource, loadOrigin) {
+            mLoaderEngine.loadBlur(it ?: resource, imageView, radius)
+            it ?: downloadInternal(resource)
+        }
     }
 
     fun download(url: String, block: ((success: Boolean, bitmap: Bitmap?) -> Unit)? = null) {
@@ -94,7 +121,8 @@ object ImageLoader {
                     mLoaderEngine.download(url) { success, bitmap ->
                         mDownloadRequestSet.remove(url)
                         if (success) {
-                            val saveResult = BitmapUtils.saveBitmap2File(bitmap, getCacheFilePath(url))
+                            val saveResult =
+                                BitmapUtils.saveBitmap2File(bitmap, getCacheFilePath(url))
                             log("保存成功：${saveResult}")
                         }
                         App.mainHandler.post {
@@ -115,18 +143,42 @@ object ImageLoader {
         }
     }
 
-    private fun downloadInternal(resource: Any) {
-        if (resource is String && resource.startsWith("http")) {
-            download(resource, null)
-        }
-    }
-
     fun getCache(url: String): File? {
         val file = File(getCacheFilePath(url))
         if (file.exists()) {
             return file
         }
         return null
+    }
+
+    fun clearCache() {
+        CoroutineHelper.threadCoroutine.launch {
+            FileUtils.deleteAllInDir(mBuilder.cacheDir)
+        }
+    }
+
+    fun errorResId() = mBuilder.errorResId
+    fun placeholder() = mBuilder.placeholder
+
+    private fun downloadInternal(resource: Any) {
+        if (resource is String && resource.startsWith("http")) {
+            download(resource, null)
+        }
+    }
+
+    private fun loadInternal(resource: Any, loadOrigin: Boolean, block: (resource: File?) -> Unit) {
+        //不是加载原图，那就直接返回
+        if (!loadOrigin) {
+            block(null)
+            return
+        }
+
+        //加载原图，那就读缓存
+        if (resource is String && resource.startsWith("http")) {
+            block(getCache(resource))
+        } else {
+            block(null)
+        }
     }
 
     private fun getCacheFilePath(url: String): String {
@@ -154,14 +206,12 @@ object ImageLoader {
         return true
     }
 
-    fun errorResId() = mBuilder.errorResId
-    fun placeholder() = mBuilder.placeholder
-
     class Builder {
         var errorResId: Int? = null
         var placeholder: Int? = null
         var cacheDir: String =
-            App.context.externalCacheDir?.absolutePath ?: App.context.cacheDir.absolutePath
+            (App.context.externalCacheDir?.absolutePath
+                ?: App.context.cacheDir.absolutePath) + File.separator + "image"
 
         companion object {
             fun create(): Builder {

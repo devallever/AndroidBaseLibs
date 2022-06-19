@@ -16,18 +16,26 @@ class CoilActivity : AbstractActivity() {
 
         val url2 = "https://img0.baidu.com/it/u=68353154,235073569&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=675"
 
+        val url3 = "https://img2.baidu.com/it/u=924133470,1725987117&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281"
+
+        val url4 = "https://img2.baidu.com/it/u=420156118,3874648934&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800"
+
+        val url5 = "https://img0.baidu.com/it/u=2066710797,1295269268&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800"
+
+        val url6 = "https://img2.baidu.com/it/u=3550900606,1592535269&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800"
+
 
         findViewById<ImageView>(R.id.iv1).load(url)
 
-        findViewById<ImageView>(R.id.iv2).loadCircle(url)
+        findViewById<ImageView>(R.id.iv2).loadCircle(url2)
 
-        findViewById<ImageView>(R.id.iv3).loadRound(url, 10F)
+        findViewById<ImageView>(R.id.iv3).loadRound(url3, 10F)
 
-        findViewById<ImageView>(R.id.iv4).loadBlur(url, 10F)
+        findViewById<ImageView>(R.id.iv4).loadBlur(url4, 10F)
 
-        findViewById<ImageView>(R.id.iv5).loadCircle(url, 2, Color.parseColor("#ff6c1e"))
+        findViewById<ImageView>(R.id.iv5).loadCircle(url5, 2, Color.parseColor("#ff6c1e"))
 
-        downloadImg(url2) { _, bitmap ->
+        downloadImg(url6) { _, bitmap ->
             bitmap?.let {
                 findViewById<ImageView>(R.id.iv6).setImageBitmap(it)
             }

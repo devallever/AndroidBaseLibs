@@ -18,7 +18,7 @@ class HttpInterceptor : Interceptor {
         val request = requestBuilder.build()
         val response = chain.proceed(request)
         val responseBody = response.body
-        val responseBodyString = if (responseBody == null) "null" else responseBody.string()
+        val responseBodyString = responseBody?.string() ?: ""
         if (BuildConfig.DEBUG) {
             log("ILogger HttpInterceptor", "请求链接 = " + request.url)
             log("ILogger HttpInterceptor", "请求体 = " + getRequestInfo(request))
