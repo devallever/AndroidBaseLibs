@@ -5,6 +5,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url "https://s01.oss.sonatype.org/content/groups/public" }
         maven { url 'https://jitpack.io' }
+        jcenter()
     }
 }
 rootProject.name = "AndroidBaseLibs"

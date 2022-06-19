@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import app.allever.android.lib.core.base.AbstractActivity
-import app.allever.android.lib.core.function.imageloader.coil.*
+import app.allever.android.lib.core.function.imageloader.*
 
 class CoilActivity: AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,9 +18,9 @@ class CoilActivity: AbstractActivity() {
 
         findViewById<ImageView>(R.id.iv2).loadCircle(url)
 
-        findViewById<ImageView>(R.id.iv3).loadRound(url, 8f)
+        findViewById<ImageView>(R.id.iv3).loadRound(url, 10F)
 
-        findViewById<ImageView>(R.id.iv4).loadBlur(url, 20f)
+        findViewById<ImageView>(R.id.iv4).loadBlur(url, 10F)
 
         findViewById<ImageView>(R.id.iv5).loadCircle(url, 2, Color.parseColor("#ff6c1e"))
 
@@ -28,9 +28,10 @@ class CoilActivity: AbstractActivity() {
             findViewById<ImageView>(R.id.iv6).setImageBitmap(it)
         }
 
+
         findViewById<ImageView>(R.id.iv7).load(R.drawable.ic_icon_gift)
 
-        findViewById<ImageView>(R.id.iv8).load(R.drawable.ic_gif)
+        findViewById<ImageView>(R.id.iv8).loadGif(R.drawable.ic_gif)
 
     }
 }

@@ -5,6 +5,7 @@ buildscript {
         google()
         mavenCentral()
         maven { url "https://s01.oss.sonatype.org/content/groups/public" }
+        jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.2"

@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import app.allever.android.lib.core.BuildConfig
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.ext.toastDebug
 import app.allever.android.lib.core.function.crash.Cockroach
@@ -84,9 +85,9 @@ abstract class App : Application() {
     protected open fun crashHandler(): ExceptionHandler? = mExceptionHandler
 
     private fun initCrashHandler() {
-//        if (BuildConfig.DEBUG) {
-//            return
-//        }
+        if (BuildConfig.DEBUG) {
+            return
+        }
 
         Cockroach.install(this, crashHandler())
 

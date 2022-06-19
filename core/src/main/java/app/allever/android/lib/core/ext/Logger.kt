@@ -7,13 +7,6 @@ class Logger
 
 private const val TAG = "ILogger"
 
-@Deprecated("")
-fun debugD(msg: String?) {
-    if (BuildConfig.DEBUG) {
-        log(TAG, msg)
-    }
-}
-
 fun log(msg: String?) {
     log(TAG, msg)
 }

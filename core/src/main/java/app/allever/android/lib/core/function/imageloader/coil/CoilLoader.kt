@@ -7,7 +7,10 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
 import android.widget.ImageView
+import app.allever.android.lib.core.app.App
+import app.allever.android.lib.core.function.imageloader.ILoader
 import app.allever.android.lib.core.helper.DisplayHelper
+import coil.Coil
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -17,8 +20,100 @@ import coil.load
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 
-fun Application.initCoil(placeholder: Int? = null): ImageLoader {
-    defaultPlaceHolder = placeholder
+object CoilLoader : ILoader {
+
+    override fun init(context: Context) {
+        if (context is Application) {
+            Coil.setImageLoader(context.initCoil())
+        }
+    }
+
+    override fun load(resource: Any, imageView: ImageView, errorResId: Int?, placeholder: Int?) {
+        imageView.load(resource) {
+            errorResId?.let {
+                error(it)
+            }
+            placeholder?.let {
+                placeholder(it)
+            }
+            crossfade(true)
+        }
+    }
+
+    override fun loadCircle(
+        resource: Any,
+        imageView: ImageView,
+        borderWidth: Int?,
+        borderColor: Int?,
+        errorResId: Int?,
+        placeholder: Int?
+    ) {
+        imageView.load(resource) {
+            placeholder?.let {
+                placeholder(it)
+            }
+            transformations(
+                BorderCircleTransformation(
+                    DisplayHelper.dip2px(borderWidth ?: 0),
+                    borderColor ?: Color.parseColor("#00000000")
+                )
+            )
+        }
+    }
+
+    override fun loadRound(
+        resource: Any,
+        imageView: ImageView,
+        radiusDp: Float?,
+        errorResId: Int?,
+        placeholder: Int?
+    ) {
+        imageView.load(resource) {
+            placeholder?.let {
+                placeholder(it)
+            }
+            transformations(
+                RoundedCornersTransformation(
+                    radius = DisplayHelper.dip2px(radiusDp ?: 0f).toFloat()
+                )
+            )
+        }
+    }
+
+    override fun loadGif(resource: Any, imageView: ImageView) {
+        load(resource, imageView, null, null)
+    }
+
+    override fun loadBlur(resource: Any, imageView: ImageView, radius: Float?) {
+        imageView.load(resource) {
+            transformations(BlurTransformation(imageView.context, radius ?: 0f))
+        }
+    }
+
+    override fun download(url: String, block: (bitmap: Bitmap) -> Unit) {
+        val request = ImageRequest.Builder(App.context)
+            .data(url)
+            .target(
+                onStart = {
+                    // Handle the placeholder drawable.
+                },
+                onSuccess = { result ->
+                    // Handle the successful result.
+                    val bitmapDrawable = result as BitmapDrawable
+                    val bitmap = bitmapDrawable.bitmap
+                    block(bitmap)
+                },
+                onError = {
+                    // Handle the error drawable.
+                }
+            )
+            .build()
+        App.context.imageLoader.enqueue(request)
+    }
+
+}
+
+fun Application.initCoil(): ImageLoader {
     return ImageLoader.Builder(this)
         .components {
             if (SDK_INT >= 28) {
@@ -33,72 +128,3 @@ fun Application.initCoil(placeholder: Int? = null): ImageLoader {
         .crossfade(true)
         .build()
 }
-
-private var defaultPlaceHolder: Int? = null
-
-fun ImageView.load(any: Any, placeholder: Int? = defaultPlaceHolder) {
-    load(any) {
-        placeholder?.let {
-            placeholder(it)
-        }
-    }
-}
-
-fun ImageView.loadCircle(
-    any: Any,
-    borderWidth: Int = 0,
-    borderColor: Int = Color.parseColor("#00000000"),
-    placeholder: Int? = defaultPlaceHolder
-) {
-
-    load(any) {
-        placeholder?.let {
-            placeholder(it)
-        }
-        transformations(BorderCircleTransformation(DisplayHelper.dip2px(borderWidth), borderColor))
-    }
-}
-
-fun ImageView.loadRound(any: Any, radius: Float = 8f, placeholder: Int? = defaultPlaceHolder) {
-    load(any) {
-        placeholder?.let {
-            placeholder(it)
-        }
-        transformations(
-            RoundedCornersTransformation(
-                radius = DisplayHelper.dip2px(radius).toFloat()
-            )
-        )
-    }
-}
-
-fun ImageView.loadBlur(any: Any, radius: Float = 10f, placeholder: Int? = defaultPlaceHolder) {
-    load(any) {
-        placeholder?.let {
-            placeholder(it)
-        }
-        transformations(BlurTransformation(context, radius))
-    }
-}
-
-fun Context.downloadImg(any: Any, block: (bitmap: Bitmap) -> Unit) {
-    val request = ImageRequest.Builder(this)
-        .data(any)
-        .target(
-            onStart = { placeholder ->
-                // Handle the placeholder drawable.
-            },
-            onSuccess = { result ->
-                // Handle the successful result.
-                val bitmapDrawable = result as BitmapDrawable
-                val bitmap = bitmapDrawable.bitmap
-                block(bitmap)
-            },
-            onError = { error ->
-                // Handle the error drawable.
-            }
-        )
-        .build()
-    imageLoader.enqueue(request)
-}
-
