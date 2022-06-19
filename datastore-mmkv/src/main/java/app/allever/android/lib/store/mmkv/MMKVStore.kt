@@ -53,6 +53,10 @@ object MMKVStore : IDataStore {
         return mmkv.decodeBool(key)
     }
 
+    override fun getBoolean(key: String, default: Boolean): Boolean {
+        return mmkv.decodeBool(key, default)
+    }
+
 
     override fun putParcelable(key: String, value: Parcelable) {
         mmkv.encode(key, value)

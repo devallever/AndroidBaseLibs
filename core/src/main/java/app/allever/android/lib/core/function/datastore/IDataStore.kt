@@ -18,6 +18,7 @@ interface IDataStore {
 
     fun putBoolean(key: String, value: Boolean)
     fun getBoolean(key: String): Boolean
+    fun getBoolean(key: String, default: Boolean): Boolean
 
     fun putParcelable(key: String, value: Parcelable)
     fun <T : Parcelable> getParcelable(key: String, clz: Class<T>): T?

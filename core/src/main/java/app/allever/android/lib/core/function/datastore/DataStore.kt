@@ -42,6 +42,7 @@ object DataStore : IDataStore {
 
     override fun getBoolean(key: String) = mDataStore.getBoolean(key)
 
+    override fun getBoolean(key: String, default: Boolean) = mDataStore.getBoolean(key, default)
 
     override fun putParcelable(key: String, value: Parcelable) {
         mDataStore.putParcelable(key, value)

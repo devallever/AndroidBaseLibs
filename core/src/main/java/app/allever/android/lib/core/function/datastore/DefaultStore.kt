@@ -34,6 +34,8 @@ class DefaultStore : IDataStore {
 
     override fun getBoolean(key: String): Boolean = SPHelper.getBoolean(key, false)
 
+    override fun getBoolean(key: String, default: Boolean): Boolean  = SPHelper.getBoolean(key, default)
+
     override fun putParcelable(key: String, value: Parcelable) {
         //SP不能存对象了也
     }
