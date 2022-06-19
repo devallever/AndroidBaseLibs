@@ -8,6 +8,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
 import android.widget.ImageView
 import app.allever.android.lib.core.app.App
+import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.function.imageloader.ILoader
 import app.allever.android.lib.core.helper.DisplayHelper
 import coil.Coil
@@ -43,7 +45,7 @@ object CoilLoader : ILoader {
     override fun loadCircle(
         resource: Any,
         imageView: ImageView,
-        borderWidth: Int?,
+        borderWidthDp: Int?,
         borderColor: Int?,
         errorResId: Int?,
         placeholder: Int?
@@ -54,7 +56,7 @@ object CoilLoader : ILoader {
             }
             transformations(
                 BorderCircleTransformation(
-                    DisplayHelper.dip2px(borderWidth ?: 0),
+                    DisplayHelper.dip2px(borderWidthDp ?: 0),
                     borderColor ?: Color.parseColor("#00000000")
                 )
             )
@@ -90,7 +92,7 @@ object CoilLoader : ILoader {
         }
     }
 
-    override fun download(url: String, block: (bitmap: Bitmap) -> Unit) {
+    override fun download(url: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit) {
         val request = ImageRequest.Builder(App.context)
             .data(url)
             .target(
@@ -99,12 +101,15 @@ object CoilLoader : ILoader {
                 },
                 onSuccess = { result ->
                     // Handle the successful result.
+                    log("下载成功: $url")
                     val bitmapDrawable = result as BitmapDrawable
                     val bitmap = bitmapDrawable.bitmap
-                    block(bitmap)
+                    block(true, bitmap)
                 },
                 onError = {
                     // Handle the error drawable.
+                    logE("下载失败: $url")
+                    block(false, null)
                 }
             )
             .build()

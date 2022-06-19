@@ -30,5 +30,5 @@ interface ILoader {
 
     fun loadBlur(resource: Any, imageView: ImageView, radius: Float?)
 
-    fun download(url: String, block: (bitmap: Bitmap) -> Unit)
+    fun download(url: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit)
 }

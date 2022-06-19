@@ -121,7 +121,7 @@ object GlideLoader : ILoader {
             .into(imageView)
     }
 
-    override fun download(url: String, block: (bitmap: Bitmap) -> Unit) {
+    override fun download(url: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit) {
         Glide.with(App.context)
             .downloadOnly()
             .load(url)
@@ -132,7 +132,8 @@ object GlideLoader : ILoader {
                     target: com.bumptech.glide.request.target.Target<File>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    logE("下载失败")
+                    logE("下载失败: $url")
+                    block(false, null)
                     return false
                 }
 
@@ -143,13 +144,10 @@ object GlideLoader : ILoader {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    log("下载成功")
+                    log("下载成功: $url")
                     val bitmap = BitmapFactory.decodeFile(resource?.absolutePath ?: "")
-                    block(bitmap)
-                    if (bitmap == null) {
-                        return false
-                    }
-                    return true
+                    block(true, bitmap)
+                    return false
                 }
             })
             .preload()
