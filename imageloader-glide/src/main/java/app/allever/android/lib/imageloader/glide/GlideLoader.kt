@@ -12,6 +12,7 @@ import app.allever.android.lib.core.function.imageloader.ILoader
 import app.allever.android.lib.core.function.imageloader.ImageLoader
 import app.allever.android.lib.core.helper.DisplayHelper
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
@@ -33,13 +34,7 @@ object GlideLoader : ILoader {
             return
         }
         val requestBuilder = Glide.with(imageView.context).load(resource)
-        errorResId?.let {
-            requestBuilder.error(errorResId)
-        }
-        placeholder?.let {
-            requestBuilder.placeholder(it)
-        }
-        requestBuilder.into(imageView)
+        applyDefault(requestBuilder, errorResId, placeholder).into(imageView)
     }
 
 
@@ -66,14 +61,7 @@ object GlideLoader : ILoader {
                     )
                 )
             )
-
-        errorResId?.let {
-            requestBuilder.error(errorResId)
-        }
-        placeholder?.let {
-            requestBuilder.placeholder(it)
-        }
-        requestBuilder.into(imageView)
+        applyDefault(requestBuilder, errorResId, placeholder).into(imageView)
     }
 
     override fun loadRound(
@@ -91,12 +79,7 @@ object GlideLoader : ILoader {
             .centerCrop()
             .load(resource)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-        errorResId?.let {
-            requestBuilder.error(errorResId)
-        }
-        placeholder?.let {
-            requestBuilder.placeholder(it)
-        }
+        applyDefault(requestBuilder, errorResId, placeholder)
         requestBuilder.into(object : BitmapImageViewTarget(imageView) {
             override fun setResource(resource: Bitmap?) {
                 super.setResource(resource)
@@ -163,5 +146,19 @@ object GlideLoader : ILoader {
                 }
             })
             .preload()
+    }
+
+    private fun applyDefault(
+        requestBuilder: RequestBuilder<*>,
+        errorResId: Int?,
+        placeholder: Int?
+    ): RequestBuilder<*> {
+        errorResId?.let {
+            requestBuilder.error(errorResId)
+        }
+        placeholder?.let {
+            requestBuilder.placeholder(placeholder)
+        }
+        return requestBuilder
     }
 }
