@@ -52,9 +52,8 @@ object ImageLoader {
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        loadInternal(resource, loadOrigin) {
+        performDownload(resource, loadOrigin) {
             mLoaderEngine.load(it ?: resource, imageView, errorResId, placeholder)
-            downloadInternal(it, resource)
         }
     }
 
@@ -67,7 +66,7 @@ object ImageLoader {
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        loadInternal(resource, loadOrigin) {
+        performDownload(resource, loadOrigin) {
             mLoaderEngine.loadCircle(
                 it ?: resource,
                 imageView,
@@ -76,7 +75,6 @@ object ImageLoader {
                 errorResId,
                 placeholder
             )
-            downloadInternal(it, resource)
         }
     }
 
@@ -88,16 +86,14 @@ object ImageLoader {
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        loadInternal(resource, loadOrigin) {
+        performDownload(resource, loadOrigin) {
             mLoaderEngine.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
-            downloadInternal(it, resource)
         }
     }
 
     fun loadGif(resource: Any, imageView: ImageView) {
-        loadInternal(resource, true) {
+        performDownload(resource, true) {
             mLoaderEngine.loadGif(it ?: resource, imageView)
-            downloadInternal(it, resource)
         }
     }
 
@@ -107,9 +103,8 @@ object ImageLoader {
         radius: Float?,
         loadOrigin: Boolean = true,
     ) {
-        loadInternal(resource, loadOrigin) {
+        performDownload(resource, loadOrigin) {
             mLoaderEngine.loadBlur(it ?: resource, imageView, radius)
-            downloadInternal(it, resource)
         }
     }
 
@@ -128,6 +123,7 @@ object ImageLoader {
                     .url(url)
                     .build()
 
+                log("下载图片：$url")
                 mOkHttpClient.newCall(requests).enqueue(object : Callback {
                     override fun onResponse(call: Call, response: Response) {
                         mDownloadRequestSet.remove(url)
@@ -137,15 +133,15 @@ object ImageLoader {
                             path,
                             response.body?.byteStream()?.readBytes()
                         )
-                        val file = if (result) {
-                            log("保存成功: $path")
+                        val originFile = if (result) {
+                            log("保存成功: $url -> $path")
                             File(path)
                         } else {
-                            logE("保存失败: $path")
+                            logE("保存失败: $url")
                             null
                         }
                         CoroutineHelper.mainCoroutine.launch {
-                            block?.let { it(result, file) }
+                            block?.let { it(result, originFile) }
                         }
                     }
 
@@ -182,8 +178,10 @@ object ImageLoader {
     suspend fun getCache(url: String) = withContext(Dispatchers.IO) {
         val file = File(getCacheFilePath(url))
         if (file.exists()) {
+//            log("有缓存：$url -> ${file.absolutePath}")
             return@withContext file
         }
+//        log("没有缓存：$url")
         return@withContext null
     }
 
@@ -215,6 +213,38 @@ object ImageLoader {
         CoroutineHelper.mainCoroutine.launch {
             if (resource is String && resource.startsWith("http")) {
                 block(getCache(resource))
+            } else {
+                block(null)
+            }
+        }
+    }
+
+    private fun performDownload(
+        resource: Any,
+        loadOrigin: Boolean,
+        block: (resource: File?) -> Unit
+    ) {
+        //不是加载原图，那就直接返回
+        if (!loadOrigin) {
+            block(null)
+            return
+        }
+
+        //加载原图，那就读缓存
+        CoroutineHelper.mainCoroutine.launch {
+            if (resource is String && resource.startsWith("http")) {
+                val file = getCache(resource)
+                if (file == null) {
+                    log("拿不到缓存")
+                    //没有缓存就下载
+                    download(resource) { success, originFile ->
+                        block(originFile)
+                    }
+                } else {
+                    //有就返回文件
+                    log("拿到缓存：$resource -> ${file.absolutePath}")
+                    block(file)
+                }
             } else {
                 block(null)
             }

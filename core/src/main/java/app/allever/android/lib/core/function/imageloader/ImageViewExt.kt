@@ -6,7 +6,7 @@ import java.io.File
 
 fun ImageView.load(
     resource: Any,
-    loadOrigin: Boolean = false,
+    loadOrigin: Boolean = true,
     errorResId: Int? = ImageLoader.errorResId(),
     placeholder: Int? = ImageLoader.placeholder()
 ) {
@@ -21,7 +21,7 @@ fun ImageView.loadCircle(
     any: Any,
     borderWidth: Int = 0,
     borderColor: Int? = Color.parseColor("#00000000"),
-    loadOrigin: Boolean = false,
+    loadOrigin: Boolean = true,
     errorResId: Int? = ImageLoader.errorResId(),
     placeholder: Int? = ImageLoader.placeholder()
 ) {
@@ -31,14 +31,14 @@ fun ImageView.loadCircle(
 fun ImageView.loadRound(
     any: Any,
     radius: Float = 8f,
-    loadOrigin: Boolean = false,
+    loadOrigin: Boolean = true,
     errorResId: Int? = ImageLoader.errorResId(),
     placeholder: Int? = ImageLoader.placeholder()
 ) {
     ImageLoader.loadRound(any, this, radius, loadOrigin, errorResId, placeholder)
 }
 
-fun ImageView.loadBlur(any: Any, radius: Float = 10f, loadOrigin: Boolean = false) {
+fun ImageView.loadBlur(any: Any, radius: Float = 10f, loadOrigin: Boolean = true) {
     ImageLoader.loadBlur(any, this, radius, loadOrigin)
 }
 
