@@ -1,8 +1,8 @@
 package app.allever.android.lib.core.function.imageloader
 
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.widget.ImageView
+import java.io.File
 
 fun ImageView.load(
     resource: Any,
@@ -42,6 +42,6 @@ fun ImageView.loadBlur(any: Any, radius: Float = 10f, loadOrigin: Boolean = fals
     ImageLoader.loadBlur(any, this, radius, loadOrigin)
 }
 
-suspend fun downloadImg(any: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit) {
+suspend fun downloadImg(any: String, block: (success: Boolean, file: File?) -> Unit) {
     ImageLoader.download(any, block)
 }

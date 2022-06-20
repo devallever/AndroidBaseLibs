@@ -3,6 +3,7 @@ package app.allever.android.lib.core.function.imageloader
 import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
+import java.io.File
 
 interface ILoader {
     fun init(context: Context)
@@ -30,5 +31,5 @@ interface ILoader {
 
     fun loadBlur(resource: Any, imageView: ImageView, radius: Float?)
 
-    fun download(url: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit)
+    fun download(url: String, block: (success: Boolean, file: File?) -> Unit)
 }

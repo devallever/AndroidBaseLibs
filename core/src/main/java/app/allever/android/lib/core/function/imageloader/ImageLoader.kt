@@ -2,8 +2,6 @@ package app.allever.android.lib.core.function.imageloader
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -11,7 +9,6 @@ import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.DisplayHelper
-import app.allever.android.lib.core.util.BitmapUtils
 import app.allever.android.lib.core.util.FileUtils
 import app.allever.android.lib.core.util.MD5
 import kotlinx.coroutines.Dispatchers
@@ -110,31 +107,31 @@ object ImageLoader {
 
     suspend fun download(
         url: String,
-        block: ((success: Boolean, bitmap: Bitmap?) -> Unit)? = null
+        block: ((success: Boolean, file: File?) -> Unit)? = null
     ) {
         val file = getCache(url)
         if (file != null) {
-            block?.let { it(true, BitmapFactory.decodeFile(file.absolutePath)) }
+            block?.let { it(true, file) }
         } else {
             if (!mDownloadRequestSet.contains(url)) {
                 mDownloadRequestSet.add(url)
-                mLoaderEngine.download(url) { success, bitmap ->
+                mLoaderEngine.download(url) { success, originFile ->
                     mDownloadRequestSet.remove(url)
                     CoroutineHelper.mainCoroutine.launch {
-                        saveCache(success, url, bitmap)
-                        block?.let { it(success, bitmap) }
+                        saveCache(success, url, originFile)
+                        block?.let { it(success, originFile) }
                     }
                 }
             }
         }
     }
 
-    private suspend fun saveCache(success: Boolean, url: String, bitmap: Bitmap?) {
+    private suspend fun saveCache(success: Boolean, url: String, src: File?) {
         withContext(Dispatchers.IO) {
             if (success) {
                 val saveResult =
-                    BitmapUtils.saveBitmap2File(bitmap, getCacheFilePath(url))
-                log("保存成功：${saveResult}")
+                    FileUtils.copy(src?.absolutePath ?: return@withContext, getCacheFilePath(url))
+                log("保存成功：${saveResult} -> ${getCacheFilePath(url)}")
             }
         }
     }

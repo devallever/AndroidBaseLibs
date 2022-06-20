@@ -1,5 +1,6 @@
 package app.allever.android.lib.project
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
@@ -40,7 +41,7 @@ class CoilActivity : AbstractActivity() {
         lifecycleScope.launch {
             downloadImg(url6) { _, bitmap ->
                 bitmap?.let {
-                    findViewById<ImageView>(R.id.iv6).setImageBitmap(it)
+                    findViewById<ImageView>(R.id.iv6).setImageBitmap(BitmapFactory.decodeFile(it.absolutePath))
                 }
             }
         }

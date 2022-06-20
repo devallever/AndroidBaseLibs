@@ -2,7 +2,6 @@ package app.allever.android.lib.core.function.imageloader.coil
 
 import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
@@ -11,7 +10,10 @@ import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.function.imageloader.ILoader
+import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.DisplayHelper
+import app.allever.android.lib.core.util.BitmapUtils
+import app.allever.android.lib.core.util.MD5
 import coil.Coil
 import coil.ImageLoader
 import coil.decode.GifDecoder
@@ -21,6 +23,10 @@ import coil.imageLoader
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 object CoilLoader : ILoader {
 
@@ -92,7 +98,7 @@ object CoilLoader : ILoader {
         }
     }
 
-    override fun download(url: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit) {
+    override fun download(url: String, block: (success: Boolean, file: File?) -> Unit) {
         val request = ImageRequest.Builder(App.context)
             .data(url)
             .target(
@@ -104,7 +110,13 @@ object CoilLoader : ILoader {
                     log("下载成功: $url")
                     val bitmapDrawable = result as BitmapDrawable
                     val bitmap = bitmapDrawable.bitmap
-                    block(true, bitmap)
+                    CoroutineHelper.mainCoroutine.launch {
+                        val file = withContext(Dispatchers.IO) {
+                            File(BitmapUtils.saveBitmap2File(bitmap, App.context.externalCacheDir?.absolutePath + File.separator + MD5.getMD5Str(url)))
+                        }
+                        block(true, file)
+                    }
+
                 },
                 onError = {
                     // Handle the error drawable.

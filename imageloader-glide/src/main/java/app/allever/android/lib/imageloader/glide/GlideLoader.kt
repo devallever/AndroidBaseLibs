@@ -2,7 +2,6 @@ package app.allever.android.lib.imageloader.glide
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.widget.ImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
@@ -121,7 +120,7 @@ object GlideLoader : ILoader {
             .into(imageView)
     }
 
-    override fun download(url: String, block: (success: Boolean, bitmap: Bitmap?) -> Unit) {
+    override fun download(url: String, block: (success: Boolean, file: File?) -> Unit) {
         Glide.with(App.context)
             .downloadOnly()
             .load(url)
@@ -145,8 +144,7 @@ object GlideLoader : ILoader {
                     isFirstResource: Boolean
                 ): Boolean {
                     log("下载成功: $url")
-                    val bitmap = BitmapFactory.decodeFile(resource?.absolutePath ?: "")
-                    block(true, bitmap)
+                    block(true, resource)
                     return false
                 }
             })
