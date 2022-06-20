@@ -18,6 +18,7 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
 import coil.load
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import okhttp3.*
 import java.io.File
@@ -37,13 +38,7 @@ object CoilLoader : ILoader {
 
     override fun load(resource: Any, imageView: ImageView, errorResId: Int?, placeholder: Int?) {
         imageView.load(resource) {
-            errorResId?.let {
-                error(it)
-            }
-            placeholder?.let {
-                placeholder(it)
-            }
-            crossfade(true)
+            applyDefault(this, errorResId, placeholder)
         }
     }
 
@@ -56,9 +51,7 @@ object CoilLoader : ILoader {
         placeholder: Int?
     ) {
         imageView.load(resource) {
-            placeholder?.let {
-                placeholder(it)
-            }
+            applyDefault(this, errorResId, placeholder)
             transformations(
                 BorderCircleTransformation(
                     DisplayHelper.dip2px(borderWidthDp ?: 0),
@@ -76,9 +69,7 @@ object CoilLoader : ILoader {
         placeholder: Int?
     ) {
         imageView.load(resource) {
-            placeholder?.let {
-                placeholder(it)
-            }
+            applyDefault(this, errorResId, placeholder)
             transformations(
                 RoundedCornersTransformation(
                     radius = DisplayHelper.dip2px(radiusDp ?: 0f).toFloat()
@@ -128,6 +119,21 @@ object CoilLoader : ILoader {
         })
     }
 
+
+    private fun applyDefault(
+        imageRequestBuilder: ImageRequest.Builder,
+        errorResId: Int?,
+        placeholder: Int?
+    ): ImageRequest.Builder {
+        errorResId?.let {
+            imageRequestBuilder.error(it)
+        }
+        placeholder?.let {
+            imageRequestBuilder.placeholder(it)
+        }
+        imageRequestBuilder.crossfade(true)
+        return imageRequestBuilder
+    }
 }
 
 fun Application.initCoil(): ImageLoader {
