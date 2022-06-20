@@ -48,7 +48,7 @@ object ImageLoader {
     fun load(
         resource: Any,
         imageView: ImageView,
-        loadOrigin: Boolean = false,
+        loadOrigin: Boolean = true,
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
@@ -63,7 +63,7 @@ object ImageLoader {
         imageView: ImageView,
         borderWidth: Int? = 0,
         borderColor: Int? = Color.parseColor("#00000000"),
-        loadOrigin: Boolean = false,
+        loadOrigin: Boolean = true,
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
@@ -84,7 +84,7 @@ object ImageLoader {
         resource: Any,
         imageView: ImageView,
         radius: Float? = DisplayHelper.dip2px(10).toFloat(),
-        loadOrigin: Boolean = false,
+        loadOrigin: Boolean = true,
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
@@ -105,7 +105,7 @@ object ImageLoader {
         resource: Any,
         imageView: ImageView,
         radius: Float?,
-        loadOrigin: Boolean = false,
+        loadOrigin: Boolean = true,
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine.loadBlur(it ?: resource, imageView, radius)
@@ -130,6 +130,7 @@ object ImageLoader {
 
                 mOkHttpClient.newCall(requests).enqueue(object : Callback {
                     override fun onResponse(call: Call, response: Response) {
+                        mDownloadRequestSet.remove(url)
                         log("下载成功: $url")
                         val path = getCacheFilePath(url)
                         val result = FileIOUtils.writeFileFromBytesByStream(
@@ -149,6 +150,7 @@ object ImageLoader {
                     }
 
                     override fun onFailure(call: Call, e: IOException) {
+                        mDownloadRequestSet.remove(url)
                         logE("下载失败: $url")
                         CoroutineHelper.mainCoroutine.launch {
                             block?.let { it(false, null) }
