@@ -32,11 +32,14 @@ object GlideLoader : ILoader {
         if (!ImageLoader.checkCanLoad(imageView)) {
             return
         }
-        Glide.with(imageView.context)
-            .asBitmap()
-            .error(errorResId)
-            .placeholder(placeholder ?: 0)
-            .load(resource).into(imageView)
+        val requestBuilder = Glide.with(imageView.context).load(resource)
+        errorResId?.let {
+            requestBuilder.error(errorResId)
+        }
+        placeholder?.let {
+            requestBuilder.placeholder(it)
+        }
+        requestBuilder.into(imageView)
     }
 
 
@@ -52,7 +55,7 @@ object GlideLoader : ILoader {
             return
         }
 
-        Glide.with(imageView.context).load(resource)
+        val requestBuilder = Glide.with(imageView.context).load(resource)
 //            .apply(RequestOptions.circleCropTransform())
             .apply(
                 RequestOptions.bitmapTransform(
@@ -63,9 +66,14 @@ object GlideLoader : ILoader {
                     )
                 )
             )
-            .error(errorResId)
-            .placeholder(placeholder ?: 0)
-            .into(imageView)
+
+        errorResId?.let {
+            requestBuilder.error(errorResId)
+        }
+        placeholder?.let {
+            requestBuilder.placeholder(it)
+        }
+        requestBuilder.into(imageView)
     }
 
     override fun loadRound(
@@ -78,20 +86,26 @@ object GlideLoader : ILoader {
         if (!ImageLoader.checkCanLoad(imageView)) {
             return
         }
-        Glide.with(imageView.context)
+        val requestBuilder = Glide.with(imageView.context)
             .asBitmap()
             .centerCrop()
             .load(resource)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(object : BitmapImageViewTarget(imageView) {
-                override fun setResource(resource: Bitmap?) {
-                    super.setResource(resource)
-                    val rbd =
-                        RoundedBitmapDrawableFactory.create(imageView.context.resources, resource)
-                    rbd.cornerRadius = DisplayHelper.dip2px(radiusDp ?: 0F).toFloat()
-                    imageView.setImageDrawable(rbd)
-                }
-            })
+        errorResId?.let {
+            requestBuilder.error(errorResId)
+        }
+        placeholder?.let {
+            requestBuilder.placeholder(it)
+        }
+        requestBuilder.into(object : BitmapImageViewTarget(imageView) {
+            override fun setResource(resource: Bitmap?) {
+                super.setResource(resource)
+                val rbd =
+                    RoundedBitmapDrawableFactory.create(imageView.context.resources, resource)
+                rbd.cornerRadius = DisplayHelper.dip2px(radiusDp ?: 0F).toFloat()
+                imageView.setImageDrawable(rbd)
+            }
+        })
     }
 
 
