@@ -3,32 +3,31 @@ package app.allever.android.lib.core.function.imageloader.coil
 import android.app.Application
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
 import android.widget.ImageView
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.function.imageloader.ILoader
-import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.DisplayHelper
-import app.allever.android.lib.core.util.BitmapUtils
+import app.allever.android.lib.core.util.FileIOUtils
 import app.allever.android.lib.core.util.MD5
 import coil.Coil
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
-import coil.imageLoader
 import coil.load
-import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import okhttp3.*
 import java.io.File
+import java.io.IOException
 
 object CoilLoader : ILoader {
+
+    private val mOkHttpClient: OkHttpClient by lazy {
+        OkHttpClient()
+    }
 
     override fun init(context: Context) {
         if (context is Application) {
@@ -99,33 +98,34 @@ object CoilLoader : ILoader {
     }
 
     override fun download(url: String, block: (success: Boolean, file: File?) -> Unit) {
-        val request = ImageRequest.Builder(App.context)
-            .data(url)
-            .target(
-                onStart = {
-                    // Handle the placeholder drawable.
-                },
-                onSuccess = { result ->
-                    // Handle the successful result.
-                    log("下载成功: $url")
-                    val bitmapDrawable = result as BitmapDrawable
-                    val bitmap = bitmapDrawable.bitmap
-                    CoroutineHelper.mainCoroutine.launch {
-                        val file = withContext(Dispatchers.IO) {
-                            File(BitmapUtils.saveBitmap2File(bitmap, App.context.externalCacheDir?.absolutePath + File.separator + MD5.getMD5Str(url)))
-                        }
-                        block(true, file)
-                    }
-
-                },
-                onError = {
-                    // Handle the error drawable.
-                    logE("下载失败: $url")
-                    block(false, null)
-                }
-            )
+        val requests = Request.Builder()
+            .url(url)
             .build()
-        App.context.imageLoader.enqueue(request)
+
+        mOkHttpClient.newCall(requests).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                log("下载成功: $url")
+                val path =
+                    App.context.externalCacheDir?.absolutePath + File.separator + MD5.getMD5Str(url)
+                val result = FileIOUtils.writeFileFromBytesByStream(
+                    path,
+                    response.body?.byteStream()?.readBytes()
+                )
+                val file = if (result) {
+                    log("保存成功: $url")
+                    File(path)
+                } else {
+                    logE("保存失败: $url")
+                    null
+                }
+                block(result, file)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                logE("下载失败: $url")
+                block(false, null)
+            }
+        })
     }
 
 }

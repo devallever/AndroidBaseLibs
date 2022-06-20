@@ -7,14 +7,18 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.DisplayHelper
+import app.allever.android.lib.core.util.FileIOUtils
 import app.allever.android.lib.core.util.FileUtils
 import app.allever.android.lib.core.util.MD5
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.*
 import java.io.File
+import java.io.IOException
 
 object ImageLoader {
 
@@ -22,6 +26,10 @@ object ImageLoader {
     private lateinit var mBuilder: Builder
 
     private val mDownloadRequestSet = mutableSetOf<String>()
+
+    private val mOkHttpClient: OkHttpClient by lazy {
+        OkHttpClient()
+    }
 
     fun init(context: Context, loaderEngine: ILoader, builder: Builder) {
         mLoaderEngine = loaderEngine
@@ -115,13 +123,46 @@ object ImageLoader {
         } else {
             if (!mDownloadRequestSet.contains(url)) {
                 mDownloadRequestSet.add(url)
-                mLoaderEngine.download(url) { success, originFile ->
-                    mDownloadRequestSet.remove(url)
-                    CoroutineHelper.mainCoroutine.launch {
-                        saveCache(success, url, originFile)
-                        block?.let { it(success, originFile) }
+
+                val requests = Request.Builder()
+                    .url(url)
+                    .build()
+
+                mOkHttpClient.newCall(requests).enqueue(object : Callback {
+                    override fun onResponse(call: Call, response: Response) {
+                        log("下载成功: $url")
+                        val path = getCacheFilePath(url)
+                        val result = FileIOUtils.writeFileFromBytesByStream(
+                            path,
+                            response.body?.byteStream()?.readBytes()
+                        )
+                        val file = if (result) {
+                            log("保存成功: $path")
+                            File(path)
+                        } else {
+                            logE("保存失败: $path")
+                            null
+                        }
+                        CoroutineHelper.mainCoroutine.launch {
+                            block?.let { it(result, file) }
+                        }
                     }
-                }
+
+                    override fun onFailure(call: Call, e: IOException) {
+                        logE("下载失败: $url")
+                        CoroutineHelper.mainCoroutine.launch {
+                            block?.let { it(false, null) }
+                        }
+                    }
+                })
+
+//                mLoaderEngine.download(url) { success, originFile ->
+//                    mDownloadRequestSet.remove(url)
+//                    CoroutineHelper.mainCoroutine.launch {
+//                        saveCache(success, url, originFile)
+//                        block?.let { it(success, originFile) }
+//                    }
+//                }
             }
         }
     }

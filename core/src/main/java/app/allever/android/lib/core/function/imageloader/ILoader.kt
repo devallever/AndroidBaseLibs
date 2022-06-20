@@ -31,5 +31,6 @@ interface ILoader {
 
     fun loadBlur(resource: Any, imageView: ImageView, radius: Float?)
 
+    @Deprecated("")
     fun download(url: String, block: (success: Boolean, file: File?) -> Unit)
 }
