@@ -2,6 +2,7 @@ package app.allever.android.lib.permission.and.permission.demo
 
 //import app.allever.android.lib.core.ext.toast
 import android.Manifest
+import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import app.allever.android.lib.core.base.AbstractActivity
@@ -27,6 +28,14 @@ class AndPermissionActivity : AbstractActivity() {
 
                     override fun needShowWhyRequestPermissionDialog(): Boolean {
                         return true
+                    }
+
+                    override fun needShowJumpSettingDialog(): Boolean {
+                        return true
+                    }
+
+                    override fun getWhyRequestPermissionDialog(): Dialog? {
+                        return super.getWhyRequestPermissionDialog()
                     }
                 }, Manifest.permission.CAMERA,
                 Manifest.permission.READ_PHONE_STATE

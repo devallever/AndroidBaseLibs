@@ -51,7 +51,7 @@ class AndPermissionEngine : IPermissionEngine {
                 .onDenied {
                     //判断是否总是拒绝
                     if (PermissionHelper.hasAlwaysDeniedPermissionOrigin(
-                            ActivityHelper.getTopActivity()!!,
+                            context,
                             it
                         )
                     ) {

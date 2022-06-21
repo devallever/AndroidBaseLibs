@@ -11,11 +11,7 @@ import com.permissionx.guolindev.PermissionX
 class PermissionXEngine : IPermissionEngine {
 
     override fun requestPermission(listener: PermissionListener, vararg permissions: String) {
-        request(ActivityHelper.getTopActivity()!!, listener, *permissions)
-    }
-
-    override fun jumpSetting(context: Context, requestCode: Int) {
-        PermissionUtil.GoToSetting(ActivityHelper.getTopActivity())
+        requestPermission(ActivityHelper.getTopActivity() ?: return, listener, *permissions)
     }
 
     override fun requestPermission(
@@ -23,7 +19,26 @@ class PermissionXEngine : IPermissionEngine {
         listener: PermissionListener,
         vararg permissions: String
     ) {
-        request(context, listener, *permissions)
+        val requestTask = Runnable {
+            request(context, listener, *permissions)
+        }
+
+        if (listener.needShowWhyRequestPermissionDialog()) {
+            var dialog = listener.getWhyRequestPermissionDialog()
+            if (dialog == null) {
+                dialog = WhyRequestPermissionDialog(
+                    context,
+                    requestTask = requestTask
+                )
+            }
+            dialog.show()
+        } else {
+            requestTask.run()
+        }
+    }
+
+    override fun jumpSetting(context: Context, requestCode: Int) {
+        PermissionUtil.GoToSetting(ActivityHelper.getTopActivity())
     }
 
     private fun request(

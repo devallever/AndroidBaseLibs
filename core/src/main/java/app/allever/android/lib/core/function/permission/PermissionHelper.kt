@@ -8,6 +8,7 @@ import android.text.TextUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.ActivityHelper
@@ -64,7 +65,7 @@ object PermissionHelper : IPermissionEngine {
     }
 
     fun hasPermissionOrigin(context: Context, vararg permissions: String): Boolean {
-        return hasPermissionOrigin(context, Arrays.asList(*permissions))
+        return hasPermissionOrigin(context, listOf(*permissions))
     }
 
     private fun hasPermissionOrigin(context: Context, permissions: List<String>): Boolean {
@@ -89,11 +90,11 @@ object PermissionHelper : IPermissionEngine {
         return true
     }
 
-    fun hasAlwaysDeniedPermissionOrigin(activity: Activity, vararg deniedPermissions: String): Boolean {
-        return hasAlwaysDeniedPermissionOrigin(activity, Arrays.asList(*deniedPermissions))
+    fun hasAlwaysDeniedPermissionOrigin(context: Context?, vararg deniedPermissions: String): Boolean {
+        return hasAlwaysDeniedPermissionOrigin(context, listOf(*deniedPermissions))
     }
 
-    fun hasAlwaysDeniedPermissionOrigin(activity: Activity, deniedPermissions: List<String>): Boolean {
+    fun hasAlwaysDeniedPermissionOrigin(context: Context?, deniedPermissions: List<String>): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return false
         }
@@ -102,9 +103,20 @@ object PermissionHelper : IPermissionEngine {
             return false
         }
 
+        val activity = when (context) {
+            is Activity -> {
+                context
+            }
+            is Fragment -> {
+                context.activity
+            }
+            else -> {
+                null
+            }
+        }
         for (permission in deniedPermissions) {
-            val rationale = activity.shouldShowRequestPermissionRationale(permission)
-            if (!rationale) {
+            val rationale = activity?.shouldShowRequestPermissionRationale(permission)
+            if (rationale == false) {
                 return true
             }
         }

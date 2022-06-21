@@ -9,6 +9,7 @@ import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
+import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
@@ -49,7 +50,8 @@ class MainActivity : AbstractActivity() {
         }
 
         findViewById<View>(R.id.btnPermission).setOnClickListener {
-            ActivityHelper.startActivity(AndPermissionActivity::class.java)
+//            ActivityHelper.startActivity(AndPermissionActivity::class.java)
+            ActivityHelper.startActivity(PermissionXActivity::class.java)
         }
 
         findViewById<View>(R.id.btnRefreshRV).setOnClickListener {

@@ -64,7 +64,7 @@
             android:layout_height="?actionBarSize"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:text="AndPermission"
+            android:text="Permission"
             android:textStyle="bold" />
 
         <TextView
