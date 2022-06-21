@@ -3,4 +3,7 @@
     package="app.allever.android.lib.core">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <application>
+        <activity android:name=".function.businessinterceptor.demo.BusinessInterceptorActivity" />
+    </application>
 </manifest>

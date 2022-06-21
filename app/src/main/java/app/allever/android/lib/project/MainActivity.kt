@@ -3,6 +3,7 @@ package app.allever.android.lib.project
 import android.os.Bundle
 import android.view.View
 import app.allever.android.lib.core.base.AbstractActivity
+import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
@@ -57,6 +58,10 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.btnImageLoader).setOnClickListener {
             ActivityHelper.startActivity(ImageLoaderActivity::class.java)
+        }
+
+        findViewById<View>(R.id.btnBusinessInterceptor).setOnClickListener {
+            ActivityHelper.startActivity(BusinessInterceptorActivity::class.java)
         }
 
     }

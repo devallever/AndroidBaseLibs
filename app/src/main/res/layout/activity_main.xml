@@ -85,6 +85,15 @@
             android:text="ImageLoader"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/btnBusinessInterceptor"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="BusinessInterceptor"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 
