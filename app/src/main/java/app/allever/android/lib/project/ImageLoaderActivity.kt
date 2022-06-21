@@ -9,7 +9,7 @@ import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.function.imageloader.*
 import kotlinx.coroutines.launch
 
-class CoilActivity : AbstractActivity() {
+class ImageLoaderActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coil)

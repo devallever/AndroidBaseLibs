@@ -52,8 +52,9 @@ object ImageLoader {
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        performDownload(resource, loadOrigin) {
+        loadInternal(resource, loadOrigin) {
             mLoaderEngine.load(it ?: resource, imageView, errorResId, placeholder)
+            downloadInternal(it, resource)
         }
     }
 
@@ -66,7 +67,7 @@ object ImageLoader {
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        performDownload(resource, loadOrigin) {
+        loadInternal(resource, loadOrigin) {
             mLoaderEngine.loadCircle(
                 it ?: resource,
                 imageView,
@@ -75,6 +76,7 @@ object ImageLoader {
                 errorResId,
                 placeholder
             )
+            downloadInternal(it, resource)
         }
     }
 
@@ -86,14 +88,16 @@ object ImageLoader {
         errorResId: Int? = mBuilder.errorResId,
         placeholder: Int? = mBuilder.placeholder
     ) {
-        performDownload(resource, loadOrigin) {
+        loadInternal(resource, loadOrigin) {
             mLoaderEngine.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
+            downloadInternal(it, resource)
         }
     }
 
     fun loadGif(resource: Any, imageView: ImageView) {
-        performDownload(resource, true) {
+        loadInternal(resource, true) {
             mLoaderEngine.loadGif(it ?: resource, imageView)
+            downloadInternal(it, resource)
         }
     }
 
@@ -103,8 +107,9 @@ object ImageLoader {
         radius: Float?,
         loadOrigin: Boolean = true,
     ) {
-        performDownload(resource, loadOrigin) {
+        loadInternal(resource, loadOrigin) {
             mLoaderEngine.loadBlur(it ?: resource, imageView, radius)
+            downloadInternal(it, resource)
         }
     }
 

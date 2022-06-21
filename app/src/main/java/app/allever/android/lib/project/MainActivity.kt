@@ -23,7 +23,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnCenterDialog))
         RippleHelper.addRippleView(findViewById(R.id.btnPermission))
         RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
-        RippleHelper.addRippleView(findViewById(R.id.btnCoil))
+        RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -55,8 +55,8 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(RefreshRVActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnCoil).setOnClickListener {
-            ActivityHelper.startActivity(CoilActivity::class.java)
+        findViewById<View>(R.id.btnImageLoader).setOnClickListener {
+            ActivityHelper.startActivity(ImageLoaderActivity::class.java)
         }
 
     }
