@@ -1,6 +1,6 @@
 package app.allever.android.lib.core.helper
 
-import app.allever.android.lib.core.helper.LogHelper.e
+import app.allever.android.lib.core.ext.logE
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -26,7 +26,7 @@ object ReflectionHelper {
             field[obj] = value
             return true
         } catch (e: Exception) {
-            e("set value error:" + e.message)
+            logE("set value error:" + e.message)
         }
         return false
     }
@@ -45,7 +45,7 @@ object ReflectionHelper {
             field.isAccessible = true
             return field[obj]
         } catch (e: Exception) {
-            e("get value error:" + e.message)
+            logE("get value error:" + e.message)
         }
         return null
     }

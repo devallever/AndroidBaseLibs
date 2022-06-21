@@ -10,13 +10,13 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import app.allever.android.lib.core.base.AbstractActivity;
-import app.allever.android.lib.core.helper.LogHelper;
-import app.allever.android.lib.core.helper.GsonHelper;
+import app.allever.android.lib.core.ext.LoggerKt;
 import app.allever.android.lib.core.function.network.HttpConfig;
-import app.allever.android.lib.network.ApiService;
-import app.allever.android.lib.network.R;
 import app.allever.android.lib.core.function.network.ResponseCallback;
 import app.allever.android.lib.core.function.network.response.NetResponse;
+import app.allever.android.lib.core.helper.GsonHelper;
+import app.allever.android.lib.network.ApiService;
+import app.allever.android.lib.network.R;
 
 /**
  * @author allever
@@ -39,13 +39,13 @@ public class NetActivityJava extends AbstractActivity {
                 NetRepository.INSTANCE.getBannerCall(new BannerResponseCache(), new ResponseCallback<List<BannerData>>() {
                     @Override
                     public void onFail(@NonNull NetResponse<List<BannerData>> response) {
-                        LogHelper.INSTANCE.d(response.getMsg());
+                        LoggerKt.log(response.getMsg());
                         textView.setText(GsonHelper.INSTANCE.toJson(response));
                     }
 
                     @Override
                     public void onSuccess(@NonNull NetResponse<List<BannerData>> response) {
-                        LogHelper.INSTANCE.d(response.getMsg());
+                        LoggerKt.log(response.getMsg());
                         textView.setText(GsonHelper.INSTANCE.toJson(response));
                     }
                 });

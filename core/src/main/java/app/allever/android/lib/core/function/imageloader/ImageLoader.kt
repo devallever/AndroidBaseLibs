@@ -145,7 +145,7 @@ object ImageLoader {
                             logE("保存失败: $url")
                             null
                         }
-                        CoroutineHelper.mainCoroutine.launch {
+                        CoroutineHelper.MAIN.launch {
                             block?.let { it(result, originFile) }
                         }
                     }
@@ -153,7 +153,7 @@ object ImageLoader {
                     override fun onFailure(call: Call, e: IOException) {
                         mDownloadRequestSet.remove(url)
                         logE("下载失败: $url")
-                        CoroutineHelper.mainCoroutine.launch {
+                        CoroutineHelper.MAIN.launch {
                             block?.let { it(false, null) }
                         }
                     }
@@ -201,7 +201,7 @@ object ImageLoader {
 
     private fun downloadInternal(file: File?, resource: Any) {
         if (resource is String && resource.startsWith("http")) {
-            file ?: CoroutineHelper.mainCoroutine.launch {
+            file ?: CoroutineHelper.MAIN.launch {
                 download(resource, null)
             }
         }
@@ -215,7 +215,7 @@ object ImageLoader {
         }
 
         //加载原图，那就读缓存
-        CoroutineHelper.mainCoroutine.launch {
+        CoroutineHelper.MAIN.launch {
             if (resource is String && resource.startsWith("http")) {
                 block(getCache(resource))
             } else {
@@ -236,7 +236,7 @@ object ImageLoader {
         }
 
         //加载原图，那就读缓存
-        CoroutineHelper.mainCoroutine.launch {
+        CoroutineHelper.MAIN.launch {
             if (resource is String && resource.startsWith("http")) {
                 val file = getCache(resource)
                 if (file == null) {

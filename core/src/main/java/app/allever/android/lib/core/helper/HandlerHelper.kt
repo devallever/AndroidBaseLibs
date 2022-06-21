@@ -11,7 +11,7 @@ object HandlerHelper {
     }
 
     val threadHandler by lazy {
-        val handlerThread = HandlerThread("")
+        val handlerThread = HandlerThread("threadHandler")
         handlerThread.start()
         Handler(handlerThread.looper)
     }

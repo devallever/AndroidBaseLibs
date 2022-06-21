@@ -83,6 +83,7 @@ object DisplayHelper {
     /**
      * 获取屏幕高度,包括状态栏
      */
+    @SuppressLint("ObsoleteSdkInt")
     fun getFullScreenHeight(context: Context): Int {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay

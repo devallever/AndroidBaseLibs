@@ -9,12 +9,16 @@ object CoroutineHelper {
         Job()
     }
 
-    val mainCoroutine by lazy {
+    val MAIN by lazy {
         CoroutineScope(Dispatchers.Main + mJob)
     }
 
-    val threadCoroutine by lazy {
+    val DEFAULT by lazy {
         CoroutineScope(Dispatchers.Default + mJob)
+    }
+
+    val IO by lazy {
+        CoroutineScope(Dispatchers.IO + mJob)
     }
 
     fun cancelAll() {

@@ -29,7 +29,7 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
     private var mWeakRefActivity: WeakReference<Activity>? = null
 
     protected val mainCoroutine by lazy {
-        CoroutineHelper.mainCoroutine
+        CoroutineHelper.MAIN
     }
 
 

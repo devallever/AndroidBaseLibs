@@ -21,7 +21,7 @@ object NetRepository : NetworkHandler() {
 
     suspend fun getBanner(responseCache: ResponseCache<*>? = null) =
         request(BaseResponse::class.java, responseCache) {
-            getData()
+            wanAndroidApi.getBanner()
         }
 
     suspend fun test(): String {

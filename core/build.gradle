@@ -54,7 +54,7 @@ dependencies {
     api project(path: ':swipe-back-layout')
 
     //数据存储-MMKV: https://github.com/Tencent/MMKV
-    implementation "com.tencent:mmkv-static:1.2.12"
+    api "com.tencent:mmkv-static:1.2.12"
 
     api "com.google.code.gson:gson:2.9.0"
 
