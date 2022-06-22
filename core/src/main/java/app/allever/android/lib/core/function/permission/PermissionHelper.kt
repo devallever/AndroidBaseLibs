@@ -9,8 +9,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.ActivityHelper
 
 object PermissionHelper : IPermissionEngine {
@@ -42,32 +40,16 @@ object PermissionHelper : IPermissionEngine {
 
 
     override fun handlePermissionResult(
+        context: Context,
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        mEngine.handlePermissionResult(requestCode, permissions, grantResults)
+        mEngine.handlePermissionResult(context, requestCode, permissions, grantResults)
     }
 
-    fun hasPermissionOrigin(vararg permissions: String): Boolean =
-        hasPermissionOrigin(App.context, *permissions)
-
-
-    fun hasAlwaysDenyOrigin(vararg permissions: String): Boolean =
-        hasAlwaysDeniedPermissionOrigin(
-            ActivityHelper.getTopActivity() as FragmentActivity,
-            *permissions
-        )
-
-    fun gotoSetting() {
-        PermissionUtil.GoToSetting(ActivityHelper.getTopActivity())
-    }
-
-    fun hasPermissionOrigin(context: Context, vararg permissions: String): Boolean {
-        return hasPermissionOrigin(context, listOf(*permissions))
-    }
-
-    private fun hasPermissionOrigin(context: Context, permissions: List<String>): Boolean {
+    fun hasPermissionOrigin(context: Context?, permissions: List<String>): Boolean {
+        context ?: return false
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true
         }
@@ -89,15 +71,21 @@ object PermissionHelper : IPermissionEngine {
         return true
     }
 
-    fun hasAlwaysDeniedPermissionOrigin(
-        context: Context?,
-        vararg deniedPermissions: String
-    ): Boolean {
-        return hasAlwaysDeniedPermissionOrigin(context, listOf(*deniedPermissions))
+    fun requestPermissionOrigin(obj: Any, requestCode: Int, vararg permissions: String) {
+        val activity = when (obj) {
+            is Activity -> obj
+            is Fragment -> obj.activity
+            else -> ActivityHelper.getTopActivity()
+        }
+        ActivityCompat.requestPermissions(activity ?: return, permissions, requestCode)
+    }
+
+    fun gotoSettingOrigin(context: Context? = null) {
+        PermissionUtil.GoToSetting(context ?: ActivityHelper.getTopActivity())
     }
 
     fun hasAlwaysDeniedPermissionOrigin(
-        context: Context?,
+        context: Context? = null,
         deniedPermissions: List<String>
     ): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -126,21 +114,5 @@ object PermissionHelper : IPermissionEngine {
             }
         }
         return false
-    }
-
-    fun requestPermissionOrigin(activity: Activity, requestCode: Int, vararg permissions: String) {
-        ActivityCompat.requestPermissions(activity, permissions, requestCode)
-    }
-
-    fun request(context: Context, listener: PermissionListener, block: () -> Unit) {
-        if (listener.needShowWhyRequestPermissionDialog()) {
-            var dialog = listener.getWhyRequestPermissionDialog()
-            if (dialog == null) {
-                dialog = WhyRequestPermissionDialog(context, requestTask = { block() })
-            }
-            dialog.show()
-        } else {
-            block()
-        }
     }
 }

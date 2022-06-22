@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.helper.ActivityHelper
 
-object DefaultPermissionEngine : IPermissionEngine {
+object DefaultPermissionEngine : BasePermissionEngine() {
 
     private var mPermissionListener: PermissionListener? = null
 
@@ -18,7 +18,7 @@ object DefaultPermissionEngine : IPermissionEngine {
     ) {
 
         mPermissionListener = listener
-        PermissionHelper.request(context, listener) {
+        request(context, listener) {
             val activity = when (context) {
                 is Activity -> {
                     context
@@ -46,43 +46,38 @@ object DefaultPermissionEngine : IPermissionEngine {
     }
 
     override fun jumpSetting(context: Context, requestCode: Int) {
-        PermissionHelper.gotoSetting()
+        PermissionHelper.gotoSettingOrigin()
     }
 
     override fun handlePermissionResult(
+        context: Context,
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (PermissionHelper.hasPermissionOrigin(ActivityHelper.getTopActivity()!!, *permissions)) {
+        if (PermissionHelper.hasPermissionOrigin(
+                ActivityHelper.getTopActivity(),
+                permissions.toList()
+            )
+        ) {
             mPermissionListener?.onAllGranted()
         } else {
-
-            if (PermissionHelper.hasAlwaysDenyOrigin(*permissions)) {
-                //总是拒绝
-                mPermissionListener?.alwaysDenied(permissions.toMutableList())
-
-                var jumpSettingDialog = mPermissionListener?.getSettingDialog()
-                if (jumpSettingDialog == null) {
-                    jumpSettingDialog =
-                        JumpPermissionSettingDialog(ActivityHelper.getTopActivity()!!)
-                }
-                jumpSettingDialog.show()
-
-            } else {
-                //拒绝
+            mPermissionListener?.let {
                 val deniedList = mutableListOf<String>()
-                permissions.map {
+                permissions.map { permission ->
                     if (!PermissionHelper.hasPermissionOrigin(
-                            ActivityHelper.getTopActivity()!!,
-                            it
+                            ActivityHelper.getTopActivity(),
+                            listOf(permission)
                         )
                     ) {
-                        deniedList.add(it)
+                        deniedList.add(permission)
                     }
-                    log("拒绝权限：$it")
+                    log("拒绝权限：$permission")
                 }
-                mPermissionListener?.onDenied(deniedList)
+                handleDenied(
+                    permissions, context,
+                    it, deniedList
+                )
             }
         }
 

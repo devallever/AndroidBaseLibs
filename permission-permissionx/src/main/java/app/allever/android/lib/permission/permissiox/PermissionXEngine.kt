@@ -4,12 +4,13 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import app.allever.android.lib.core.ext.log
-import app.allever.android.lib.core.function.permission.*
+import app.allever.android.lib.core.function.permission.BasePermissionEngine
+import app.allever.android.lib.core.function.permission.PermissionListener
 import app.allever.android.lib.core.function.permission.PermissionUtil
 import app.allever.android.lib.core.helper.ActivityHelper
 import com.permissionx.guolindev.PermissionX
 
-class PermissionXEngine : IPermissionEngine {
+class PermissionXEngine : BasePermissionEngine() {
 
     override fun requestPermission(listener: PermissionListener, vararg permissions: String) {
         requestPermission(ActivityHelper.getTopActivity() ?: return, listener, *permissions)
@@ -20,7 +21,7 @@ class PermissionXEngine : IPermissionEngine {
         listener: PermissionListener,
         vararg permissions: String
     ) {
-        PermissionHelper.request(context, listener) {
+        request(context, listener) {
             request(context, listener, *permissions)
         }
     }
@@ -49,26 +50,7 @@ class PermissionXEngine : IPermissionEngine {
                     log("同意了所有权限")
                     listener.onAllGranted()
                 } else {
-                    if (PermissionHelper.hasAlwaysDeniedPermissionOrigin(
-                            ActivityHelper.getTopActivity()!!,
-                            deniedList
-                        )
-                    ) {
-                        permissions.map {
-                            log("总是拒绝权限：$it")
-                        }
-                        listener.alwaysDenied(deniedList)
-                        var jumpSettingDialog = listener.getSettingDialog()
-                        if (jumpSettingDialog == null) {
-                            jumpSettingDialog = JumpPermissionSettingDialog(context)
-                        }
-                        jumpSettingDialog.show()
-                    } else {
-                        permissions.map {
-                            log("拒绝权限：$it")
-                        }
-                        listener.onDenied(deniedList)
-                    }
+                    handleDenied(permissions, context, listener, deniedList)
                 }
             }
     }

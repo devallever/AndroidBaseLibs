@@ -1,17 +1,12 @@
 package app.allever.android.lib.permission.and.permission
 
 import android.content.Context
-import android.util.Log
-import app.allever.android.lib.core.function.permission.IPermissionEngine
-import app.allever.android.lib.core.function.permission.JumpPermissionSettingDialog
-import app.allever.android.lib.core.function.permission.PermissionHelper
+import app.allever.android.lib.core.function.permission.BasePermissionEngine
 import app.allever.android.lib.core.function.permission.PermissionListener
 import app.allever.android.lib.core.helper.ActivityHelper
 import com.yanzhenjie.permission.AndPermission
 
-class AndPermissionEngine : IPermissionEngine {
-    private val TAG = AndPermissionEngine::class.java.simpleName
-
+class AndPermissionEngine : BasePermissionEngine() {
     /**
      * 解决哪些不在栈顶Activity请求的权限
      */
@@ -42,41 +37,19 @@ class AndPermissionEngine : IPermissionEngine {
         listener: PermissionListener,
         vararg permissions: String
     ) {
-
-        PermissionHelper.request(context, listener) {
+        request(context, listener) {
             AndPermission.with(context)
                 .runtime()
                 .permission(permissions)
                 .onGranted {
-                    if (it.size == permissions.size) {
-                        listener.onAllGranted()
-                    }
+                    handleAllGranted(permissions, it, listener)
                 }
                 .onDenied {
-                    //判断是否总是拒绝
-                    if (PermissionHelper.hasAlwaysDeniedPermissionOrigin(
-                            context,
-                            it
-                        )
-                    ) {
-                        permissions.map {
-                            Log.e(TAG, "总是拒绝权限：$it")
-                        }
-                        listener.alwaysDenied(it)
-                        var jumpSettingDialog = listener.getSettingDialog()
-                        if (jumpSettingDialog == null) {
-                            jumpSettingDialog = JumpPermissionSettingDialog(context)
-                        }
-                        jumpSettingDialog.show()
-                    } else {
-                        permissions.map {
-                            Log.e(TAG, "拒绝权限：$it")
-                        }
-                        listener.onDenied(it)
-                    }
+                    handleDenied(permissions, context, listener, it)
                 }
                 .start()
         }
     }
+
 
 }
