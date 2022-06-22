@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.ActivityHelper
-import java.util.*
 
 object PermissionHelper : IPermissionEngine {
 
@@ -90,11 +89,17 @@ object PermissionHelper : IPermissionEngine {
         return true
     }
 
-    fun hasAlwaysDeniedPermissionOrigin(context: Context?, vararg deniedPermissions: String): Boolean {
+    fun hasAlwaysDeniedPermissionOrigin(
+        context: Context?,
+        vararg deniedPermissions: String
+    ): Boolean {
         return hasAlwaysDeniedPermissionOrigin(context, listOf(*deniedPermissions))
     }
 
-    fun hasAlwaysDeniedPermissionOrigin(context: Context?, deniedPermissions: List<String>): Boolean {
+    fun hasAlwaysDeniedPermissionOrigin(
+        context: Context?,
+        deniedPermissions: List<String>
+    ): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return false
         }
@@ -125,5 +130,17 @@ object PermissionHelper : IPermissionEngine {
 
     fun requestPermissionOrigin(activity: Activity, requestCode: Int, vararg permissions: String) {
         ActivityCompat.requestPermissions(activity, permissions, requestCode)
+    }
+
+    fun request(context: Context, listener: PermissionListener, block: () -> Unit) {
+        if (listener.needShowWhyRequestPermissionDialog()) {
+            var dialog = listener.getWhyRequestPermissionDialog()
+            if (dialog == null) {
+                dialog = WhyRequestPermissionDialog(context, requestTask = { block() })
+            }
+            dialog.show()
+        } else {
+            block()
+        }
     }
 }

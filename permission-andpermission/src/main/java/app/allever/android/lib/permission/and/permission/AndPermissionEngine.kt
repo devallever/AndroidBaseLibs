@@ -2,7 +2,10 @@ package app.allever.android.lib.permission.and.permission
 
 import android.content.Context
 import android.util.Log
-import app.allever.android.lib.core.function.permission.*
+import app.allever.android.lib.core.function.permission.IPermissionEngine
+import app.allever.android.lib.core.function.permission.JumpPermissionSettingDialog
+import app.allever.android.lib.core.function.permission.PermissionHelper
+import app.allever.android.lib.core.function.permission.PermissionListener
 import app.allever.android.lib.core.helper.ActivityHelper
 import com.yanzhenjie.permission.AndPermission
 
@@ -39,7 +42,8 @@ class AndPermissionEngine : IPermissionEngine {
         listener: PermissionListener,
         vararg permissions: String
     ) {
-        val requestTask = Runnable {
+
+        PermissionHelper.request(context, listener) {
             AndPermission.with(context)
                 .runtime()
                 .permission(permissions)
@@ -72,16 +76,6 @@ class AndPermissionEngine : IPermissionEngine {
                     }
                 }
                 .start()
-        }
-
-        if (listener.needShowWhyRequestPermissionDialog()) {
-            var dialog = listener.getWhyRequestPermissionDialog()
-            if (dialog == null) {
-                dialog = WhyRequestPermissionDialog(context, requestTask = requestTask)
-            }
-            dialog.show()
-        } else {
-            requestTask.run()
         }
     }
 

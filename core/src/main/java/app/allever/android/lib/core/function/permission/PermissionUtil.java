@@ -7,6 +7,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
+import androidx.fragment.app.Fragment;
+
+import app.allever.android.lib.core.helper.ActivityHelper;
+
 /**
  * Created by zyy on 2018/3/12.
  * 直接跳转到权限后返回，可以监控权限授权情况，但是，跳转到应用详情页，无法监测权限情况
@@ -40,35 +44,52 @@ public class PermissionUtil {
      * 跳转到相应品牌手机系统权限设置页，如果跳转不成功，则跳转到应用详情页
      * 这里需要改造成返回true或者false，应用详情页:true，应用权限页:false
      *
-     * @param activity
+     * @param context
      */
-    public static void GoToSetting(Activity activity) {
+    public static void GoToSetting(Object context) {
+        Activity activity;
+        if (context instanceof Activity) {
+            activity = (Activity) context;
+        } else if (context instanceof Fragment) {
+            activity = ((Fragment) context).getActivity();
+        } else {
+            activity = ActivityHelper.INSTANCE.getTopActivity();
+        }
         switch (Build.MANUFACTURER) {
-            case MANUFACTURER_HUAWEI://华为
+            case MANUFACTURER_HUAWEI:
+                //华为
                 Huawei(activity);
                 break;
-            case MANUFACTURER_MEIZU://魅族
+            case MANUFACTURER_MEIZU:
+                //魅族
                 Meizu(activity);
                 break;
-            case MANUFACTURER_XIAOMI://小米
+            case MANUFACTURER_XIAOMI:
+                //小米
                 Xiaomi(activity);
                 break;
-            case MANUFACTURER_SONY://索尼
+            case MANUFACTURER_SONY:
+                //索尼
                 Sony(activity);
                 break;
-            case MANUFACTURER_OPPO://oppo
+            case MANUFACTURER_OPPO:
+                //oppo
                 OPPO(activity);
                 break;
-            case MANUFACTURER_LG://lg
+            case MANUFACTURER_LG:
+                //lg
                 LG(activity);
                 break;
-            case MANUFACTURER_LETV://乐视
+            case MANUFACTURER_LETV:
+                //乐视
                 Letv(activity);
                 break;
             default://其他
-                try {//防止应用详情页也找不到，捕获异常后跳转到设置，这里跳转最好是两级，太多用户也会觉得麻烦，还不如不跳
-                    openAppDetailSetting(activity);
-//                    activity.startActivityForResult(getAppDetailSettingIntent(activity), PERMISSION_SETTING_FOR_RESULT);
+                try {
+                    //防止应用详情页也找不到，捕获异常后跳转到设置，这里跳转最好是两级，太多用户也会觉得麻烦，还不如不跳
+                    if (activity != null) {
+                        openAppDetailSetting(activity);
+                    }
                 } catch (Exception e) {
                     SystemConfig(activity);
                 }

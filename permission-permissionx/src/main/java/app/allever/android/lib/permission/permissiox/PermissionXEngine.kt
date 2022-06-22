@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.permission.*
+import app.allever.android.lib.core.function.permission.PermissionUtil
 import app.allever.android.lib.core.helper.ActivityHelper
 import com.permissionx.guolindev.PermissionX
 
@@ -19,26 +20,13 @@ class PermissionXEngine : IPermissionEngine {
         listener: PermissionListener,
         vararg permissions: String
     ) {
-        val requestTask = Runnable {
+        PermissionHelper.request(context, listener) {
             request(context, listener, *permissions)
-        }
-
-        if (listener.needShowWhyRequestPermissionDialog()) {
-            var dialog = listener.getWhyRequestPermissionDialog()
-            if (dialog == null) {
-                dialog = WhyRequestPermissionDialog(
-                    context,
-                    requestTask = requestTask
-                )
-            }
-            dialog.show()
-        } else {
-            requestTask.run()
         }
     }
 
     override fun jumpSetting(context: Context, requestCode: Int) {
-        PermissionUtil.GoToSetting(ActivityHelper.getTopActivity())
+        PermissionUtil.GoToSetting(context)
     }
 
     private fun request(
