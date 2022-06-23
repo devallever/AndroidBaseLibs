@@ -40,31 +40,18 @@ android {
 dependencies {
     api project(path: ':core')
 
-    //SmartRefreshLayout -
-    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
-    implementation  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
+    implementation  refreshLayoutKernel
+    implementation  refreshHeaderClassics   //经典刷新头
 //    implementation  'io.github.scwang90:refresh-header-radar:2.0.5'       //雷达刷新头
 //    implementation  'io.github.scwang90:refresh-header-falsify:2.0.5'     //虚拟刷新头
 //    implementation  'io.github.scwang90:refresh-header-material:2.0.5'    //谷歌刷新头
 //    implementation  'io.github.scwang90:refresh-header-two-level:2.0.5'   //二级刷新头
 //    implementation  'io.github.scwang90:refresh-footer-ball:2.0.5'        //球脉冲加载
 //    implementation  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
-
-    //RecyclerViewAdapter -
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-
-    //Banner - https://github.com/youth5201314/banner
-    implementation 'io.github.youth5201314:banner:2.2.2'
-
-    //CircleImageView -
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-    //RoundImageView
-
-
-    //material-dialogs - https://github.com/afollestad/material-dialogs
-    implementation 'com.afollestad.material-dialogs:core:3.3.0'
-    implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
-
-    //https://github.com/H07000223/FlycoTabLayout
-    implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
+    implementation baseRecyclerViewAdapterHelper
+    implementation youthBanner
+    implementation circleImageView
+    implementation materialDialogCore
+    implementation materialDialogBottomSheets
+    implementation flycoTabLayout
 }

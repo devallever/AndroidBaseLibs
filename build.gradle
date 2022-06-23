@@ -27,4 +27,177 @@ ext {
     minSdkVersion = 21
     versionName = '1.0.0'
     versionCode = 1
+
+//Android-------------------------------------------------------------------------------------------
+    androidXCoreKtx = "androidx.core:core-ktx:1.7.0"
+    androidXAppcompat = "androidx.appcompat:appcompat:1.3.1"
+    androidXAnnotation = "androidx.annotation:annotation:1.3.0"
+    androidXActivityKtx = "androidx.activity:activity-ktx:1.4.0"
+
+    androidXConstraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
+    androidXCoordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+    androidXRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
+    androidXViewPager2 = "androidx.viewpager2:viewpager2:1.1.0-alpha01"
+
+    androidXLifecycle = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    googleMaterial = "com.google.android.material:material:1.6.0"
+
+    kotlinxCoroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    androidXLifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    androidXLifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    googlePlayServiceAds = "com.google.android.gms:play-services-ads:18.3.0"
+    faceBookAudienceNetworkSdk = "com.facebook.android:audience-network-sdk:5.11.0"
+//Android-------------------------------------------------------------------------------------------
+
+
+//Core-核心库----------------------------------------------------------------------------------------
+    // https://github.com/square/okhttp
+    okhttp3 = "com.squareup.okhttp3:okhttp:4.9.3"
+    okhttp3LoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.9.3"
+
+    retrofit2 = "com.squareup.retrofit2:retrofit:2.9.0"
+    retrofit2ConverterGson = "com.squareup.retrofit2:converter-gson:2.9.0"
+    retrofit2AdapterRxjava2 = "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+    retrofit2ConverterScalars = "com.squareup.retrofit2:converter-scalars:2.0.0"
+
+    // https://github.com/google/gson
+    gson = "com.google.code.gson:gson:2.9.0"
+
+    fastJson = "com.alibaba:fastjson:1.2.69"
+
+    rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.7"
+    rxAndroid2 = "io.reactivex.rxjava2:rxandroid:2.1.1"
+
+    rxJava3 = "io.reactivex.rxjava3:rxjava:3.0.2"
+    rxAndroid3 = "io.reactivex.rxjava3:rxandroid:3.0.0"
+    rxBinding4 = "com.jakewharton.rxbinding4:rxbinding:4.0.0"
+
+    commonsCodec = "commons-codec:commons-codec:1.11"
+
+    glide = "com.github.bumptech.glide:glide:4.13.0"
+    glideTransformations = "jp.wasabeef:glide-transformations:4.3.0"
+
+    eventBus = "org.greenrobot:eventbus:3.3.1"
+
+    lottie = "com.airbnb.android:lottie:3.4.0"
+//Core核心库-----------------------------------------------------------------------------------------
+
+//Alibaba-------------------------------------------------------------------------------------------
+    aRouterApi = "com.alibaba:arouter-api:1.5.2"
+    aRouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
+    aliOSS = "com.aliyun.dpa:oss-android-sdk:2.9.5"
+    aliyunUpload = "com.aliyun.video.android:upload:1.6.5"
+    aliyunPlayer = "com.aliyun.sdk.android:AliyunPlayer:5.4.6.0-full"
+//Alibaba-------------------------------------------------------------------------------------------
+
+
+//Tencent-------------------------------------------------------------------------------------------
+    wechat = "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.7.9"
+    //数据存储-MMKV: https://github.com/Tencent/MMKV
+    mmkv = "com.tencent:mmkv-static:1.2.12"
+    qq = "com.tencent.tauth:qqopensdk:3.53.0"
+//Tencent-------------------------------------------------------------------------------------------
+
+//UMeng---------------------------------------------------------------------------------------------
+    umengCommon = "com.umeng.umsdk:common:9.4.7"
+    umengAsms = "com.umeng.umsdk:asms:1.4.1"
+    umengApm = "com.umeng.umsdk:apm:1.5.2"
+    umengLink = "com.umeng.umsdk:link:1.2.0"
+
+    umengShareCore = "com.umeng.umsdk:share-core:7.1.6"
+    umengShareBoard = "com.umeng.umsdk:share-board:7.1.6"
+    umengShareQQ = "com.umeng.umsdk:share-qq:7.1.6"
+    umengShareWx = "com.umeng.umsdk:share-wx:7.1.6"
+//UMeng---------------------------------------------------------------------------------------------
+
+//Other---------------------------------------------------------------------------------------------
+    picasso = "com.squareup.picasso:picasso:2.5.2"
+
+    coil = "io.coil-kt:coil:2.1.0"
+    coilGif = "io.coil-kt:coil-gif:2.1.0"
+    coilSvg = "io.coil-kt:coil-svg:2.1.0"
+
+    autoSize = "com.github.JessYanCoding:AndroidAutoSize:1.2.1"
+
+    baseRecyclerViewAdapterHelper =
+            "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
+
+    //上拉加载/下拉刷新,核心必须依赖
+    refreshLayoutKernel = "io.github.scwang90:refresh-layout-kernel:2.0.5"
+    refreshHeaderClassics = "io.github.scwang90:refresh-header-classics:2.0.5"
+
+    leakCanary = "com.squareup.leakcanary:leakcanary-android:2.8.1"
+
+    circleImageView = "de.hdodenhof:circleimageview:2.2.0"
+
+    //权限-https://github.com/yanzhenjie/AndPermission
+    andPermission = "com.yanzhenjie:permission:2.0.3"
+
+    logger = "com.orhanobut:logger:2.2.0"
+
+    // https://github.com/vanniktech/Emoji
+    emojiIos = "com.vanniktech:emoji-ios:0.8.0"
+
+    // https://github.com/vdurmont/emoji-java
+    emojiJava = "com.vdurmont:emoji-java:5.1.1"
+
+    //圆形图片
+    roundedImageview = "com.makeramen:roundedimageview:2.3.0"
+
+    svgAPlayer = "com.github.yyued:SVGAPlayer-Android:2.5.6"
+
+    //选择器
+    pickerView = "com.contrarywind:Android-PickerView:4.1.9"
+
+    //鲁班图片压缩
+    luban = "top.zibin:Luban:1.1.8"
+
+    fileDownloader = "com.liulishuo.filedownloader:library:1.7.7"
+
+    //https://github.com/googlesamples/easypermissions
+    easyPermissions = "pub.devrel:easypermissions:3.0.0"
+
+    //https://github.com/HarlonWang/AVLoadingIndicatorView
+    indicatorView = "com.wang.avi:library:2.1.3"
+
+    //https://github.com/yhaolpz/FloatWindow
+    floatWindow = "com.github.yhaolpz:FloatWindow:1.0.9"
+
+    XPopup = "com.github.li-xiaojun:XPopup:2.7.6"
+
+    //Banner - https://github.com/youth5201314/banner
+    youthBanner = "io.github.youth5201314:banner:2.2.2"
+
+    //material-dialogs - https://github.com/afollestad/material-dialogs
+    materialDialogCore = "com.afollestad.material-dialogs:core:3.3.0"
+    materialDialogBottomSheets = "com.afollestad.material-dialogs:bottomsheets:3.3.0"
+
+    //https://github.com/H07000223/FlycoTabLayout
+    flycoTabLayout = "io.github.h07000223:flycoTabLayout:3.0.0"
+
+    androidAudioConverter = "com.github.adrielcafe:AndroidAudioConverter:0.0.8"
+
+    photoView = "com.bm.photoview:library:1.4.1"
+
+    androidOAID = "com.github.gzu-liyujiang:Android_CN_OAID:4.2.4"
+
+    freeReflection = "me.weishu:free_reflection:3.0.1"
+
+    imageZoom = "it.sephiroth.android.library.imagezoom:library:1.0.4"
+
+    //网易登录
+    yiDunQuickLogin = "io.github.yidun:quicklogin:3.1.5"
+
+    //LitePal 数据库 https://github.com/guolindev/LitePal
+    litePal = "org.litepal.guolindev:core:3.2.2"
+
+    permissionX = "com.guolindev.permissionx:permissionx:1.6.1"
+
+    baseRecyclerViewAdapterHelper = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
+//Other---------------------------------------------------------------------------------------------
 }
+
+

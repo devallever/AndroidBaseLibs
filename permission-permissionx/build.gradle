@@ -32,6 +32,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.guolindev.permissionx:permissionx:1.6.1'
     implementation project(path: ':core')
+    implementation permissionX
 }

@@ -33,41 +33,34 @@ android {
 
 dependencies {
 
-    api 'androidx.core:core-ktx:1.7.0'
-    api 'androidx.appcompat:appcompat:1.3.1'
-    api 'com.google.android.material:material:1.6.0'
-    api 'androidx.constraintlayout:constraintlayout:2.1.4'
+    api androidXCoreKtx
+    api androidXAppcompat
+    api googleMaterial
+    api androidXConstraintLayout
     //如何解决“无法访问androidx.activity.contextaware.ContextAware‘”?”
-    api "androidx.activity:activity-ktx:1.4.0"
+    api androidXActivityKtx
 
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    api kotlinxCoroutinesCore
+    api kotlinxCoroutinesAndroid
 
-    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    api androidXLifecycleExtensions
     //ViewModel
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    api androidXLifecycleViewModelKtx
     //activity-ktx
-    api 'androidx.activity:activity-ktx:1.2.4'
+    api androidXActivityKtx
 
     //https://github.com/bingoogolapple/BGASwipeBackLayout-Android
 //    implementation 'com.github.bingoogolapple:BGASwipeBackLayout-Android:2.0.2'
     api project(path: ':swipe-back-layout')
 
-    //数据存储-MMKV: https://github.com/Tencent/MMKV
-    api "com.tencent:mmkv-static:1.2.12"
+    api mmkv
 
-    api "com.google.code.gson:gson:2.9.0"
+    api gson
 
-    api 'com.squareup.okhttp3:logging-interceptor:4.9.3'
-    api 'com.squareup.okhttp3:okhttp:4.9.3'
+    api okhttp3LoggingInterceptor
+    api okhttp3
 
-
-    //coil
-    api "io.coil-kt:coil:2.1.0"
-    //coil-gif
-    api "io.coil-kt:coil-gif:2.1.0"
-    //coil-svg
-    api "io.coil-kt:coil-svg:2.1.0"
-    //coil-video
-    //api "io.coil-kt:coil-video:2.1.0"
+    api coil
+    api coilGif
+    api coilSvg
 }

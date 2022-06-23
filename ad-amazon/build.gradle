@@ -34,5 +34,5 @@ android {
 dependencies {
     implementation project(path: ':core')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    implementation googlePlayServiceAds
 }

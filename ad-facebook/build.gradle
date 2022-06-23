@@ -33,7 +33,7 @@ android {
 
 dependencies {
     implementation project(path: ':core')
-    implementation('com.facebook.android:audience-network-sdk:5.11.0') {
+    implementation(faceBookAudienceNetworkSdk) {
         exclude group: "com.google.android.gms"
     }
 }
