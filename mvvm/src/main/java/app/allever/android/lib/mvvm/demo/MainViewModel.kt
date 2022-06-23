@@ -1,7 +1,9 @@
 package app.allever.android.lib.mvvm.demo
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import app.allever.android.lib.mvvm.base.BaseViewModel
+import kotlinx.coroutines.launch
 
 class MainViewModel : BaseViewModel() {
     val usernameLiveData = MutableLiveData<String>()
@@ -10,6 +12,8 @@ class MainViewModel : BaseViewModel() {
     }
 
     fun login() {
-        usernameLiveData.value = "allever"
+        viewModelScope.launch {
+            usernameLiveData.value = "allever"
+        }
     }
 }
