@@ -33,8 +33,8 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         mViewModel = createVM()
         _binding?.setVariable(mvvmConfig.bindingVariable, mViewModel)
 
-        mViewModel.init()
         init()
+        mViewModel.init()
         return _binding?.root
     }
 

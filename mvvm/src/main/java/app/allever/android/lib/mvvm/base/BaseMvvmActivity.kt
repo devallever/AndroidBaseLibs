@@ -5,9 +5,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
-import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : AbstractActivity() {
@@ -22,7 +20,7 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         mBinding.lifecycleOwner = this
         mViewModel = createVM()
         mBinding.setVariable(mvvmConfig.bindingVariable, mViewModel)
-
+        init()
         mViewModel.init()
 
     }
