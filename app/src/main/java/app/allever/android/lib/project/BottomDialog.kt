@@ -1,10 +1,11 @@
 package app.allever.android.lib.project
 
-import android.content.Context
-import app.allever.android.lib.core.base.AbstractBottomDialog
+import app.allever.android.lib.core.base.AbstractSlideBottomDialog
+import app.allever.android.lib.core.helper.DisplayHelper
+import app.allever.android.lib.project.databinding.DialogBottomBinding
 
-class BottomDialog(context: Context) : AbstractBottomDialog(context) {
+class BottomDialog : AbstractSlideBottomDialog<DialogBottomBinding>() {
     override fun getLayoutId(): Int = R.layout.dialog_bottom
-    override fun initView() {
-    }
+    override fun getDialogHeight() = DisplayHelper.dip2px(350)
+    override fun initView() {}
 }

@@ -8,7 +8,6 @@ import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
-import app.allever.android.lib.permission.and.permission.demo.AndPermissionActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
@@ -42,7 +41,7 @@ class MainActivity : AbstractActivity() {
         }
 
         findViewById<View>(R.id.btnBottomDialog).setOnClickListener {
-            BottomDialog(this).show()
+            BottomDialog().show(supportFragmentManager)
         }
 
         findViewById<View>(R.id.btnCenterDialog).setOnClickListener {

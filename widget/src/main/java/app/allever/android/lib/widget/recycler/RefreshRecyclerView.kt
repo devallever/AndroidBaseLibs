@@ -197,9 +197,6 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         this.mDataFetchListener = dataFetchListener
         this.mCurrentPage = 0
         this.mPreLoadCount = preLoadCount
-        coroutineScope.launch {
-            handleLoadOrRefresh(false)
-        }
         mPageChangeListener = pageChangeListener
         if (executeLoadData) {
             coroutineScope.launch {

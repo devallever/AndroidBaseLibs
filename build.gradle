@@ -40,15 +40,15 @@ ext {
     androidXViewPager2 = "androidx.viewpager2:viewpager2:1.1.0-alpha01"
 
     androidXLifecycle = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    googleMaterial = "com.google.android.material:material:1.6.0"
+    androidXLifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    androidXLifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     kotlinxCoroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
     kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
-    androidXLifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
-    androidXLifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-
+    googleMaterial = "com.google.android.material:material:1.6.0"
     googlePlayServiceAds = "com.google.android.gms:play-services-ads:18.3.0"
+
     faceBookAudienceNetworkSdk = "com.facebook.android:audience-network-sdk:5.11.0"
 //Android-------------------------------------------------------------------------------------------
 
