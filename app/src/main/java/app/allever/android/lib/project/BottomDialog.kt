@@ -1,6 +1,6 @@
 package app.allever.android.lib.project
 
-import app.allever.android.lib.core.base.AbstractSlideBottomDialog
+import app.allever.android.lib.core.base.dialog.AbstractSlideBottomDialog
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.project.databinding.DialogBottomBinding
 

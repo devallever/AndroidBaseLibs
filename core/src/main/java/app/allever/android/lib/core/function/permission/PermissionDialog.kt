@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.TextView
 import app.allever.android.lib.core.R
-import app.allever.android.lib.core.base.AbstractCenterDialog
+import app.allever.android.lib.core.base.dialog.AbstractCenterDialog
 
 abstract class PermissionDialog
     (context: Context, val title: String? = "", val message: String? = "") :

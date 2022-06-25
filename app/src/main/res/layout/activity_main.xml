@@ -41,21 +41,12 @@
 
 
         <TextView
-            android:id="@+id/btnBottomDialog"
+            android:id="@+id/btnDialog"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:text="Bottom Dialog"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/btnCenterDialog"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="Center Dialog"
+            android:text="Dialog"
             android:textStyle="bold" />
 
         <TextView

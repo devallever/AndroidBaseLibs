@@ -18,10 +18,9 @@ class MainActivity : AbstractActivity() {
         setContentView(R.layout.activity_main)
 
         RippleHelper.addRippleView(findViewById(R.id.btnMvvm))
-        RippleHelper.addRippleView(findViewById(R.id.btnBottomDialog))
         RippleHelper.addRippleView(findViewById(R.id.btnMvp))
         RippleHelper.addRippleView(findViewById(R.id.btnNetwork))
-        RippleHelper.addRippleView(findViewById(R.id.btnCenterDialog))
+        RippleHelper.addRippleView(findViewById(R.id.btnDialog))
         RippleHelper.addRippleView(findViewById(R.id.btnPermission))
         RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
         RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
@@ -40,12 +39,8 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(NetworkActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnBottomDialog).setOnClickListener {
-            BottomDialog().show(supportFragmentManager)
-        }
-
-        findViewById<View>(R.id.btnCenterDialog).setOnClickListener {
-            CenterDialog(this).show()
+        findViewById<View>(R.id.btnDialog).setOnClickListener {
+            ActivityHelper.startActivity(DialogActivity::class.java)
         }
 
         findViewById<View>(R.id.btnPermission).setOnClickListener {

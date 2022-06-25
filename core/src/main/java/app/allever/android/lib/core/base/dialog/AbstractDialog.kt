@@ -1,4 +1,4 @@
-package app.allever.android.lib.core.base
+package app.allever.android.lib.core.base.dialog
 
 import android.app.Dialog
 import android.content.Context

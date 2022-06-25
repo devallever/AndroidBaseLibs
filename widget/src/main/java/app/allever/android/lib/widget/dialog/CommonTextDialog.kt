@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
 import android.widget.TextView
-import app.allever.android.lib.core.base.AbstractCenterDialog
+import app.allever.android.lib.core.base.dialog.AbstractCenterDialog
 import app.allever.android.lib.widget.R
 
 class CommonTextDialog(

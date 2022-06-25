@@ -1,4 +1,4 @@
-package app.allever.android.lib.core.base
+package app.allever.android.lib.core.base.dialog
 
 import android.content.Context
 import android.view.Gravity

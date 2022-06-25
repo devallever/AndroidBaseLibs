@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImageLoaderActivity" />
+        <activity android:name=".DialogActivity" />
 
         <meta-data
             android:name="APP_ID"
