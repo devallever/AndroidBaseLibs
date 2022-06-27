@@ -19,18 +19,18 @@ abstract class AbstractPopWindow<DB : ViewDataBinding>() {
 
     protected var mBinding: DB
 
-    private var popupWindow: PopupWindow
-    protected var mParams: Params
+    private var mPopupWindow: PopupWindow
+    private var mParams: Params
 
     private lateinit var mShowAnim: Animator
     private lateinit var mHideAnim: Animator
 
     init {
         mParams = getParams()
-        popupWindow = PopupWindow(mParams.width, mParams.height)
+        mPopupWindow = PopupWindow(mParams.width, mParams.height)
         mBinding =
             DataBindingUtil.inflate(LayoutInflater.from(App.context), mParams.layoutId, null, false)
-        popupWindow.contentView = mBinding.root
+        mPopupWindow.contentView = mBinding.root
         initView()
         initAnim()
     }
@@ -60,32 +60,34 @@ abstract class AbstractPopWindow<DB : ViewDataBinding>() {
         mHideAnim.duration = 300
         mHideAnim.interpolator = LinearInterpolator()
         mHideAnim.addListener(onEnd = {
-            popupWindow.dismiss()
+            mPopupWindow.dismiss()
         })
     }
 
-    fun hide() {
-        if (mParams.enableAnim) {
+    fun hide(enableAnim: Boolean = mParams.enableAnim) {
+        if (enableAnim) {
             mHideAnim.start()
         } else {
-            popupWindow.dismiss()
+            mPopupWindow.dismiss()
         }
     }
 
     fun isShowing(): Boolean {
-        return popupWindow.isShowing
+        return mPopupWindow.isShowing
     }
 
-    fun show() {
-        show(ActivityHelper.getTopActivity()?.window?.decorView)
+    fun show(marginTop: Int = 0, marginLeft: Int = 0) {
+        show(ActivityHelper.getTopActivity()?.window?.decorView, marginTop, marginLeft)
     }
 
-    fun show(anchor: View?) {
+    fun show(anchor: View?, marginTop: Int = 0, marginLeft: Int = 0) {
         if (isShowing()) {
             return
         }
-        popupWindow.showAtLocation(anchor ?: return, Gravity.TOP, 0, 0)
-        mShowAnim.start()
+        mPopupWindow.showAtLocation(anchor ?: return, Gravity.TOP, marginLeft, marginTop)
+        if (mParams.enableAnim) {
+            mShowAnim.start()
+        }
     }
 
     /**
