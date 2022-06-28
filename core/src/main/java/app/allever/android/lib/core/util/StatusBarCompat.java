@@ -86,6 +86,11 @@ public class StatusBarCompat {
         }
     }
 
+    /**
+     * 使用日间模式，字体黑色
+     *
+     * @param activity activity
+     */
     public static void changeToLightStatusBar(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
@@ -104,6 +109,11 @@ public class StatusBarCompat {
         decorView.setSystemUiVisibility(decorView.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
+    /**
+     * 取消日间模式，字体白色
+     *
+     * @param activity activity
+     */
     public static void cancelLightStatusBar(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;

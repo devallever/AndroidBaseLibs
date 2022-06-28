@@ -6,6 +6,7 @@ import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
+import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
@@ -24,6 +25,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnPermission))
         RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
         RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
+        RippleHelper.addRippleView(findViewById(R.id.btnBaseActivity))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -60,9 +62,19 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(BusinessInterceptorActivity::class.java)
         }
 
+        findViewById<View>(R.id.btnBaseActivity).setOnClickListener {
+            ActivityHelper.startActivity(UserActivity::class.java)
+        }
+
     }
 
     override fun isSupportSwipeBack(): Boolean {
         return false
+    }
+}
+
+class MainViewModel: BaseViewModel() {
+    override fun init() {
+
     }
 }

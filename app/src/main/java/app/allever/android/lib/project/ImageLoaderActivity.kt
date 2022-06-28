@@ -2,18 +2,20 @@ package app.allever.android.lib.project
 
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.os.Bundle
-import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
-import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.function.imageloader.*
+import app.allever.android.lib.mvvm.BR
+import app.allever.android.lib.mvvm.base.BaseViewModel
+import app.allever.android.lib.mvvm.base.MvvmConfig
+import app.allever.android.lib.project.databinding.ActivityCoilBinding
 import kotlinx.coroutines.launch
 
-class ImageLoaderActivity : AbstractActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coil)
+class ImageLoaderActivity : BaseActivity<ActivityCoilBinding, ImageLoaderViewModel>() {
 
+    override fun getContentMvvmConfig() = MvvmConfig(R.layout.activity_coil,BR.imageLoaderViewModel)
+
+    override fun init() {
+        initTopBar("图片加载器")
         val url =
             "https://img0.baidu.com/it/u=962361882,2281204904&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500"
 
@@ -28,27 +30,32 @@ class ImageLoaderActivity : AbstractActivity() {
         val url6 = "https://img2.baidu.com/it/u=3550900606,1592535269&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800"
 
 
-        findViewById<ImageView>(R.id.iv1).load(url)
+        binding.iv1.load(url)
 
-        findViewById<ImageView>(R.id.iv2).loadCircle(url2)
+        binding.iv2.loadCircle(url2)
 
-        findViewById<ImageView>(R.id.iv3).loadRound(url3, 10F)
+        binding.iv3.loadRound(url3, 10F)
 
-        findViewById<ImageView>(R.id.iv4).loadBlur(url4, 10F)
+        binding.iv4.loadBlur(url4, 10F)
 
-        findViewById<ImageView>(R.id.iv5).loadCircle(url5, 2, Color.parseColor("#ff6c1e"))
+        binding.iv5.loadCircle(url5, 2, Color.parseColor("#ff6c1e"))
 
         lifecycleScope.launch {
             downloadImg(url6) { _, bitmap ->
                 bitmap?.let {
-                    findViewById<ImageView>(R.id.iv6).setImageBitmap(BitmapFactory.decodeFile(it.absolutePath))
+                    (binding.iv6).setImageBitmap(BitmapFactory.decodeFile(it.absolutePath))
                 }
             }
         }
 
-        findViewById<ImageView>(R.id.iv7).load(R.drawable.ic_icon_gift)
+        binding.iv7.load(R.drawable.ic_icon_gift)
 
-        findViewById<ImageView>(R.id.iv8).loadGif(R.drawable.ic_gif)
+        binding.iv8.loadGif(R.drawable.ic_gif)
+    }
+}
+
+class ImageLoaderViewModel: BaseViewModel() {
+    override fun init() {
 
     }
 }

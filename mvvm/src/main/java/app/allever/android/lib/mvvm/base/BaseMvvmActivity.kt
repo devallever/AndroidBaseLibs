@@ -19,9 +19,11 @@ abstract class BaseMvvmActivity<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         mBinding = DataBindingUtil.setContentView(this, mvvmConfig.layoutId)
         mBinding.lifecycleOwner = this
         mViewModel = createVM()
-        mBinding.setVariable(mvvmConfig.bindingVariable, mViewModel)
-        init()
-        mViewModel.init()
+        if (mvvmConfig.bindingVariable != -1) {
+            mBinding.setVariable(mvvmConfig.bindingVariable, mViewModel)
+            init()
+            mViewModel.init()
+        }
 
     }
 
