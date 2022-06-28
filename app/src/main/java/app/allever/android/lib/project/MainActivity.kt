@@ -2,6 +2,7 @@ package app.allever.android.lib.project
 
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
 import app.allever.android.lib.core.helper.ActivityHelper
@@ -10,13 +11,14 @@ import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
+import app.allever.android.lib.project.databinding.ActivityMainBinding
 import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
 
 class MainActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         RippleHelper.addRippleView(findViewById(R.id.btnMvvm))
         RippleHelper.addRippleView(findViewById(R.id.btnMvp))

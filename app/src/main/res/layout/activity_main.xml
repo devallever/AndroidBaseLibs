@@ -1,100 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
 
-    <LinearLayout
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <ScrollView
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-
-        <TextView
-            android:id="@+id/btnMvp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="MVP"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/btnMvvm"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="MVVM"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/btnNetwork"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="Network"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/btnMvp"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="MVP"
+                android:textStyle="bold" />
 
 
-        <TextView
-            android:id="@+id/btnDialog"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="Dialog"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/btnMvvm"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="MVVM"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/btnPermission"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="Permission"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/btnRefreshRV"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="refreshRV"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/btnImageLoader"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="ImageLoader"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/btnBusinessInterceptor"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="BusinessInterceptor"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/btnBaseActivity"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="btnBaseActivity"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+            <TextView
+                android:id="@+id/btnNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Network"
+                android:textStyle="bold" />
 
 
-</ScrollView>
+            <TextView
+                android:id="@+id/btnDialog"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Dialog"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnPermission"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Permission"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnRefreshRV"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="refreshRV"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnImageLoader"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="ImageLoader"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnBusinessInterceptor"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="BusinessInterceptor"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnBaseActivity"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="btnBaseActivity"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</layout>

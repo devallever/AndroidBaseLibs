@@ -1,4 +1,4 @@
-package app.allever.android.lib.core.base.dialog
+package app.allever.android.lib.core.base
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
@@ -76,15 +76,20 @@ abstract class AbstractPopWindow<DB : ViewDataBinding>() {
         return mPopupWindow.isShowing
     }
 
-    fun show(marginTop: Int = 0, marginLeft: Int = 0) {
-        show(ActivityHelper.getTopActivity()?.window?.decorView, marginTop, marginLeft)
+    fun show(marginTopDp: Int = 0, marginLeftDp: Int = 0) {
+        show(ActivityHelper.getTopActivity()?.window?.decorView, marginTopDp, marginLeftDp)
     }
 
-    fun show(anchor: View?, marginTop: Int = 0, marginLeft: Int = 0) {
+    fun show(anchor: View?, marginTopDp: Int = 0, marginLeftDp: Int = 0) {
         if (isShowing()) {
             return
         }
-        mPopupWindow.showAtLocation(anchor ?: return, Gravity.TOP, marginLeft, marginTop)
+        mPopupWindow.showAtLocation(
+            anchor ?: return,
+            Gravity.TOP,
+            DisplayHelper.dip2px(marginLeftDp),
+            DisplayHelper.dip2px(marginTopDp)
+        )
         if (mParams.enableAnim) {
             mShowAnim.start()
         }
