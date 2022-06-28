@@ -89,7 +89,7 @@ class RefreshRVActivity : AbstractActivity() {
                 "聊天室",
                 true,
                 0,
-                NavigationBarItem.TYPE_TEXT
+                NavigationBarItem.TYPE_IMG_TEXT
             )
         )
         mList.add(

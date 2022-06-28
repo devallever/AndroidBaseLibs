@@ -1,5 +1,7 @@
 package app.allever.android.lib.project
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -36,7 +38,11 @@ abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
         mViewModel.init()
         mBinding.setVariable(contentConfig.bindingVariable, mViewModel)
         if (enableAdaptStatusBar()) {
-            adaptStatusBarView(mBinding.statusBar)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                StatusBarCompat.setStatusBarColor(this, Color.parseColor("#000000"))
+            } else {
+                adaptStatusBarView(mBinding.statusBar)
+            }
         }
         setVisibility(mBinding.topBar, showTopBar())
     }
