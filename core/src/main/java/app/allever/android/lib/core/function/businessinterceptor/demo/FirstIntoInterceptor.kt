@@ -20,8 +20,8 @@ class FirstIntoInterceptor : BaseInterceptor() {
 
     private fun doSomeThing() {
         mChain?.let { chain ->
-            chain.context?.let { context ->
-                AlertDialog.Builder(context)
+            chain.context?.let { weakReference ->
+                AlertDialog.Builder(weakReference.get() ?: return)
                     .setTitle("用户协议和隐私政策")
                     .setCancelable(true)
                     .setPositiveButton("同意") { p0, _ ->

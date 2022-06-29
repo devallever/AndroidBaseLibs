@@ -18,8 +18,8 @@ class ThirdInterceptor : BaseInterceptor() {
     }
 
     private fun doSomeThing(chain: InterceptChain) {
-        chain.context?.let { context ->
-            AlertDialog.Builder(context)
+        chain.context?.let { weakReference ->
+            AlertDialog.Builder(weakReference.get() ?: return)
                 .setTitle("领取红包")
                 .setCancelable(true)
                 .setPositiveButton("领取") { dialog, _ ->

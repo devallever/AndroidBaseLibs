@@ -20,8 +20,8 @@ class SecIntoInterceptor : BaseInterceptor() {
 
     private fun doSomeThing() {
         mChain?.let { chain ->
-            chain.context?.let { context ->
-                AlertDialog.Builder(context)
+            chain.context?.let { weakReference ->
+                AlertDialog.Builder(weakReference.get() ?: return)
                     .setTitle("权限申请")
                     .setCancelable(true)
                     .setPositiveButton("关闭") { p0, _ ->

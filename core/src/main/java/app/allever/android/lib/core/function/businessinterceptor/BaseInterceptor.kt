@@ -5,6 +5,10 @@ abstract class BaseInterceptor : Interceptor {
     protected var mChain: InterceptChain? = null
 
     override fun intercept(chain: InterceptChain) {
-        mChain = chain
+        this.mChain = chain
+    }
+
+    fun process() {
+        mChain?.process()
     }
 }
