@@ -4,7 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import app.allever.android.lib.core.base.AbstractActivity
+import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
+import app.allever.android.lib.core.function.work.PollingTask
+import app.allever.android.lib.core.function.work.PollingTask2
+import app.allever.android.lib.core.function.work.TimerTask
+import app.allever.android.lib.core.function.work.TimerTask2
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
@@ -68,6 +74,31 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(UserActivity::class.java)
         }
 
+        object : TimerTask() {
+            override fun delay() = 3 * 1000L
+            override fun execute() = toast("执行定时任务 TimerTask")
+        }.start()
+
+        TimerTask2(6000) {
+            toast("执行定时任务 TimerTask2")
+        }.start()
+
+        object : PollingTask() {
+            override fun interval() = 1000L
+            override fun condition() = true
+            override fun execute() {
+                log("执行轮训任务 PollingTask")
+                toast("执行轮训任务 PollingTask")
+            }
+        }.start()
+
+        PollingTask2(1000, condition = {
+            true
+        }) {
+            log("执行轮训任务 PollingTask2")
+            toast("执行轮训任务 PollingTask2")
+        }.start()
+
     }
 
     override fun isSupportSwipeBack(): Boolean {
@@ -75,7 +106,7 @@ class MainActivity : AbstractActivity() {
     }
 }
 
-class MainViewModel: BaseViewModel() {
+class MainViewModel : BaseViewModel() {
     override fun init() {
 
     }
