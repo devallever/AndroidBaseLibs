@@ -18,9 +18,9 @@ class DialogActivity: BaseActivity<ActivityDialogBinding, DialogViewModel>() {
         binding.btnCenterDialog.setOnClickListener {
             CenterDialog(this).show()
         }
-        val firstPopWindow = FirstPopWindow()
+        val firstPopWindow = FirstPopWindow(this)
         binding.btnNotificationPopWindow.setOnClickListener {
-            firstPopWindow.show()
+            firstPopWindow.show(offsetYDp = 42)
         }
     }
 }

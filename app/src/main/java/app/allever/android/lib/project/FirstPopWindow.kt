@@ -1,10 +1,11 @@
 package app.allever.android.lib.project
 
+import android.content.Context
 import app.allever.android.lib.core.base.AbstractPopWindow
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.project.databinding.DialogFirstBinding
 
-class FirstPopWindow : AbstractPopWindow<DialogFirstBinding>() {
+class FirstPopWindow(context: Context) : AbstractPopWindow<DialogFirstBinding>(context) {
 
     override fun getParams() =
         Params(

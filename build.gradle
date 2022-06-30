@@ -197,6 +197,8 @@ ext {
     permissionX = "com.guolindev.permissionx:permissionx:1.6.1"
 
     baseRecyclerViewAdapterHelper = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
+
+    basePopup = "io.github.razerdp:BasePopup:3.2.0"
 //Other---------------------------------------------------------------------------------------------
 }
 
