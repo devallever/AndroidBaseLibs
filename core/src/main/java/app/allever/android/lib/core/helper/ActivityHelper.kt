@@ -16,7 +16,6 @@
  */
 package app.allever.android.lib.core.helper
 
-//import app.allever.android.lib.core.ext.log
 import android.app.Activity
 import android.content.Intent
 import app.allever.android.lib.core.ext.log
@@ -40,6 +39,11 @@ object ActivityHelper {
 
     fun add(weakRefActivity: WeakReference<Activity>?) {
         activityList.add(weakRefActivity)
+    }
+
+    fun resumeTop(weakRefActivity: WeakReference<Activity>?) {
+        val index = activityList.indexOf(weakRefActivity)
+        activityList.add(activityList.removeAt(index))
     }
 
     fun remove(weakRefActivity: WeakReference<Activity>?) {

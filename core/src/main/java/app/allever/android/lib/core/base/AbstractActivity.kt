@@ -80,7 +80,7 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
 
     override fun onResume() {
         super.onResume()
-        ActivityHelper.setCurrent(this)
+        ActivityHelper.resumeTop(mWeakRefActivity)
         LifecycleHelper.pullRootOwner(this)
     }
 
