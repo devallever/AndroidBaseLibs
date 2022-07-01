@@ -97,4 +97,37 @@ object ActivityHelper {
             null
         }
     }
+
+    fun  getActivity(clazz: Class<*>): Activity? {
+        if (activityList.isNotEmpty()) {
+            for (activityWeakReference in activityList) {
+                val activity = activityWeakReference?.get()
+                if (activity != null && activity.javaClass == clazz) {
+                    return activity
+                }
+            }
+        }
+        return null
+    }
+
+
+    /**
+     * 是否存在Activity
+     */
+    fun contain(clazz: Class<*>): Boolean {
+        return getActivity(clazz) != null
+    }
+
+    fun contain(clzSimpleName: String): Boolean {
+        if (activityList.isNotEmpty()) {
+            for (activityWeakReference in activityList) {
+                val activity = activityWeakReference?.get()
+                if (activity != null && activity.javaClass.simpleName == clzSimpleName) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 }
