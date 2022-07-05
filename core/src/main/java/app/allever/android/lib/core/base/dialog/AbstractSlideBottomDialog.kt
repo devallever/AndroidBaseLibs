@@ -8,8 +8,8 @@ import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
-import app.allever.android.lib.core.R
 import app.allever.android.lib.core.helper.DisplayHelper
+import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -20,7 +20,7 @@ abstract class AbstractSlideBottomDialog<DB : ViewDataBinding> : BottomSheetDial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.BottomSheetDialog)
+        setStyle(STYLE_NORMAL, app.allever.android.lib.core.R.style.BottomSheetDialog)
     }
 
     override fun onCreateView(

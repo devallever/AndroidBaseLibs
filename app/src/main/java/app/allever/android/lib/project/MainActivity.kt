@@ -80,7 +80,7 @@ class MainActivity : AbstractActivity() {
         }.start()
 
         TimerTask2(6000) {
-            toast("执行定时任务 TimerTask2")
+//            toast("执行定时任务 TimerTask2")
         }.start()
 
         object : PollingTask() {
@@ -88,7 +88,7 @@ class MainActivity : AbstractActivity() {
             override fun condition() = true
             override fun execute() {
                 log("执行轮训任务 PollingTask")
-                toast("执行轮训任务 PollingTask")
+//                toast("执行轮训任务 PollingTask")
             }
         }.start()
 
@@ -96,9 +96,16 @@ class MainActivity : AbstractActivity() {
             true
         }) {
             log("执行轮训任务 PollingTask2")
-            toast("执行轮训任务 PollingTask2")
+//            toast("执行轮训任务 PollingTask2")
         }.start()
 
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        toast("栈顶Activity = ${ActivityHelper.getTopActivity()?.javaClass?.simpleName}")
     }
 
     override fun isSupportSwipeBack(): Boolean {
