@@ -10,6 +10,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndroidBaseLibs"
 include ':app'
+include ':common'
 include ':core'
 include ':mvvm'
 include ':widget'

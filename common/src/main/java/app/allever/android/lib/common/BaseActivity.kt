@@ -1,4 +1,4 @@
-package app.allever.android.lib.project
+package app.allever.android.lib.common
 
 import android.graphics.Color
 import android.os.Build
@@ -7,12 +7,12 @@ import android.text.TextUtils
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import app.allever.android.lib.common.databinding.ActivityBaseBinding
 import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.mvvm.base.BaseMvvmActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.base.MvvmConfig
-import app.allever.android.lib.project.databinding.ActivityBaseBinding
 
 abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
     BaseMvvmActivity<ActivityBaseBinding, VM>() {
