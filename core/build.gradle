@@ -40,7 +40,7 @@ android {
 dependencies {
     ////https://github.com/bingoogolapple/BGASwipeBackLayout-Android
     //implementation 'com.github.bingoogolapple:BGASwipeBackLayout-Android:2.0.2'
-    api project(path: ':swipe-back-layout')
+//    api project(path: ':swipe-back-layout')
 
     api androidXCoreKtx
     api androidXAppcompat

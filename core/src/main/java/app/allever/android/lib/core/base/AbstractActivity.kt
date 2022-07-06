@@ -13,8 +13,8 @@ import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.HandlerHelper
 import app.allever.android.lib.core.helper.LifecycleHelper
-import cn.bingoogolapple.swipebacklayout.BGAKeyboardUtil
-import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
+import app.allever.android.lib.core.widget.swipebacklayout.BGAKeyboardUtil
+import app.allever.android.lib.core.widget.swipebacklayout.BGASwipeBackHelper
 import java.lang.ref.WeakReference
 
 abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delegate {
@@ -63,7 +63,7 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
         // 设置是否是微信滑动返回样式。默认值为 true
         mSwipeBackHelper.setIsWeChatStyle(true)
         // 设置阴影资源 id。默认值为 R.drawable.bga_sbl_shadow
-        mSwipeBackHelper.setShadowResId(cn.bingoogolapple.swipebacklayout.R.drawable.bga_sbl_shadow)
+        mSwipeBackHelper.setShadowResId(R.drawable.bga_sbl_shadow)
         // 设置是否显示滑动返回的阴影效果。默认值为 true
         mSwipeBackHelper.setIsNeedShowShadow(true)
         // 设置阴影区域的透明度是否根据滑动的距离渐变。默认值为 true

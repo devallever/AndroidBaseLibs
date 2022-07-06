@@ -10,7 +10,7 @@ import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.ext.toastDebug
 import app.allever.android.lib.core.function.crash.Cockroach
 import app.allever.android.lib.core.function.crash.ExceptionHandler
-import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper
+import app.allever.android.lib.core.widget.swipebacklayout.BGASwipeBackHelper
 
 abstract class App : Application() {
     override fun onCreate() {
