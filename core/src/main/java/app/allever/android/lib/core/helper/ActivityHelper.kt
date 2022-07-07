@@ -67,7 +67,7 @@ object ActivityHelper {
         }
     }
 
-    fun <T : Activity> startActivity(clazz: Class<T>) {
+    fun startActivity(clazz: Class<*>) {
         val context = getTopActivity()
         val intent = Intent(context, clazz)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
