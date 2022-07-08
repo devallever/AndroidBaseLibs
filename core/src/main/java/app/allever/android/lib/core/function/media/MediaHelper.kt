@@ -501,6 +501,85 @@ object MediaHelper {
         result
     }
 
+    suspend fun getAudioMedia(
+        context: Context,
+        path: String,
+        maxDuration: Long
+    ) = withContext(Dispatchers.IO) {
+        val contentResolver = context.contentResolver
+        val result: MutableList<MediaBean> = mutableListOf()
+        var cursor: Cursor? = null
+        try {
+            cursor = if (TextUtils.isEmpty(path)) {
+                contentResolver.query(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    arrayOf(
+                        MediaStore.Audio.AudioColumns._ID,
+                        MediaStore.Audio.AudioColumns.DATA,
+                        MediaStore.Audio.AudioColumns.DATE_ADDED,
+                        MediaStore.Audio.AudioColumns.DURATION
+                    ),
+                    null,
+                    null,
+                    MediaStore.Audio.AudioColumns.DATE_ADDED + " DESC" + ", " + MediaStore.Audio.AudioColumns._ID + " ASC"
+                )
+            } else {
+                contentResolver.query(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    arrayOf(
+                        MediaStore.Audio.AudioColumns._ID,
+                        MediaStore.Audio.AudioColumns.DATA,
+                        MediaStore.Audio.AudioColumns.DATE_ADDED,
+                        MediaStore.Audio.AudioColumns.DURATION
+                    ),
+                    MediaStore.Audio.AudioColumns.DATA + " like ? ",
+                    arrayOf(path + File.separator + "%"),
+                    MediaStore.Audio.AudioColumns.DATE_ADDED + " DESC" + ", " + MediaStore.Audio.AudioColumns._ID + " ASC"
+                )
+            }
+            if (cursor == null) {
+                return@withContext result
+            }
+            if (cursor.moveToFirst()) {
+                val idIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns._ID)
+                val pathIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
+                val dateIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATE_ADDED)
+                val durationIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION)
+                do {
+                    val mediaBean = MediaBean()
+                    mediaBean.uri = (
+                            ContentUris.withAppendedId(
+                                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                cursor.getInt(idIndex).toLong()
+                            )
+                            )
+                    val audioPath = cursor.getString(pathIndex)
+                    if (checkAudioError(audioPath)) {
+                        continue
+                    }
+                    mediaBean.path = (audioPath)
+                    mediaBean.date = (cursor.getLong(dateIndex))
+                    mediaBean.type = (MediaType.TYPE_AUDIO)
+
+                    //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
+                    val time = cursor.getLong(durationIndex)
+                    if (time <= 0) {
+                        continue
+                    }
+                    mediaBean.duration = (time)
+                    if (maxDuration <= 0 || time <= maxDuration) {
+                        result.add(mediaBean)
+                    }
+                } while (cursor.moveToNext())
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        } finally {
+            cursor?.close()
+        }
+        result
+    }
+
     /***
      *
      * @param path
@@ -516,6 +595,12 @@ object MediaHelper {
         return if (!FileUtils.isExistsFile(path)) {
             true
         } else !MediaFile.isVideoFile(path)
+    }
+
+    private fun checkAudioError(path: String): Boolean {
+        return if (!FileUtils.isExistsFile(path)) {
+            true
+        } else !MediaFile.isAudioFileType(path)
     }
 
 
