@@ -3,10 +3,12 @@ package app.allever.android.lib.project
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
+import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.function.work.PollingTask
 import app.allever.android.lib.core.function.work.PollingTask2
 import app.allever.android.lib.core.function.work.TimerTask
@@ -20,6 +22,7 @@ import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.project.databinding.ActivityMainBinding
 import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.ripple.RippleHelper
+import kotlinx.coroutines.launch
 
 class MainActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +37,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
         RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
         RippleHelper.addRippleView(findViewById(R.id.btnBaseActivity))
+        RippleHelper.addRippleView(findViewById(R.id.btnMediaSelector))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -73,6 +77,28 @@ class MainActivity : AbstractActivity() {
         findViewById<View>(R.id.btnBaseActivity).setOnClickListener {
             ActivityHelper.startActivity(UserActivity::class.java)
         }
+
+        findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
+            lifecycleScope.launch {
+                val videoFolderList = MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_VIDEO, true)
+                log("视频文件夹")
+                videoFolderList.map {
+                    log("folder: ${it.dir}")
+                }
+                val imageFolderList = MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_IMAGE, true)
+                log("图片文件夹")
+                imageFolderList.map {
+                    log("folder: ${it.dir}")
+                }
+
+                val audioFolderList = MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_AUDIO, false)
+                log("音频文件夹")
+                audioFolderList.map {
+                    log("folder: ${it.dir}")
+                }
+            }
+        }
+
 
         object : TimerTask() {
             override fun delay() = 3 * 1000L

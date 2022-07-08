@@ -100,6 +100,15 @@
                 android:text="btnBaseActivity"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/btnMediaSelector"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="媒体选择器"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
 
