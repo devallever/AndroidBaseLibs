@@ -17,6 +17,7 @@
  */
 package app.allever.android.lib.core.function.media;
 
+import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
 
 import java.util.Arrays;
@@ -86,13 +87,13 @@ public enum MimeType {
 
     // ============== audio ==============
     /**
-     *         addFileType("MP3", FILE_TYPE_MP3, "audio/mpeg");
-     *         addFileType("M4A", FILE_TYPE_M4A, "audio/mp4");
-     *         addFileType("WAV", FILE_TYPE_WAV, "audio/x-wav");
-     *         addFileType("AMR", FILE_TYPE_AMR, "audio/amr");
-     *         addFileType("AWB", FILE_TYPE_AWB, "audio/amr-wb");
-     *         addFileType("WMA", FILE_TYPE_WMA, "audio/x-ms-wma");
-     *         addFileType("OGG", FILE_TYPE_OGG, "application/ogg");
+     * addFileType("MP3", FILE_TYPE_MP3, "audio/mpeg");
+     * addFileType("M4A", FILE_TYPE_M4A, "audio/mp4");
+     * addFileType("WAV", FILE_TYPE_WAV, "audio/x-wav");
+     * addFileType("AMR", FILE_TYPE_AMR, "audio/amr");
+     * addFileType("AWB", FILE_TYPE_AWB, "audio/amr-wb");
+     * addFileType("WMA", FILE_TYPE_WMA, "audio/x-ms-wma");
+     * addFileType("OGG", FILE_TYPE_OGG, "application/ogg");
      */
     MP3("audio/mpeg", arraySetOf(
             "mp3"
@@ -109,8 +110,6 @@ public enum MimeType {
     OGG("application/ogg", arraySetOf(
             "ogg"
     ));
-
-
 
     private final String mMimeTypeName;
     private final Set<String> mExtensions;
@@ -173,6 +172,7 @@ public enum MimeType {
         return new ArraySet<>(Arrays.asList(suffixes));
     }
 
+    @NonNull
     @Override
     public String toString() {
         return mMimeTypeName;

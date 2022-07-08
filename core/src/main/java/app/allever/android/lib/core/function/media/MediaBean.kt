@@ -9,7 +9,7 @@ class MediaBean() : Parcelable {
         set(value) {
             var fileName = value
             val array = value.split("/")
-            if (array.isNotEmpty()){
+            if (array.isNotEmpty()) {
                 fileName = array[array.size - 1]
             }
             this.name = fileName

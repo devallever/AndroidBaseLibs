@@ -17,31 +17,47 @@ class FolderBean {
     var bucketId: String = ""
 
     /**
-     * 所有ThumbnailBean
+     * 所有资源列表
      */
     var totalList: MutableList<MediaBean> = mutableListOf()
 
     /**
-     * Photo ThumbnailBean
+     * 图片列表
      */
     var imageMediaList: MutableList<MediaBean> = mutableListOf()
 
     /**
-     * Video ThumbnailBean
+     * 视频列表
      */
     var videoMediaList: MutableList<MediaBean> = mutableListOf()
 
     /**
-     * 图片的数量
+     * 音频列表
+     */
+    var audioMediaList: MutableList<MediaBean> = mutableListOf()
+
+    /**
+     * 资源总数
      */
     var total = 0
 
+    /**
+     * 图片的数量
+     */
     var photoCount = 0
 
+    /**
+     * 视频的数量
+     */
     var videoCount = 0
 
     /**
-     * 第一张图片的ThumbnailBean
+     * 音频的数量
+     */
+    var audioCount = 0
+
+    /**
+     * 第一张图片/封面
      */
     var coverMediaBean: MediaBean? = null
 

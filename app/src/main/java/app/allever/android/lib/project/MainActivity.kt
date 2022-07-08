@@ -80,21 +80,28 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
             lifecycleScope.launch {
-                val videoFolderList = MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_VIDEO, true)
+                val videoFolderList =
+                    MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_VIDEO, true)
                 log("视频文件夹")
                 videoFolderList.map {
                     log("folder: ${it.dir}")
                 }
-                val imageFolderList = MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_IMAGE, true)
+                val imageFolderList =
+                    MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_IMAGE, true)
                 log("图片文件夹")
                 imageFolderList.map {
                     log("folder: ${it.dir}")
                 }
 
-                val audioFolderList = MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_AUDIO, false)
+                val audioFolderList =
+                    MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_AUDIO, false)
                 log("音频文件夹")
-                audioFolderList.map {
+                audioFolderList.map { it ->
                     log("folder: ${it.dir}")
+                    val musicList = MediaHelper.getAudioMedia(this@MainActivity, it.dir, 0)
+                    musicList.map {
+                        log("music: ${it.path}")
+                    }
                 }
             }
         }
@@ -124,7 +131,6 @@ class MainActivity : AbstractActivity() {
             log("执行轮训任务 PollingTask2")
 //            toast("执行轮训任务 PollingTask2")
         }.start()
-
 
 
     }
