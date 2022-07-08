@@ -82,7 +82,35 @@ public enum MimeType {
     )),
     AVI("video/avi", arraySetOf(
             "avi"
+    )),
+
+    // ============== audio ==============
+    /**
+     *         addFileType("MP3", FILE_TYPE_MP3, "audio/mpeg");
+     *         addFileType("M4A", FILE_TYPE_M4A, "audio/mp4");
+     *         addFileType("WAV", FILE_TYPE_WAV, "audio/x-wav");
+     *         addFileType("AMR", FILE_TYPE_AMR, "audio/amr");
+     *         addFileType("AWB", FILE_TYPE_AWB, "audio/amr-wb");
+     *         addFileType("WMA", FILE_TYPE_WMA, "audio/x-ms-wma");
+     *         addFileType("OGG", FILE_TYPE_OGG, "application/ogg");
+     */
+    MP3("audio/mpeg", arraySetOf(
+            "mp3"
+    )),
+    WAV("audio/x-wav", arraySetOf(
+            "wav"
+    )),
+    ARM("audio/amr", arraySetOf(
+            "arm"
+    )),
+    WMA("audio/x-ms-wma", arraySetOf(
+            "wma"
+    )),
+    OGG("application/ogg", arraySetOf(
+            "ogg"
     ));
+
+
 
     private final String mMimeTypeName;
     private final Set<String> mExtensions;
@@ -116,6 +144,11 @@ public enum MimeType {
         return EnumSet.of(MPEG, MP4, QUICKTIME, THREEGPP, THREEGPP2, MKV, WEBM, TS, AVI);
     }
 
+    public static Set<MimeType> ofAudio() {
+        return EnumSet.of(MP3, WAV, ARM, WMA, OGG);
+    }
+
+
     public static boolean isImage(String mimeType) {
         if (mimeType == null) return false;
         return mimeType.startsWith("image");
@@ -129,6 +162,11 @@ public enum MimeType {
     public static boolean isGif(String mimeType) {
         if (mimeType == null) return false;
         return mimeType.equals(MimeType.GIF.toString());
+    }
+
+    public static boolean isAudio(String mimeType) {
+        if (mimeType == null) return false;
+        return mimeType.startsWith("audio");
     }
 
     private static Set<String> arraySetOf(String... suffixes) {
