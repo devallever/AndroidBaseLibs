@@ -21,8 +21,9 @@ object MediaHelper {
     const val TYPE_IMAGE = "TYPE_IMAGE"
     const val TYPE_VIDEO = "TYPE_VIDEO"
     const val TYPE_AUDIO = "TYPE_AUDIO"
+    const val TYPE_ALL = ""
 
-    @StringDef(value = [TYPE_IMAGE, TYPE_VIDEO, TYPE_AUDIO])
+    @StringDef(value = [TYPE_IMAGE, TYPE_VIDEO, TYPE_AUDIO, TYPE_ALL])
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class Type
 
@@ -92,6 +93,12 @@ object MediaHelper {
             MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
                     + " AND " + MediaStore.MediaColumns.SIZE + ">0")
 
+    private const val SELECTION_FOR_MEDIA_TYPE = (
+            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " OR " +  MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " OR " +  MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0")
+
     private fun getSelectionArgsForSingleMediaType(mediaType: Int): Array<String> {
         return arrayOf(mediaType.toString())
     }
@@ -118,7 +125,7 @@ object MediaHelper {
     /**
      * 获取所有文件夹
      */
-    suspend fun getAllFolder(context: Context, @Type type: String, includeGif: Boolean = false) =
+    suspend fun getAllFolder(context: Context, @Type type: String = TYPE_ALL, includeGif: Boolean = false) =
         withContext(Dispatchers.IO) {
 
             val imageFolderList = mutableListOf<FolderBean>()
@@ -133,10 +140,16 @@ object MediaHelper {
                     else -> SELECTION_ARGS
                 }
 
+                val selection = if (type.isEmpty()) {
+                    SELECTION_FOR_MEDIA_TYPE
+                } else {
+                    SELECTION_FOR_SINGLE_MEDIA_TYPE_29
+                }
+
                 cursor = contentResolver.query(
                     QUERY_URI,
                     PROJECTION_29,
-                    SELECTION_FOR_SINGLE_MEDIA_TYPE_29,
+                    selection,
                     selectionArgs,
                     BUCKET_ORDER_BY
                 )
@@ -247,6 +260,8 @@ object MediaHelper {
                                 imageFolderList.add(imageFolder)
                             } else if (type == TYPE_AUDIO) {
                                 bean.type = MediaType.TYPE_AUDIO
+                                imageFolderList.add(imageFolder)
+                            } else {
                                 imageFolderList.add(imageFolder)
                             }
 
@@ -395,7 +410,7 @@ object MediaHelper {
                             )
                             )
                     val thumbPath = cursor.getString(pathIndex)
-                    log(TAG, "Image: $thumbPath")
+//                    log(TAG, "Image: $thumbPath")
 
                     if (checkImageError(thumbPath)) {
                         continue
@@ -431,7 +446,7 @@ object MediaHelper {
     suspend fun getVideoMedia(
         context: Context,
         path: String,
-        maxDuration: Long
+        maxDuration: Long = 0
     ) = withContext(Dispatchers.IO) {
         val contentResolver = context.contentResolver
         val result: MutableList<MediaBean> = mutableListOf()
@@ -510,7 +525,7 @@ object MediaHelper {
     suspend fun getAudioMedia(
         context: Context,
         path: String,
-        maxDuration: Long
+        maxDuration: Long = 0
     ) = withContext(Dispatchers.IO) {
         val contentResolver = context.contentResolver
         val result: MutableList<MediaBean> = mutableListOf()

@@ -13,19 +13,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import app.allever.android.lib.core.base.AbstractFragment
+import app.allever.android.lib.core.function.media.FolderBean
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
+import app.allever.android.lib.widget.mediapicker.ui.adapter.ClickListener
 import app.allever.android.lib.widget.mediapicker.ui.adapter.ImageVideoAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ImageVideoFragment : AbstractFragment() {
+class ImageVideoFragment : AbstractFragment(), IMediaPicker {
     private lateinit var mBinding: FragmentPickerListBinding
     private val mViewModel by viewModels<ImageVideoFragmentViewModel>()
+    private var mSelectListener: SelectListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +51,16 @@ class ImageVideoFragment : AbstractFragment() {
         mViewModel.adapter = ImageVideoAdapter()
         mBinding.recyclerView.layoutManager = GridLayoutManager(requireContext(), MAX_COL)
         mBinding.recyclerView.adapter = mViewModel.adapter
+        mViewModel.adapter.setOptionListener(object : ClickListener {
+            override fun onItemClick(mediaItem: MediaItem, position: Int): Boolean {
+                mSelectListener?.onItemSelected(mediaItem)
+                return true
+            }
+
+            override fun onItemLongClick(mediaItem: MediaItem, position: Int) {
+            }
+
+        })
         val firstTopSpacing = DisplayHelper.dip2px(2)
         mBinding.recyclerView.addItemDecoration(object :
             androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
@@ -69,9 +82,24 @@ class ImageVideoFragment : AbstractFragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun initData() {
         lifecycleScope.launch {
+            mViewModel.list.clear()
+            mViewModel.adapter.setList(null)
             mViewModel.list.addAll(mViewModel.fetchData(requireContext()))
             mViewModel.adapter.setList(mViewModel.list)
         }
+    }
+
+    override fun update(list: MutableList<FolderBean>) {
+        lifecycleScope.launch {
+            mViewModel.list.clear()
+            mViewModel.adapter.setList(null)
+            mViewModel.list.addAll(mViewModel.fetchData(requireContext(), list))
+            mViewModel.adapter.setList(mViewModel.list)
+        }
+    }
+
+    fun setSelectListener(selectListener: SelectListener?) {
+        mSelectListener = selectListener
     }
 }
 
@@ -87,21 +115,26 @@ class ImageVideoFragmentViewModel : ViewModel() {
         mediaType = bundle?.getString("MEDIA_TYPE") ?: ""
     }
 
-    suspend fun fetchData(context: Context) = withContext(Dispatchers.IO) {
-        val folderList = MediaHelper.getAllFolder(context, mediaType, true)
-        val result = mutableListOf<MediaItem>()
-        folderList.map {
-            val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
-                MediaHelper.getVideoMedia(context, it.dir, 0)
+    suspend fun fetchData(context: Context, path: MutableList<FolderBean> = mutableListOf()) =
+        withContext(Dispatchers.IO) {
+            val folderList = if (path.isEmpty()) {
+                MediaHelper.getAllFolder(context, mediaType, true)
             } else {
-                MediaHelper.getImageMedia(context, it.dir)
+                path
             }
+            val result = mutableListOf<MediaItem>()
+            folderList.map {
+                val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
+                    MediaHelper.getVideoMedia(context, it.dir, 0)
+                } else {
+                    MediaHelper.getImageMedia(context, it.dir)
+                }
 
-            list.map {
-                val mediaItem = MediaItem(it)
-                result.add(mediaItem)
+                list.map {
+                    val mediaItem = MediaItem(it)
+                    result.add(mediaItem)
+                }
             }
+            result
         }
-        result
-    }
 }

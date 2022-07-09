@@ -10,8 +10,9 @@ import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.helper.FragmentHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.ActivityMediaPickerBinding
+import app.allever.android.lib.widget.mediapicker.MediaPicker
 
-class MediaPickerActivity : AbstractActivity() {
+class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
     companion object {
         const val EXTRA_MEDIA_TYPE_LIST = MediaPickerFragment.EXTRA_MEDIA_TYPE_LIST
     }
@@ -23,13 +24,20 @@ class MediaPickerActivity : AbstractActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_media_picker)
         mViewModel.initExtra(intent)
+        val fragment = FragmentHelper.newInstance(MediaPickerFragment::class.java) {
+            putStringArrayList(EXTRA_MEDIA_TYPE_LIST, mViewModel.typeList)
+        }
+        fragment.setCallback(this)
         FragmentHelper.addToContainer(
             supportFragmentManager,
-            FragmentHelper.newInstance(MediaPickerFragment::class.java) {
-                putStringArrayList(EXTRA_MEDIA_TYPE_LIST, mViewModel.typeList)
-            },
+            fragment,
             mBinding.fragmentContainer.id
         )
+    }
+
+    override fun onFinish() {
+        finish()
+        MediaPicker.listeners().clear()
     }
 }
 

@@ -8,6 +8,7 @@ import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
+import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.function.work.PollingTask
 import app.allever.android.lib.core.function.work.PollingTask2
@@ -22,6 +23,7 @@ import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.project.databinding.ActivityMainBinding
 import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.mediapicker.MediaPicker
+import app.allever.android.lib.widget.mediapicker.MediaPickerListener
 import app.allever.android.lib.widget.ripple.RippleHelper
 import kotlinx.coroutines.launch
 
@@ -79,41 +81,62 @@ class MainActivity : AbstractActivity() {
             ActivityHelper.startActivity(UserActivity::class.java)
         }
 
+        val mediaPickerListener = object : MediaPickerListener {
+            override fun onPicked(
+                all: MutableList<MediaBean>,
+                imageList: MutableList<MediaBean>?,
+                videoList: MutableList<MediaBean>?,
+                audioList: MutableList<MediaBean>?
+            ) {
+                all.map {
+                    log("选中：${it.path}")
+                }
+            }
+        }
+
         findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
+
             MediaPicker.launchPickerActivity(
                 MediaHelper.TYPE_IMAGE,
                 MediaHelper.TYPE_VIDEO,
-                MediaHelper.TYPE_AUDIO
+                MediaHelper.TYPE_AUDIO,
+                mediaPickerListener = mediaPickerListener
             )
 //            MediaPicker.launchPickerDialog(
 //                supportFragmentManager,
 //                MediaHelper.TYPE_IMAGE,
 //                MediaHelper.TYPE_VIDEO,
-//                MediaHelper.TYPE_AUDIO
+//                MediaHelper.TYPE_AUDIO,
+//                mediaPickerListener = mediaPickerListener
 //            )
             lifecycleScope.launch {
+                val mediaFolderList = MediaHelper.getAllFolder(this@MainActivity)
+                log("媒体资源文件夹")
+                mediaFolderList.map {
+                    log("媒体资源文件夹: ${it.dir}")
+                }
                 val videoFolderList =
                     MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_VIDEO, true)
                 log("视频文件夹")
                 videoFolderList.map {
-                    log("folder: ${it.dir}")
+                    log("视频文件夹: ${it.dir}")
                 }
                 val imageFolderList =
                     MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_IMAGE, true)
                 log("图片文件夹")
                 imageFolderList.map {
-                    log("folder: ${it.dir}")
+                    log("图片文件夹: ${it.dir}")
                 }
 
                 val audioFolderList =
                     MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_AUDIO, false)
                 log("音频文件夹")
                 audioFolderList.map { it ->
-                    log("folder: ${it.dir}")
-                    val musicList = MediaHelper.getAudioMedia(this@MainActivity, it.dir, 0)
-                    musicList.map {
-                        log("music: ${it.musicTitle} - ${it.musicArtist} - ${it.musicAlbum}")
-                    }
+                    log("音频文件夹: ${it.dir}")
+//                    val musicList = MediaHelper.getAudioMedia(this@MainActivity, it.dir, 0)
+//                    musicList.map {
+//                        log("music: ${it.musicTitle} - ${it.musicArtist} - ${it.musicAlbum}")
+//                    }
                 }
             }
         }
