@@ -1,5 +1,6 @@
 package app.allever.android.lib.core.base.dialog
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,11 @@ abstract class AbstractSlideBottomDialog<DB : ViewDataBinding> : BottomSheetDial
         return mBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
     override fun onStart() {
         super.onStart()
         val dialog = dialog as BottomSheetDialog?
@@ -45,6 +51,11 @@ abstract class AbstractSlideBottomDialog<DB : ViewDataBinding> : BottomSheetDial
     }
 
     open fun show(manager: FragmentManager) {
+        if (context is Activity) {
+            if ((context as Activity).isFinishing || (context as Activity).isDestroyed) {
+                return
+            }
+        }
         if (isAdded || manager.findFragmentByTag(TAG) != null) {
             return
         }

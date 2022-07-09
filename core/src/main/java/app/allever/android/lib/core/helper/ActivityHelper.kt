@@ -51,6 +51,7 @@ object ActivityHelper {
         log("remove activity reference $result")
     }
 
+    @Deprecated("")
     fun setCurrent(activity: Activity) {
         weakReference = WeakReference(activity)
     }
@@ -67,18 +68,19 @@ object ActivityHelper {
         }
     }
 
-    fun startActivity(clazz: Class<*>) {
-        val context = getTopActivity()
-        val intent = Intent(context, clazz)
+    fun startActivity(clazz: Class<*>, context: Activity? = null, block: Intent.() -> Unit = {}) {
+        val ctx = context ?: getTopActivity()
+        val intent = Intent(ctx, clazz)
+        intent.block()
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context?.startActivity(intent)
+        ctx?.startActivity(intent)
     }
 
-    inline fun <reified T> startActivity(block: Intent.() -> Unit) {
-        val context = getTopActivity()
-        val intent = Intent(context, T::class.java)
+    inline fun <reified T> startActivity(context: Activity? = null, block: Intent.() -> Unit = {}) {
+        val ctx = context ?: getTopActivity()
+        val intent = Intent(ctx, T::class.java)
         intent.block()
-        context?.startActivity(intent)
+        ctx?.startActivity(intent)
     }
 
     fun <T : Activity> startActivityForResult(
@@ -98,11 +100,11 @@ object ActivityHelper {
         }
     }
 
-    fun  getActivity(clazz: Class<*>): Activity? {
+    fun getActivity(clazz: Class<*>): Activity? {
         if (activityList.isNotEmpty()) {
             for (activityWeakReference in activityList) {
                 val activity = activityWeakReference?.get()
-                if (activity != null && activity.javaClass == clazz) {
+                if (activity?.javaClass == clazz) {
                     return activity
                 }
             }

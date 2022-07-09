@@ -21,6 +21,7 @@ import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.project.databinding.ActivityMainBinding
 import app.allever.android.lib.widget.demo.RefreshRVActivity
+import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.ripple.RippleHelper
 import kotlinx.coroutines.launch
 
@@ -79,6 +80,17 @@ class MainActivity : AbstractActivity() {
         }
 
         findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
+            MediaPicker.launchPickerActivity(
+                MediaHelper.TYPE_IMAGE,
+                MediaHelper.TYPE_VIDEO,
+                MediaHelper.TYPE_AUDIO
+            )
+//            MediaPicker.launchPickerDialog(
+//                supportFragmentManager,
+//                MediaHelper.TYPE_IMAGE,
+//                MediaHelper.TYPE_VIDEO,
+//                MediaHelper.TYPE_AUDIO
+//            )
             lifecycleScope.launch {
                 val videoFolderList =
                     MediaHelper.getAllFolder(this@MainActivity, MediaHelper.TYPE_VIDEO, true)
@@ -100,7 +112,7 @@ class MainActivity : AbstractActivity() {
                     log("folder: ${it.dir}")
                     val musicList = MediaHelper.getAudioMedia(this@MainActivity, it.dir, 0)
                     musicList.map {
-                        log("music: ${it.path}")
+                        log("music: ${it.musicTitle} - ${it.musicArtist} - ${it.musicAlbum}")
                     }
                 }
             }

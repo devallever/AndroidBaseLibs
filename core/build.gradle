@@ -48,6 +48,7 @@ dependencies {
     api androidXConstraintLayout
     //如何解决“无法访问androidx.activity.contextaware.ContextAware‘”?”
     api androidXActivityKtx
+    api androidXFragmentKtx
 
     api kotlinxCoroutinesCore
     api kotlinxCoroutinesAndroid
