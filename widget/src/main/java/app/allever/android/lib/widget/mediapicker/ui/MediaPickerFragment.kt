@@ -240,6 +240,9 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
                 log("total count = ${it.total}")
             }
             mViewModel.folderAdapter.setList(folderList)
+//            mViewModel.fragmentList.map {
+//                (it as? IMediaPicker)?.update("")
+//            }
         }
     }
 
@@ -308,30 +311,45 @@ class MediaPickerFragmentViewModel : ViewModel() {
         var audioCount = 0
         mediaFolderList.map {
             if (typeList.contains(MediaHelper.TYPE_IMAGE)) {
-                val imageList = MediaHelper.getImageMedia(context, it.dir)
+                val imageList = if (it.bucketId == null) {
+                    MediaHelper.getImageMedia(context, it.dir)
+                } else {
+                    MediaHelper.getImageMediaBeanFromBucketId(context, it.bucketId, true)
+                }
                 it.photoCount = imageList.size
                 if (imageList.isNotEmpty()) {
                     it.coverMediaBean = imageList[0]
                 }
                 imageCount += it.photoCount
                 it.imageMediaList.addAll(imageList)
+//                MediaPicker.cacheAllImageBeanList.addAll(it.imageMediaList)
             }
 
             if (typeList.contains(MediaHelper.TYPE_VIDEO)) {
-                val videoList = MediaHelper.getVideoMedia(context, it.dir)
+                val videoList = if (it.bucketId == null) {
+                    MediaHelper.getVideoMedia(context, it.dir)
+                } else {
+                    MediaHelper.getVideoMediaBeanFromBucketId(context, it.bucketId)
+                }
                 if (videoList.isNotEmpty()) {
                     it.coverMediaBean = videoList[0]
                 }
                 it.videoCount = videoList.size
                 videoCount += it.videoCount
                 it.videoMediaList.addAll(videoList)
+//                MediaPicker.cacheAllVideoBeanList.addAll(it.videoMediaList)
             }
 
             if (typeList.contains(MediaHelper.TYPE_AUDIO)) {
-                val audioList = MediaHelper.getAudioMedia(context, it.dir)
+                val audioList = if (it.bucketId == null) {
+                    MediaHelper.getAudioMedia(context, it.dir)
+                } else {
+                    MediaHelper.getAudioMediaBeanFromBucketId(context, it.bucketId)
+                }
                 it.audioCount = audioList.size
                 audioCount += it.audioCount
                 it.audioMediaList.addAll(audioList)
+//                MediaPicker.cacheAllAudioBeanList.addAll(it.audioMediaList)
             }
         }
 

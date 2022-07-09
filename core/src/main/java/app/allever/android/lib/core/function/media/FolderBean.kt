@@ -14,7 +14,7 @@ class FolderBean {
     /**
      * 文件夹的名称
      */
-    var bucketId: String = ""
+    var bucketId: String? = null
 
     /**
      * 所有资源列表
