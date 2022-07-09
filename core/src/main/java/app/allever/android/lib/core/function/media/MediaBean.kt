@@ -20,7 +20,26 @@ class MediaBean() : Parcelable {
     var uri: Uri? = null
     var type: Int = MediaType.TYPE_OTHER_IMAGE
     var duration: Long = 0
+
+    /**
+     * 文件名
+     */
     var name: String = ""
+
+    /**
+     * 标题
+     */
+    var musicTitle = ""
+
+    /***
+     * 艺人
+     */
+    var musicArtist = ""
+
+    /**
+     * 专辑
+     */
+    var musicAlbum = ""
 
     constructor(parcel: Parcel) : this() {
         path = parcel.readString().toString()
@@ -30,6 +49,9 @@ class MediaBean() : Parcelable {
         type = parcel.readInt()
         duration = parcel.readLong()
         name = parcel.readString().toString()
+        musicTitle = parcel.readString().toString()
+        musicArtist = parcel.readString().toString()
+        musicAlbum = parcel.readString().toString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -40,6 +62,9 @@ class MediaBean() : Parcelable {
         parcel.writeInt(type)
         parcel.writeLong(duration)
         parcel.writeString(name)
+        parcel.writeString(musicTitle)
+        parcel.writeString(musicArtist)
+        parcel.writeString(musicAlbum)
     }
 
     override fun describeContents(): Int {

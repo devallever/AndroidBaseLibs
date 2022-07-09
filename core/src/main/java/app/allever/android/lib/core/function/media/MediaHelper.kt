@@ -395,7 +395,7 @@ object MediaHelper {
                             )
                             )
                     val thumbPath = cursor.getString(pathIndex)
-                    log(TAG, "Gif: $thumbPath")
+                    log(TAG, "Image: $thumbPath")
 
                     if (checkImageError(thumbPath)) {
                         continue
@@ -523,7 +523,10 @@ object MediaHelper {
                         MediaStore.Audio.AudioColumns._ID,
                         MediaStore.Audio.AudioColumns.DATA,
                         MediaStore.Audio.AudioColumns.DATE_ADDED,
-                        MediaStore.Audio.AudioColumns.DURATION
+                        MediaStore.Audio.AudioColumns.DURATION,
+                        MediaStore.Audio.AudioColumns.TITLE,
+                        MediaStore.Audio.AudioColumns.ARTIST,
+                        MediaStore.Audio.AudioColumns.ALBUM
                     ),
                     null,
                     null,
@@ -536,7 +539,10 @@ object MediaHelper {
                         MediaStore.Audio.AudioColumns._ID,
                         MediaStore.Audio.AudioColumns.DATA,
                         MediaStore.Audio.AudioColumns.DATE_ADDED,
-                        MediaStore.Audio.AudioColumns.DURATION
+                        MediaStore.Audio.AudioColumns.DURATION,
+                        MediaStore.Audio.AudioColumns.TITLE,
+                        MediaStore.Audio.AudioColumns.ARTIST,
+                        MediaStore.Audio.AudioColumns.ALBUM
                     ),
                     MediaStore.Audio.AudioColumns.DATA + " like ? ",
                     arrayOf(path + File.separator + "%"),
@@ -551,6 +557,9 @@ object MediaHelper {
                 val pathIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
                 val dateIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATE_ADDED)
                 val durationIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION)
+                val titleIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE)
+                val artistIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST)
+                val albumIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM)
                 do {
                     val mediaBean = MediaBean()
                     mediaBean.uri = (
@@ -566,6 +575,9 @@ object MediaHelper {
                     mediaBean.path = (audioPath)
                     mediaBean.date = (cursor.getLong(dateIndex))
                     mediaBean.type = (MediaType.TYPE_AUDIO)
+                    mediaBean.musicTitle = cursor.getString(titleIndex)
+                    mediaBean.musicArtist = cursor.getString(artistIndex)
+                    mediaBean.musicAlbum = cursor.getString(albumIndex)
 
                     //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
                     val time = cursor.getLong(durationIndex)
