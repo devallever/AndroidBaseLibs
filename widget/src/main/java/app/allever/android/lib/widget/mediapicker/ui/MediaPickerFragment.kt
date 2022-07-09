@@ -167,24 +167,24 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
         mBinding.recyclerViewFolder.layoutManager = LinearLayoutManager(requireContext())
         mBinding.recyclerViewFolder.adapter = mViewModel.folderAdapter
         mViewModel.folderAdapter.setOnItemClickListener { adapter, view, position ->
-            val item = mViewModel.folderList[position]
-            val dir = item.dir
-            mBinding.tvTitle.text = item.name
-            showSelectAlbumContainer(false)
-            val list = mutableListOf<FolderBean>()
-            val folderBean = FolderBean()
-            folderBean.dir = dir
-            list.add(folderBean)
-            mViewModel.fragmentList.map {
-                if (position == 0) {
-                    (it as? IMediaPicker)?.update(mutableListOf())
-                } else {
-                    (it as? IMediaPicker)?.update(list)
+            try {
+                val item = mViewModel.folderList[position]
+                val dir = item.dir
+                mBinding.tvTitle.text = item.name
+                showSelectAlbumContainer(false)
+                mViewModel.fragmentList.map {
+                    if (position == 0) {
+                        (it as? IMediaPicker)?.update("")
+                    } else {
+                        (it as? IMediaPicker)?.update(dir)
+                    }
                 }
-            }
 
-            mViewModel.selectedList.clear()
-            updateConfirm()
+                mViewModel.selectedList.clear()
+                updateConfirm()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -297,6 +297,7 @@ class MediaPickerFragmentViewModel : ViewModel() {
 
     suspend fun getFolder(context: Context) = withContext(Dispatchers.IO) {
         if (MediaPicker.cacheFolderList.isNotEmpty()) {
+            folderList.addAll(MediaPicker.cacheFolderList)
             return@withContext MediaPicker.cacheFolderList
         }
 

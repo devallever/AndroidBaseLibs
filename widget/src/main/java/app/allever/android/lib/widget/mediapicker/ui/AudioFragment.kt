@@ -73,11 +73,11 @@ class AudioFragment : AbstractFragment(), IMediaPicker {
         }
     }
 
-    override fun update(list: MutableList<FolderBean>) {
+    override fun update(path: String) {
         lifecycleScope.launch {
             mViewModel.list.clear()
             mViewModel.adapter.setList(null)
-            mViewModel.list.addAll(mViewModel.fetchData(requireContext(), list))
+            mViewModel.list.addAll(mViewModel.fetchData(requireContext(), path))
             mViewModel.adapter.setList(mViewModel.list)
         }
     }
@@ -99,9 +99,30 @@ class AudioFragmentViewModel : ViewModel() {
         mediaType = bundle?.getString("MEDIA_TYPE") ?: ""
     }
 
-    suspend fun fetchData(context: Context, path: MutableList<FolderBean> = mutableListOf()) =
+    suspend fun fetchData(context: Context, path: String = "") =
         withContext(Dispatchers.IO) {
             val result = mutableListOf<MediaItem>()
+
+            if (path.isNotEmpty()) {
+                var folderBean: FolderBean? = null
+                MediaPicker.cacheFolderList.map {
+                    if (it.dir == path) {
+                        folderBean = it
+                        return@map
+                    }
+                }
+
+                folderBean?.let {
+                    it.audioMediaList.map {
+                        val mediaItem = MediaItem(it)
+                        result.add(mediaItem)
+                    }
+                    if (result.isNotEmpty()) {
+                        return@withContext result
+                    }
+                }
+            }
+
             val isAll = path.isEmpty()
             if (isAll && MediaPicker.cacheAllAudioBeanList.isNotEmpty()) {
                 MediaPicker.cacheAllAudioBeanList.map {
@@ -111,21 +132,13 @@ class AudioFragmentViewModel : ViewModel() {
                 return@withContext result
             }
 
-            val folderList = if (isAll) {
-                MediaHelper.getAllFolder(context, mediaType, true)
-            } else {
-                path
+            val list = MediaHelper.getAudioMedia(context, path, 0)
+            if (path.isEmpty()) {
+                MediaPicker.cacheAllAudioBeanList.addAll(list)
             }
-
-            folderList.map {
-                val list = MediaHelper.getAudioMedia(context, it.dir, 0)
-                if (path.isEmpty()) {
-                    MediaPicker.cacheAllAudioBeanList.addAll(list)
-                }
-                list.map {
-                    val mediaItem = MediaItem(it)
-                    result.add(mediaItem)
-                }
+            list.map {
+                val mediaItem = MediaItem(it)
+                result.add(mediaItem)
             }
             result
         }

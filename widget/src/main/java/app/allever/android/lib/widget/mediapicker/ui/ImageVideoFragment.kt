@@ -90,11 +90,11 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker {
         }
     }
 
-    override fun update(list: MutableList<FolderBean>) {
+    override fun update(path: String) {
         lifecycleScope.launch {
             mViewModel.list.clear()
             mViewModel.adapter.setList(null)
-            mViewModel.list.addAll(mViewModel.fetchData(requireContext(), list))
+            mViewModel.list.addAll(mViewModel.fetchData(requireContext(), path))
             mViewModel.adapter.setList(mViewModel.list)
         }
     }
@@ -116,9 +116,39 @@ class ImageVideoFragmentViewModel : ViewModel() {
         mediaType = bundle?.getString("MEDIA_TYPE") ?: ""
     }
 
-    suspend fun fetchData(context: Context, path: MutableList<FolderBean> = mutableListOf()) =
+    suspend fun fetchData(context: Context, path: String = "") =
         withContext(Dispatchers.IO) {
             val result = mutableListOf<MediaItem>()
+
+            var folderBean: FolderBean? = null
+            if (path.isNotEmpty()) {
+                MediaPicker.cacheFolderList.map {
+                    if (it.dir == path) {
+                        folderBean = it
+                        return@map
+                    }
+                }
+                folderBean?.let {
+                    if (mediaType == MediaHelper.TYPE_IMAGE) {
+                        it.imageMediaList.map {
+                            val mediaItem = MediaItem(it)
+                            result.add(mediaItem)
+                        }
+                        if (result.isNotEmpty()) {
+                            return@withContext result
+                        }
+                    } else if (mediaType == MediaHelper.TYPE_VIDEO) {
+                        it.videoMediaList.map {
+                            val mediaItem = MediaItem(it)
+                            result.add(mediaItem)
+                        }
+                        if (result.isNotEmpty()) {
+                            return@withContext result
+                        }
+                    }
+                }
+            }
+
             val isAll = path.isEmpty()
             if (isAll) {
                 if (mediaType == MediaHelper.TYPE_IMAGE) {
@@ -140,30 +170,24 @@ class ImageVideoFragmentViewModel : ViewModel() {
                 }
 
             }
-            val folderList = if (path.isEmpty()) {
-                MediaHelper.getAllFolder(context, mediaType, true)
+
+            val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
+                MediaHelper.getVideoMedia(context, path, 0)
             } else {
-                path
+                MediaHelper.getImageMedia(context, path)
             }
-            folderList.map {
-                val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
-                    MediaHelper.getVideoMedia(context, it.dir, 0)
-                } else {
-                    MediaHelper.getImageMedia(context, it.dir)
-                }
 
-                if (path.isEmpty()) {
-                    if (mediaType == MediaHelper.TYPE_IMAGE) {
-                        MediaPicker.cacheAllImageBeanList.addAll(list)
-                    } else if (mediaType == MediaHelper.TYPE_VIDEO) {
-                        MediaPicker.cacheAllVideoBeanList.addAll(list)
-                    }
+            if (path.isEmpty()) {
+                if (mediaType == MediaHelper.TYPE_IMAGE) {
+                    MediaPicker.cacheAllImageBeanList.addAll(list)
+                } else if (mediaType == MediaHelper.TYPE_VIDEO) {
+                    MediaPicker.cacheAllVideoBeanList.addAll(list)
                 }
+            }
 
-                list.map {
-                    val mediaItem = MediaItem(it)
-                    result.add(mediaItem)
-                }
+            list.map {
+                val mediaItem = MediaItem(it)
+                result.add(mediaItem)
             }
             result
         }
