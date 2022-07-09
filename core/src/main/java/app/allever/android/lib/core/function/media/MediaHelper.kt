@@ -123,6 +123,15 @@ object MediaHelper {
 
     private const val BUCKET_ORDER_BY = "$COLUMN_DATE_TAKEN DESC"
 
+    fun getTypeName(@Type type: String): String {
+        when(type) {
+            TYPE_IMAGE -> return "图片"
+            TYPE_VIDEO -> return "视频"
+            TYPE_AUDIO -> return "歌曲"
+        }
+        return "其他"
+    }
+
     /**
      * 获取所有文件夹
      */

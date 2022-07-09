@@ -148,7 +148,7 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
 
     private fun initViewPager() {
         val adapter =
-            fragmentManager?.let { PagerAdapter(it, mViewModel.fragmentList, mViewModel.typeList) }
+            fragmentManager?.let { PagerAdapter(it, mViewModel.fragmentList, mViewModel.titleList) }
         mBinding.viewPager.adapter = adapter
         mBinding.viewPager.offscreenPageLimit = mViewModel.typeList.size
     }
@@ -281,6 +281,7 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
 
 class MediaPickerFragmentViewModel : ViewModel() {
     lateinit var typeList: ArrayList<String>
+    val titleList = ArrayList<String>()
     val fragmentList = arrayListOf<Fragment>()
 
     //目录列表数据
@@ -295,6 +296,7 @@ class MediaPickerFragmentViewModel : ViewModel() {
                 ?: ArrayList()
         typeList.map {
             log("MediaPickerFragment 媒体类型：${it}")
+            titleList.add(MediaHelper.getTypeName(it))
         }
     }
 
