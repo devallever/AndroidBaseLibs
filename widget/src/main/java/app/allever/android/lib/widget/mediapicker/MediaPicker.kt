@@ -1,6 +1,8 @@
 package app.allever.android.lib.widget.mediapicker
 
 import androidx.fragment.app.FragmentManager
+import app.allever.android.lib.core.function.media.FolderBean
+import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.widget.mediapicker.ui.MediaPickerActivity
 import app.allever.android.lib.widget.mediapicker.ui.MediaPickerDialog
@@ -8,6 +10,11 @@ import app.allever.android.lib.widget.mediapicker.ui.MediaPickerDialog
 object MediaPicker {
 
     private val mMediaPickerListenerSet = mutableListOf<MediaPickerListener>()
+
+    val cacheFolderList = mutableListOf<FolderBean>()
+    val cacheAllImageBeanList = mutableListOf<MediaBean>()
+    val cacheAllVideoBeanList = mutableListOf<MediaBean>()
+    val cacheAllAudioBeanList = mutableListOf<MediaBean>()
 
     fun launchPickerActivity(
         vararg type: String,

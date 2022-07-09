@@ -17,6 +17,7 @@ import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
+import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.mediapicker.ui.adapter.AudioAdapter
 import app.allever.android.lib.widget.mediapicker.ui.adapter.ClickListener
 import kotlinx.coroutines.Dispatchers
@@ -100,14 +101,27 @@ class AudioFragmentViewModel : ViewModel() {
 
     suspend fun fetchData(context: Context, path: MutableList<FolderBean> = mutableListOf()) =
         withContext(Dispatchers.IO) {
-            val folderList = if (path.isEmpty()) {
+            val result = mutableListOf<MediaItem>()
+            val isAll = path.isEmpty()
+            if (isAll && MediaPicker.cacheAllAudioBeanList.isNotEmpty()) {
+                MediaPicker.cacheAllAudioBeanList.map {
+                    val mediaItem = MediaItem(it)
+                    result.add(mediaItem)
+                }
+                return@withContext result
+            }
+
+            val folderList = if (isAll) {
                 MediaHelper.getAllFolder(context, mediaType, true)
             } else {
                 path
             }
-            val result = mutableListOf<MediaItem>()
+
             folderList.map {
                 val list = MediaHelper.getAudioMedia(context, it.dir, 0)
+                if (path.isEmpty()) {
+                    MediaPicker.cacheAllAudioBeanList.addAll(list)
+                }
                 list.map {
                     val mediaItem = MediaItem(it)
                     result.add(mediaItem)

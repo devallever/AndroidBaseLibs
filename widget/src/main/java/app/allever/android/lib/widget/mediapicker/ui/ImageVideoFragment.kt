@@ -19,6 +19,7 @@ import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
+import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.mediapicker.ui.adapter.ClickListener
 import app.allever.android.lib.widget.mediapicker.ui.adapter.ImageVideoAdapter
 import kotlinx.coroutines.Dispatchers
@@ -117,17 +118,46 @@ class ImageVideoFragmentViewModel : ViewModel() {
 
     suspend fun fetchData(context: Context, path: MutableList<FolderBean> = mutableListOf()) =
         withContext(Dispatchers.IO) {
+            val result = mutableListOf<MediaItem>()
+            val isAll = path.isEmpty()
+            if (isAll) {
+                if (mediaType == MediaHelper.TYPE_IMAGE) {
+                    if (MediaPicker.cacheAllImageBeanList.isNotEmpty()) {
+                        MediaPicker.cacheAllImageBeanList.map {
+                            val mediaItem = MediaItem(it)
+                            result.add(mediaItem)
+                        }
+                        return@withContext result
+                    }
+                } else if (mediaType == MediaHelper.TYPE_VIDEO) {
+                    if (MediaPicker.cacheAllVideoBeanList.isNotEmpty()) {
+                        MediaPicker.cacheAllVideoBeanList.map {
+                            val mediaItem = MediaItem(it)
+                            result.add(mediaItem)
+                        }
+                        return@withContext result
+                    }
+                }
+
+            }
             val folderList = if (path.isEmpty()) {
                 MediaHelper.getAllFolder(context, mediaType, true)
             } else {
                 path
             }
-            val result = mutableListOf<MediaItem>()
             folderList.map {
                 val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
                     MediaHelper.getVideoMedia(context, it.dir, 0)
                 } else {
                     MediaHelper.getImageMedia(context, it.dir)
+                }
+
+                if (path.isEmpty()) {
+                    if (mediaType == MediaHelper.TYPE_IMAGE) {
+                        MediaPicker.cacheAllImageBeanList.addAll(list)
+                    } else if (mediaType == MediaHelper.TYPE_VIDEO) {
+                        MediaPicker.cacheAllVideoBeanList.addAll(list)
+                    }
                 }
 
                 list.map {

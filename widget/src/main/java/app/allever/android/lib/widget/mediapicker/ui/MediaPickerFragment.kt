@@ -176,7 +176,11 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
             folderBean.dir = dir
             list.add(folderBean)
             mViewModel.fragmentList.map {
-                (it as? IMediaPicker)?.update(list)
+                if (position == 0) {
+                    (it as? IMediaPicker)?.update(mutableListOf())
+                } else {
+                    (it as? IMediaPicker)?.update(list)
+                }
             }
 
             mViewModel.selectedList.clear()
@@ -292,6 +296,10 @@ class MediaPickerFragmentViewModel : ViewModel() {
     }
 
     suspend fun getFolder(context: Context) = withContext(Dispatchers.IO) {
+        if (MediaPicker.cacheFolderList.isNotEmpty()) {
+            return@withContext MediaPicker.cacheFolderList
+        }
+
         val startTime = System.currentTimeMillis()
         val mediaFolderList = MediaHelper.getAllFolder(context)
         var imageCount = 0
@@ -305,6 +313,7 @@ class MediaPickerFragmentViewModel : ViewModel() {
                     it.coverMediaBean = imageList[0]
                 }
                 imageCount += it.photoCount
+                it.imageMediaList.addAll(imageList)
             }
 
             if (typeList.contains(MediaHelper.TYPE_VIDEO)) {
@@ -314,12 +323,14 @@ class MediaPickerFragmentViewModel : ViewModel() {
                 }
                 it.videoCount = videoList.size
                 videoCount += it.videoCount
+                it.videoMediaList.addAll(videoList)
             }
 
             if (typeList.contains(MediaHelper.TYPE_AUDIO)) {
                 val audioList = MediaHelper.getAudioMedia(context, it.dir)
                 it.audioCount = audioList.size
                 audioCount += it.audioCount
+                it.audioMediaList.addAll(audioList)
             }
         }
 
@@ -327,6 +338,16 @@ class MediaPickerFragmentViewModel : ViewModel() {
         log("getFolder 耗时：${(endTime - startTime)}")
 
         val allFolderBean = FolderBean()
+        mediaFolderList.mapIndexed { index, folderBean ->
+            folderBean.imageMediaList.map {
+                allFolderBean.coverMediaBean = it
+                return@mapIndexed
+            }
+            folderBean.videoMediaList.map {
+                allFolderBean.coverMediaBean = it
+                return@mapIndexed
+            }
+        }
         allFolderBean.audioCount = audioCount
         allFolderBean.photoCount = imageCount
         allFolderBean.videoCount = videoCount
@@ -334,6 +355,9 @@ class MediaPickerFragmentViewModel : ViewModel() {
         allFolderBean.name = "全部"
         mediaFolderList.add(0, allFolderBean)
         folderList.addAll(mediaFolderList)
+        if (MediaPicker.cacheFolderList.isEmpty()) {
+            MediaPicker.cacheFolderList.addAll(mediaFolderList)
+        }
         mediaFolderList
     }
 }
