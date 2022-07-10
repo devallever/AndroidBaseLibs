@@ -206,7 +206,7 @@ public class MediaFile {
     }
 
     //重载方法，根据文件路径识别音频文件
-    public static boolean isAudioFileType(String path) {
+    public static boolean isAudioFile(String path) {
         MediaFileType type = getFileType(path);
         if (null != type) {
             return isAudioFileType(type.fileType);
