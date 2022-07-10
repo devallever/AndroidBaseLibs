@@ -162,161 +162,160 @@ object MediaHelper {
         context: Context,
         @Type type: String = TYPE_ALL,
         includeGif: Boolean = false
-    ) =
-        withContext(Dispatchers.IO) {
+    ) = withContext(Dispatchers.IO) {
 
-            val imageFolderList = mutableListOf<FolderBean>()
-            var cursor: Cursor? = null
-            try {
-                val contentResolver = App.context.contentResolver
+        val imageFolderList = mutableListOf<FolderBean>()
+        var cursor: Cursor? = null
+        try {
+            val contentResolver = App.context.contentResolver
 
-                val selectionArgs = when (type) {
-                    TYPE_IMAGE -> SELECTION_ARGS_IMAGE
-                    TYPE_VIDEO -> SELECTION_ARGS_VIDEO
-                    TYPE_AUDIO -> SELECTION_ARGS_AUDIO
-                    else -> SELECTION_ARGS
-                }
+            val selectionArgs = when (type) {
+                TYPE_IMAGE -> SELECTION_ARGS_IMAGE
+                TYPE_VIDEO -> SELECTION_ARGS_VIDEO
+                TYPE_AUDIO -> SELECTION_ARGS_AUDIO
+                else -> SELECTION_ARGS
+            }
 
-                val selection = if (type.isEmpty()) {
-                    SELECTION_FOR_MEDIA_TYPE
-                } else {
-                    SELECTION_FOR_SINGLE_MEDIA_TYPE_29
-                }
+            val selection = if (type.isEmpty()) {
+                SELECTION_FOR_MEDIA_TYPE
+            } else {
+                SELECTION_FOR_SINGLE_MEDIA_TYPE_29
+            }
 
-                cursor = contentResolver.query(
-                    QUERY_URI,
-                    PROJECTION_29,
-                    selection,
-                    selectionArgs,
-                    BUCKET_ORDER_BY
-                )
+            cursor = contentResolver.query(
+                QUERY_URI,
+                PROJECTION_29,
+                selection,
+                selectionArgs,
+                BUCKET_ORDER_BY
+            )
 
-                // Pseudo GROUP BY
-                val countMap = HashMap<Long, Long>()
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        val bucketId = cursor.getLong(cursor.getColumnIndex(COLUMN_BUCKET_ID))
+            // Pseudo GROUP BY
+            val countMap = HashMap<Long, Long>()
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    val bucketId = cursor.getLong(cursor.getColumnIndex(COLUMN_BUCKET_ID))
 
-                        var count = countMap[bucketId]
-                        if (count == null) {
-                            count = 1L
-                        } else {
-                            count++
-                        }
-                        countMap[bucketId] = count
+                    var count = countMap[bucketId]
+                    if (count == null) {
+                        count = 1L
+                    } else {
+                        count++
                     }
+                    countMap[bucketId] = count
                 }
+            }
 
-                if (cursor != null) {
-                    if (cursor.moveToFirst()) {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
 
-                        val done = HashSet<Long>()
+                    val done = HashSet<Long>()
 
-                        do {
-                            val bucketId = cursor.getLong(cursor.getColumnIndex(COLUMN_BUCKET_ID))
-                            log(TAG, "bucketId = $bucketId")
-                            if (done.contains(bucketId)) {
-                                continue
+                    do {
+                        val bucketId = cursor.getLong(cursor.getColumnIndex(COLUMN_BUCKET_ID))
+                        log(TAG, "bucketId = $bucketId")
+                        if (done.contains(bucketId)) {
+                            continue
+                        }
+
+                        val fileId = cursor.getLong(
+                            cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)
+                        )
+                        log(TAG, "id = $fileId")
+                        val bucketDisplayName = cursor.getString(
+                            cursor.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME)
+                        )
+                        log(TAG, "displayName = $bucketDisplayName")
+                        val mimeType = cursor.getString(
+                            cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)
+                        )
+                        log(TAG, "mimeType = $mimeType")
+                        val uri = getUri(cursor)
+                        log(TAG, "uri = $uri")
+                        val count = countMap[bucketId]!!
+                        log(TAG, "count = $count")
+                        val date = cursor.getLong(
+                            cursor.getColumnIndex(COLUMN_DATE_TAKEN)
+                        )
+                        log(TAG, "date = $date")
+                        val filePath = cursor.getString(
+                            cursor.getColumnIndex(COLUMN_DATA)
+                        )
+                        val path =
+                            filePath.substring(0, filePath.lastIndexOf(File.separatorChar))
+                        log(TAG, "path = $path")
+
+                        //-----------------------------------------
+                        val imageFolder = FolderBean()
+                        imageFolder.total = count.toInt()
+                        val bean = MediaBean()
+                        bean.date = date
+                        bean.path = filePath
+
+                        bean.uri = ContentUris.withAppendedId(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            fileId
+                        )
+                        if (bucketDisplayName == null) {
+                            imageFolder.setDirAndName(path)
+                        } else {
+                            imageFolder.dir = path
+                            imageFolder.name = bucketDisplayName
+                        }
+                        imageFolder.bucketId = bucketId.toString()
+
+                        if (type == TYPE_IMAGE) {
+                            when {
+                                MediaFile.isGifFileType(bean.path) -> bean.type =
+                                    MediaType.TYPE_GIF
+                                MediaFile.isJPGFileType(bean.path) -> bean.type =
+                                    MediaType.TYPE_JPG
+                                MediaFile.isPNGFileType(bean.path) -> bean.type =
+                                    MediaType.TYPE_PNG
+                                else -> bean.type = MediaType.TYPE_OTHER_IMAGE
                             }
 
-                            val fileId = cursor.getLong(
-                                cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)
-                            )
-                            log(TAG, "id = $fileId")
-                            val bucketDisplayName = cursor.getString(
-                                cursor.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME)
-                            )
-                            log(TAG, "displayName = $bucketDisplayName")
-                            val mimeType = cursor.getString(
-                                cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)
-                            )
-                            log(TAG, "mimeType = $mimeType")
-                            val uri = getUri(cursor)
-                            log(TAG, "uri = $uri")
-                            val count = countMap[bucketId]!!
-                            log(TAG, "count = $count")
-                            val date = cursor.getLong(
-                                cursor.getColumnIndex(COLUMN_DATE_TAKEN)
-                            )
-                            log(TAG, "date = $date")
-                            val filePath = cursor.getString(
-                                cursor.getColumnIndex(COLUMN_DATA)
-                            )
-                            val path =
-                                filePath.substring(0, filePath.lastIndexOf(File.separatorChar))
-                            log(TAG, "path = $path")
-
-                            //-----------------------------------------
-                            val imageFolder = FolderBean()
-                            imageFolder.total = count.toInt()
-                            val bean = MediaBean()
-                            bean.date = date
-                            bean.path = filePath
-
-                            bean.uri = ContentUris.withAppendedId(
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                fileId
-                            )
-                            if (bucketDisplayName == null) {
-                                imageFolder.setDirAndName(path)
-                            } else {
-                                imageFolder.dir = path
-                                imageFolder.name = bucketDisplayName
-                            }
-                            imageFolder.bucketId = bucketId.toString()
-
-                            if (type == TYPE_IMAGE) {
-                                when {
-                                    MediaFile.isGifFileType(bean.path) -> bean.type =
-                                        MediaType.TYPE_GIF
-                                    MediaFile.isJPGFileType(bean.path) -> bean.type =
-                                        MediaType.TYPE_JPG
-                                    MediaFile.isPNGFileType(bean.path) -> bean.type =
-                                        MediaType.TYPE_PNG
-                                    else -> bean.type = MediaType.TYPE_OTHER_IMAGE
-                                }
-
-                                if (!includeGif) {
-                                    val imgExcludeGif =
-                                        getImageMedia(
-                                            context,
-                                            path, false
-                                        )
-                                    if (imgExcludeGif.size > 0) {
-                                        imageFolder.coverMediaBean = (imgExcludeGif[0])
-                                        imageFolder.total = imgExcludeGif.size
-                                        imageFolderList.add(imageFolder)
-                                    }
-                                } else {
-                                    imageFolder.coverMediaBean = bean
+                            if (!includeGif) {
+                                val imgExcludeGif =
+                                    getImageMedia(
+                                        context,
+                                        path, false
+                                    )
+                                if (imgExcludeGif.size > 0) {
+                                    imageFolder.coverMediaBean = (imgExcludeGif[0])
+                                    imageFolder.total = imgExcludeGif.size
                                     imageFolderList.add(imageFolder)
                                 }
-                            } else if (type == TYPE_VIDEO) {
-                                bean.type = MediaType.TYPE_VIDEO
+                            } else {
                                 imageFolder.coverMediaBean = bean
                                 imageFolderList.add(imageFolder)
-                            } else if (type == TYPE_AUDIO) {
-                                bean.type = MediaType.TYPE_AUDIO
-                                imageFolderList.add(imageFolder)
-                            } else {
-                                imageFolderList.add(imageFolder)
                             }
+                        } else if (type == TYPE_VIDEO) {
+                            bean.type = MediaType.TYPE_VIDEO
+                            imageFolder.coverMediaBean = bean
+                            imageFolderList.add(imageFolder)
+                        } else if (type == TYPE_AUDIO) {
+                            bean.type = MediaType.TYPE_AUDIO
+                            imageFolderList.add(imageFolder)
+                        } else {
+                            imageFolderList.add(imageFolder)
+                        }
 
-                            done.add(bucketId)
+                        done.add(bucketId)
 
-                            log(TAG, "-----------------------------------------\n\n")
-                        } while (cursor.moveToNext())
-                    }
+                        log(TAG, "-----------------------------------------\n\n")
+                    } while (cursor.moveToNext())
                 }
-
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                cursor?.close()
             }
-            imageFolderList
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            cursor?.close()
         }
+        imageFolderList
+    }
 
     suspend fun getImageMedia(context: Context, path: String, includeGif: Boolean = true) =
         withContext(Dispatchers.IO) {
