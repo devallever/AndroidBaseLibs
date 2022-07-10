@@ -81,12 +81,7 @@ class ImageVideoAdapter :
 
         binding.root.setOnClickListener {
             item.isChecked = !item.isChecked
-            val result = mClickListener?.onItemClick(item, position)
-//            if (result == true) {
-//                checkSelected(holder, item)
-//            } else {
-//                item.isChecked = false
-//            }
+            mClickListener?.onItemClick(item, position)
             setData(position, item)
         }
 

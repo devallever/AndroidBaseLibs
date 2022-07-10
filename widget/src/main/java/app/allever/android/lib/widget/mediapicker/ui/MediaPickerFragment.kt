@@ -265,10 +265,6 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
         }
     }
 
-    override fun onConfirm() {
-        activity?.finish()
-    }
-
     fun setCallback(callback: Callback) {
         mCallback = callback
     }
@@ -306,89 +302,6 @@ class MediaPickerFragmentViewModel : ViewModel() {
             return@withContext MediaPicker.cacheFolderList
         }
 
-        val startTime = System.currentTimeMillis()
-        val mediaFolderList = MediaHelper.getAllFolder(context)
-        var imageCount = 0
-        var videoCount = 0
-        var audioCount = 0
-        val emptyList = mutableListOf<FolderBean>()
-        mediaFolderList.map {
-            if (typeList.contains(MediaHelper.TYPE_IMAGE)) {
-                val imageList = if (it.bucketId == null) {
-                    MediaHelper.getImageMedia(context, it.dir)
-                } else {
-                    MediaHelper.getImageMediaBeanFromBucketId(context, it.bucketId, true)
-                }
-                it.photoCount = imageList.size
-                if (imageList.isNotEmpty()) {
-                    it.coverMediaBean = imageList[0]
-                }
-                imageCount += it.photoCount
-                it.imageMediaList.addAll(imageList)
-//                MediaPicker.cacheAllImageBeanList.addAll(it.imageMediaList)
-            }
-
-            if (typeList.contains(MediaHelper.TYPE_VIDEO)) {
-                val videoList = if (it.bucketId == null) {
-                    MediaHelper.getVideoMedia(context, it.dir)
-                } else {
-                    MediaHelper.getVideoMediaBeanFromBucketId(context, it.bucketId)
-                }
-                if (videoList.isNotEmpty()) {
-                    it.coverMediaBean = videoList[0]
-                }
-                it.videoCount = videoList.size
-                videoCount += it.videoCount
-                it.videoMediaList.addAll(videoList)
-//                MediaPicker.cacheAllVideoBeanList.addAll(it.videoMediaList)
-            }
-
-            if (typeList.contains(MediaHelper.TYPE_AUDIO)) {
-                val audioList = if (it.bucketId == null) {
-                    MediaHelper.getAudioMedia(context, it.dir)
-                } else {
-                    MediaHelper.getAudioMediaBeanFromBucketId(context, it.bucketId)
-                }
-                it.audioCount = audioList.size
-                audioCount += it.audioCount
-                it.audioMediaList.addAll(audioList)
-//                MediaPicker.cacheAllAudioBeanList.addAll(it.audioMediaList)
-            }
-
-            //暂时解决目录出现空数据也显示在列表
-            if (it.audioCount <= 0 && it.videoCount <= 0 && it.photoCount <= 0) {
-                emptyList.add(it)
-            }
-        }
-
-        emptyList.map {
-            mediaFolderList.remove(it)
-        }
-
-        val endTime = System.currentTimeMillis()
-        log("getFolder 耗时：${(endTime - startTime)}")
-
-        val allFolderBean = FolderBean()
-        mediaFolderList.mapIndexed { index, folderBean ->
-            folderBean.imageMediaList.map {
-                allFolderBean.coverMediaBean = it
-                return@mapIndexed
-            }
-            folderBean.videoMediaList.map {
-                allFolderBean.coverMediaBean = it
-                return@mapIndexed
-            }
-        }
-        allFolderBean.audioCount = audioCount
-        allFolderBean.photoCount = imageCount
-        allFolderBean.videoCount = videoCount
-        allFolderBean.total = audioCount + imageCount + videoCount
-        allFolderBean.name = "全部"
-        mediaFolderList.add(0, allFolderBean)
-        folderList.addAll(mediaFolderList)
-        if (MediaPicker.cacheFolderList.isEmpty()) {
-            MediaPicker.cacheFolderList.addAll(mediaFolderList)
-        }
-        mediaFolderList
+        MediaPicker.fetchFolderList(context, typeList)
     }
 }

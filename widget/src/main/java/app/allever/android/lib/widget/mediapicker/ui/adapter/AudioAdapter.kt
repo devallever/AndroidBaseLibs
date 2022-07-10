@@ -19,9 +19,6 @@ class AudioAdapter :
 
     private var mClickListener: ClickListener? = null
     private lateinit var mBinding: RvItemAudioBinding
-
-    private val unknownArtist = "未知"
-
     private var songPlayer = SongMediaPlayer()
     private var currentPlayItemStateInfo: MediaItem? = null
     private val onPlayerListener = object : SongMediaPlayer.OnPlayerListener {
@@ -47,7 +44,6 @@ class AudioAdapter :
                 songPlayer.pause()
                 isi.playing = false
                 setData(position, isi)
-//                notifyItemChanged(position, position)
             }
         }
 
@@ -59,7 +55,6 @@ class AudioAdapter :
                 prevISI.playing = false
                 prevISI.loaded = false
                 setData(position, prevISI)
-//                notifyItemChanged(prevISI.position, prevISI.position)
                 songPlayer.reset()
             }
             currentPlayItemStateInfo = isi
@@ -81,19 +76,13 @@ class AudioAdapter :
             if (isi != null && position >= 0) {
                 isi.playing = false
                 setData(position, isi)
-//                notifyItemChanged(isi.position, isi.position)
             }
         }
 
-        override fun onError(err: String) {
-        }
+        override fun onError(err: String) {}
 
-        override fun onProgress(time: Int) {
-
-
-        }
+        override fun onProgress(time: Int) {}
     }
-
 
     init {
         songPlayer.addOnPlayerListener(onPlayerListener)
@@ -110,12 +99,7 @@ class AudioAdapter :
 
         binding.ivSelect.setOnClickListener {
             item.isChecked = !item.isChecked
-            val result = mClickListener?.onItemClick(item, position)
-//            if (result == true) {
-//                checkSelected(holder, item)
-//            } else {
-//                item.isChecked = false
-//            }
+            mClickListener?.onItemClick(item, position)
             setData(position, item)
         }
 
@@ -182,7 +166,6 @@ class AudioAdapter :
             currentPlayItemStateInfo = null
         } catch (e: Exception) {
             logE("error: release: ${e.message}")
-
         }
     }
 }

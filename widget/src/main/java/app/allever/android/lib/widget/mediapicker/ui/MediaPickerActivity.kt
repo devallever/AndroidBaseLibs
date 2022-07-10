@@ -5,12 +5,16 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
+import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.function.media.MediaHelper
+import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.FragmentHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.ActivityMediaPickerBinding
 import app.allever.android.lib.widget.mediapicker.MediaPicker
+import kotlinx.coroutines.launch
 
 class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
     companion object {
@@ -33,6 +37,16 @@ class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
             fragment,
             mBinding.fragmentContainer.id
         )
+    }
+
+    override fun finish() {
+        super.finish()
+        CoroutineHelper.DEFAULT.launch {
+            MediaPicker.fetchFromPhone(App.context, MediaHelper.TYPE_IMAGE)
+            MediaPicker.fetchFromPhone(App.context, MediaHelper.TYPE_VIDEO)
+            MediaPicker.fetchFromPhone(App.context, MediaHelper.TYPE_AUDIO)
+            MediaPicker.fetchFolderList(App.context, mViewModel.typeList)
+        }
     }
 
     override fun onFinish() {

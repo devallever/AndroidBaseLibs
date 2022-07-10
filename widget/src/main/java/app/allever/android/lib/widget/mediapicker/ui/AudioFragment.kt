@@ -12,9 +12,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.allever.android.lib.core.base.AbstractFragment
-import app.allever.android.lib.core.function.media.FolderBean
-import app.allever.android.lib.core.function.media.MediaBean
-import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
@@ -53,14 +50,9 @@ class AudioFragment : AbstractFragment(), IMediaPicker {
         mBinding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         mBinding.recyclerView.adapter = mViewModel.adapter
         mViewModel.adapter.setOptionListener(object : ClickListener {
-            override fun onItemClick(mediaItem: MediaItem, position: Int): Boolean {
+            override fun onItemClick(mediaItem: MediaItem, position: Int) {
                 mSelectListener?.onItemSelected(mediaItem)
-                return true
             }
-
-            override fun onItemLongClick(mediaItem: MediaItem, position: Int) {
-            }
-
         })
     }
 
@@ -105,70 +97,17 @@ class AudioFragmentViewModel : ViewModel() {
         withContext(Dispatchers.IO) {
             val result = mutableListOf<MediaItem>()
 
-            result.addAll(fetchFromFolderCache(path))
+            result.addAll(MediaPicker.fetchFromFolderCache(mediaType, path))
             if (result.isNotEmpty()) {
                 return@withContext result
             }
 
-            result.addAll(fetchFromCache(path))
+            result.addAll(MediaPicker.fetchFromCache(mediaType, path))
             if (result.isNotEmpty()) {
                 return@withContext result
             }
 
-            result.addAll(fetchFromPhone(context, path))
-            result
-        }
-
-    private suspend fun fetchFromFolderCache(path: String) =
-        withContext(Dispatchers.IO) {
-            val result = mutableListOf<MediaItem>()
-            if (path.isNotEmpty()) {
-                var folderBean: FolderBean? = null
-                MediaPicker.cacheFolderList.map {
-                    if (it.dir == path) {
-                        folderBean = it
-                        return@map
-                    }
-                }
-
-                folderBean?.let {
-                    result.addAll(generateMediaItemList(it.audioMediaList))
-                    if (result.isNotEmpty()) {
-                        return@withContext result
-                    }
-                }
-            }
-            result
-        }
-
-    private suspend fun fetchFromCache(path: String) = withContext(Dispatchers.IO) {
-        val result = mutableListOf<MediaItem>()
-        val isAll = path.isEmpty()
-        if (isAll && MediaPicker.cacheAllAudioBeanList.isNotEmpty()) {
-            result.addAll(generateMediaItemList(MediaPicker.cacheAllAudioBeanList))
-            return@withContext result
-        }
-        result
-    }
-
-    private suspend fun fetchFromPhone(context: Context, path: String) =
-        withContext(Dispatchers.IO) {
-            val result = mutableListOf<MediaItem>()
-            val list = MediaHelper.getAudioMedia(context, path, 0)
-            if (path.isEmpty()) {
-                MediaPicker.cacheAllAudioBeanList.addAll(list)
-            }
-            result.addAll(generateMediaItemList(list))
-            result
-        }
-
-    private suspend fun generateMediaItemList(list: MutableList<MediaBean>): Collection<MediaItem> =
-        withContext(Dispatchers.IO) {
-            val result = mutableListOf<MediaItem>()
-            list.map {
-                val mediaItem = MediaItem(it)
-                result.add(mediaItem)
-            }
+            result.addAll(MediaPicker.fetchFromPhone(context, mediaType, path))
             result
         }
 }

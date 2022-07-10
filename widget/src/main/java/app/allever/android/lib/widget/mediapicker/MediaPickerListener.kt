@@ -8,8 +8,8 @@ interface MediaPickerListener {
      */
     fun onPicked(
         all: MutableList<MediaBean>,
-        imageList: MutableList<MediaBean>?,
-        videoList: MutableList<MediaBean>?,
-        audioList: MutableList<MediaBean>?
+        imageList: MutableList<MediaBean>,
+        videoList: MutableList<MediaBean>,
+        audioList: MutableList<MediaBean>
     )
 }

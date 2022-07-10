@@ -56,7 +56,7 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
             mViewModel.mediaItemList
         )
         mBinding.idVpImage.adapter = mViewModel.pagerAdapter
-        mBinding.idVpImage.addOnPageChangeListener(object : LineIndicator.OnPageChangeListener,
+        mBinding.idVpImage.addOnPageChangeListener(object :
             ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
                 if (mViewModel.checkOutOfBoundary()) {
@@ -74,7 +74,6 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
 
             override fun onPageScrollStateChanged(p0: Int) {}
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
-            override fun onPageChange(page: Int) {}
         })
 
         mViewModel.pagerAdapter?.notifyDataSetChanged()
@@ -124,6 +123,9 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
     }
 
     interface Callback {
+        /**
+         * 当预览页面选中后，刷新列表item选中状态
+         */
         fun updateSelected(mediaItem: MediaItem)
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
+import app.allever.android.lib.core.ext.toastLong
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
 import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
@@ -84,13 +85,16 @@ class MainActivity : AbstractActivity() {
         val mediaPickerListener = object : MediaPickerListener {
             override fun onPicked(
                 all: MutableList<MediaBean>,
-                imageList: MutableList<MediaBean>?,
-                videoList: MutableList<MediaBean>?,
-                audioList: MutableList<MediaBean>?
+                imageList: MutableList<MediaBean>,
+                videoList: MutableList<MediaBean>,
+                audioList: MutableList<MediaBean>
             ) {
+                val builder = StringBuilder()
                 all.map {
+                    builder.append(it.path).append("\n")
                     log("选中：${it.path}")
                 }
+                toastLong(builder.toString())
             }
         }
 
@@ -109,6 +113,7 @@ class MainActivity : AbstractActivity() {
 //                MediaHelper.TYPE_AUDIO,
 //                mediaPickerListener = mediaPickerListener
 //            )
+            return@setOnClickListener
             lifecycleScope.launch {
                 val mediaFolderList = MediaHelper.getAllFolder(this@MainActivity)
                 log("媒体资源文件夹")

@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.AsyncTask
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.MotionEvent
@@ -16,7 +15,11 @@ import android.widget.ImageView
 import android.widget.VideoView
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.toast
+import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.widget.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class VideoViewHolder
     : View.OnClickListener, View.OnTouchListener, MediaPlayer.OnCompletionListener,
@@ -57,11 +60,6 @@ class VideoViewHolder
         }
     }
 
-
-    init {
-//        initVideoView()
-    }
-
     private fun initVideoView() {
         mIvPlay?.setOnClickListener(this)
         mVideoView?.setOnTouchListener(this)
@@ -79,13 +77,6 @@ class VideoViewHolder
         mAlphaAnimator?.addListener(mAnimListener)
     }
 
-    fun initVideo(videoView: VideoView?, path: String?, ivPlay: ImageView?) {
-        mIvPlay = ivPlay
-        mVideoView = videoView
-        mPath = path
-        initVideoView()
-    }
-
     fun initVideo(videoView: VideoView?, uri: Uri?, path: String?, ivPlay: ImageView?) {
         mIvPlay = ivPlay
         mVideoView = videoView
@@ -95,10 +86,17 @@ class VideoViewHolder
     }
 
     fun play() {
-//        mVideoView?.start()
-//        mVideoView?.visibility = View.VISIBLE
-//        mIvPlay?.visibility = View.GONE
-        checkAndPlay()
+        CoroutineHelper.MAIN.launch {
+            val canPlay = checkVideoAvailable(mPath)
+            if (canPlay) {
+                mVideoView?.start()
+                mVideoView?.visibility = View.VISIBLE
+                mIvPlay?.setImageResource(R.drawable.icon_album_video_preview_pause)
+                mAlphaAnimator?.start()
+            } else {
+                toast("播放失败")
+            }
+        }
     }
 
     fun pause() {
@@ -118,28 +116,6 @@ class VideoViewHolder
         mIvPlay = null
         mVideoView = null
         mAlphaAnimator = null
-    }
-
-    private fun checkAndPlay() {
-        val asyncTask = object : AsyncTask<Void, Void, Boolean>() {
-            override fun doInBackground(vararg params: Void?): Boolean? {
-                return checkVideoAvailable(mPath)
-            }
-
-            override fun onPostExecute(result: Boolean?) {
-                if (result == true) {
-                    mVideoView?.start()
-                    mVideoView?.visibility = View.VISIBLE
-//                    mIvPlay?.visibility = View.GONE
-                    mIvPlay?.setImageResource(R.drawable.icon_album_video_preview_pause)
-                    mAlphaAnimator?.start()
-                } else {
-                    toast("播放失败")
-                }
-            }
-        }
-
-        asyncTask.execute()
     }
 
     override fun onPrepared(it: MediaPlayer?) {
@@ -188,9 +164,9 @@ class VideoViewHolder
         return false
     }
 
-    private fun checkVideoAvailable(path: String?): Boolean {
+    private suspend fun checkVideoAvailable(path: String?) = withContext(Dispatchers.IO) {
         if (TextUtils.isEmpty(path)) {
-            return false
+            return@withContext false
         }
 
         val cr = App.context.contentResolver
@@ -208,7 +184,7 @@ class VideoViewHolder
             )
 
             if (cursor == null) {
-                return false
+                return@withContext false
             }
 
             if (cursor.moveToFirst()) {
@@ -216,18 +192,20 @@ class VideoViewHolder
                 //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
                 val time = cursor.getLong(durationIndex)
                 if (time <= 0) {
-                    return false
+                    return@withContext false
                 }
             } else {
-                return false
+                return@withContext false
             }
         } catch (e: Exception) {
             e.printStackTrace()
             cursor?.close()
-            return false
+            return@withContext false
+        } finally {
+            cursor?.close()
         }
 
-        return true
+        return@withContext true
     }
 
 }

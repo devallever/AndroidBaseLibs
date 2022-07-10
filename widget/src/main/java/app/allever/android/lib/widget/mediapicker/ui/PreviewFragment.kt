@@ -18,10 +18,7 @@ class PreviewFragment : AbstractFragment() {
 
     private val mViewModel by viewModels<PreviewFragmentViewModel>()
     private lateinit var mBinding: FragmentPreviewBinding
-
-    //    private var mVideoMark: View? = null
-
-    private var mThumbnailBean: MediaItem? = null
+    private var mMediaItem: MediaItem? = null
     private var mVideoViewHolder: VideoViewHolder? = null
 
     override fun onCreateView(
@@ -40,27 +37,23 @@ class PreviewFragment : AbstractFragment() {
     }
 
     private fun initView() {
-
-        if (MediaType.isImage(mThumbnailBean?.data?.type ?: -1)) {
+        val data = mMediaItem?.data ?: return
+        if (MediaType.isImage(data.type)) {
             //图片类型
             mBinding.idIvImage.visibility = View.VISIBLE
-            mBinding.idIvImage.load(mThumbnailBean?.data?.uri ?: mThumbnailBean?.data?.path ?: "")
-        } else if (MediaType.isVideo(mThumbnailBean?.data?.type ?: -1)) {
+            mBinding.idIvImage.load(data.uri ?: data.path)
+        } else if (MediaType.isVideo(data.type)) {
             //视频类型
-            mBinding.idIvImage?.visibility = View.GONE
+            mBinding.idIvImage.visibility = View.GONE
 
             mVideoViewHolder = VideoViewHolder()
             mVideoViewHolder?.initVideo(
                 mBinding.idVideoView,
-                mThumbnailBean?.data?.uri,
-                mThumbnailBean?.data?.path,
+                data.uri,
+                data.path,
                 mBinding.idIvVideoController
             )
         }
-
-//        if (mThumbnailBean?.isAutoPlay == true) {
-//            mVideoViewHolder?.play()
-//        }
     }
 
 
@@ -76,7 +69,7 @@ class PreviewFragment : AbstractFragment() {
     }
 
     fun setData(thumbnailBean: MediaItem?) {
-        mThumbnailBean = thumbnailBean
+        mMediaItem = thumbnailBean
     }
 }
 
