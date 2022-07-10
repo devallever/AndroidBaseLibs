@@ -182,6 +182,7 @@ ext {
     androidAudioConverter = "com.github.adrielcafe:AndroidAudioConverter:0.0.8"
 
     photoView = "com.bm.photoview:library:1.4.1"
+    chrisbanesPhotoView = "com.github.chrisbanes:PhotoView:2.0.0"
 
     androidOAID = "com.github.gzu-liyujiang:Android_CN_OAID:4.2.4"
 

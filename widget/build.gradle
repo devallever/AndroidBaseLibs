@@ -54,4 +54,5 @@ dependencies {
     implementation materialDialogCore
     implementation materialDialogBottomSheets
     implementation flycoTabLayout
+    api chrisbanesPhotoView
 }

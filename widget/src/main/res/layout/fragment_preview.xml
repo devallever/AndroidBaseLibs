@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <VideoView
+            android:id="@+id/id_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/id_iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside" />
+
+        <View
+            android:id="@+id/id_video_mark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#19ffffff"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/id_iv_video_controller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_album_video_preview_play"
+
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>

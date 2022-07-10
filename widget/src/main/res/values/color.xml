@@ -5,4 +5,7 @@
     <color name="search_view_text_color">#000000</color>
     <color name="search_view_cursor_color">@color/search_view_text_color</color>
     <color name="search_view_hint_text_color">#666666</color>
+
+    <color name="indicator_line_color">#b1b9bd</color>
+    <color name="indicator_cursor_color">#474747</color>
 </resources>

@@ -15,6 +15,7 @@ object MediaPicker {
     val cacheAllImageBeanList = mutableListOf<MediaBean>()
     val cacheAllVideoBeanList = mutableListOf<MediaBean>()
     val cacheAllAudioBeanList = mutableListOf<MediaBean>()
+    val extraMap = mutableMapOf<String, Any>()
 
     fun launchPickerActivity(
         vararg type: String,

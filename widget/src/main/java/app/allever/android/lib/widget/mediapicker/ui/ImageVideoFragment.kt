@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.media.FolderBean
+import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.widget.R
@@ -59,6 +60,17 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker {
             }
 
             override fun onItemLongClick(mediaItem: MediaItem, position: Int) {
+                try {
+                    val list = mutableListOf<MediaBean>()
+                    mViewModel.list.map {
+                        list.add(it.data)
+                    }
+                    MediaPicker.extraMap[PreviewActivity.EXTRA_THUMBNAIL_LIST] = list
+                    PreviewActivity.startActivity(activity!!, position)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
             }
 
         })
