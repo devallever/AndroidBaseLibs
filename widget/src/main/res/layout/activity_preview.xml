@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,9 +33,10 @@
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginHorizontal="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/icon_album_unselected"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </RelativeLayout>
 

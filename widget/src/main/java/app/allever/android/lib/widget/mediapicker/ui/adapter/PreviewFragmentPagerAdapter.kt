@@ -3,13 +3,13 @@ package app.allever.android.lib.widget.mediapicker.ui.adapter
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
-import app.allever.android.lib.core.function.media.MediaBean
+import app.allever.android.lib.widget.mediapicker.MediaItem
 import app.allever.android.lib.widget.mediapicker.ui.PreviewFragment
 
-class PreviewFragmentPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager, data: MutableList<MediaBean>) :
+class PreviewFragmentPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager, data: MutableList<MediaItem>) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    var data: MutableList<MediaBean>? = data
+    var data: MutableList<MediaItem>? = data
     var currentFragment: Fragment? = null
 
     override fun getItem(position: Int): Fragment {

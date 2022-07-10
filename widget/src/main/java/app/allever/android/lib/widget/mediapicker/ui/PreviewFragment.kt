@@ -9,10 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.imageloader.load
-import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaType
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPreviewBinding
+import app.allever.android.lib.widget.mediapicker.MediaItem
 import app.allever.android.lib.widget.mediapicker.VideoViewHolder
 
 class PreviewFragment: AbstractFragment() {
@@ -22,7 +22,7 @@ class PreviewFragment: AbstractFragment() {
 
     //    private var mVideoMark: View? = null
 
-    private var mThumbnailBean: MediaBean? = null
+    private var mThumbnailBean: MediaItem? = null
     private var mVideoViewHolder: VideoViewHolder? = null
 
     override fun onCreateView(
@@ -42,16 +42,16 @@ class PreviewFragment: AbstractFragment() {
 
     private fun initView() {
 
-        if (MediaType.isImage(mThumbnailBean?.type ?: -1)) {
+        if (MediaType.isImage(mThumbnailBean?.data?.type ?: -1)) {
             //图片类型
             mBinding.idIvImage.visibility = View.VISIBLE
-            mBinding.idIvImage.load(mThumbnailBean?.uri?:mThumbnailBean?.path?:"")
-        } else if (MediaType.isVideo(mThumbnailBean?.type ?: -1)) {
+            mBinding.idIvImage.load(mThumbnailBean?.data?.uri?:mThumbnailBean?.data?.path?:"")
+        } else if (MediaType.isVideo(mThumbnailBean?.data?.type ?: -1)) {
             //视频类型
             mBinding.idIvImage?.visibility = View.GONE
 
             mVideoViewHolder = VideoViewHolder()
-            mVideoViewHolder?.initVideo(mBinding.idVideoView, mThumbnailBean?.uri, mThumbnailBean?.path,  mBinding.idIvVideoController)
+            mVideoViewHolder?.initVideo(mBinding.idVideoView, mThumbnailBean?.data?.uri, mThumbnailBean?.data?.path,  mBinding.idIvVideoController)
         }
 
 //        if (mThumbnailBean?.isAutoPlay == true) {
@@ -71,7 +71,7 @@ class PreviewFragment: AbstractFragment() {
         mVideoViewHolder?.pause()
     }
 
-    fun setData(thumbnailBean: MediaBean?) {
+    fun setData(thumbnailBean: MediaItem?) {
         mThumbnailBean = thumbnailBean
     }
 }

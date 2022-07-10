@@ -14,8 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.media.FolderBean
-import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
+import app.allever.android.lib.core.function.work.PollingTask
+import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
@@ -27,10 +28,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ImageVideoFragment : AbstractFragment(), IMediaPicker {
+class ImageVideoFragment : AbstractFragment(), IMediaPicker, PreviewActivity.Callback {
     private lateinit var mBinding: FragmentPickerListBinding
     private val mViewModel by viewModels<ImageVideoFragmentViewModel>()
     private var mSelectListener: SelectListener? = null
+
+    private val mSetCallbackTask by lazy {
+        object : PollingTask(){
+            override fun interval() = 100L
+            override fun condition(): Boolean {
+                return ActivityHelper.getTopActivity() as? PreviewActivity != null
+            }
+
+            override fun execute() {
+                val previewActivity = ActivityHelper.getTopActivity() as? PreviewActivity
+                previewActivity?.setCallback(this@ImageVideoFragment)
+            }
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,12 +76,9 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker {
 
             override fun onItemLongClick(mediaItem: MediaItem, position: Int) {
                 try {
-                    val list = mutableListOf<MediaBean>()
-                    mViewModel.list.map {
-                        list.add(it.data)
-                    }
-                    MediaPicker.extraMap[PreviewActivity.EXTRA_THUMBNAIL_LIST] = list
+                    MediaPicker.extraMap[PreviewActivity.EXTRA_THUMBNAIL_LIST] = mViewModel.list
                     PreviewActivity.startActivity(activity!!, position)
+                    mSetCallbackTask.start()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -113,6 +125,17 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker {
 
     fun setSelectListener(selectListener: SelectListener?) {
         mSelectListener = selectListener
+    }
+
+    override fun updateSelected(mediaItem: MediaItem) {
+        val index = mViewModel.list.indexOf(mediaItem)
+        mViewModel.adapter.setData(index, mediaItem)
+        mSelectListener?.onItemSelected(mediaItem)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mSetCallbackTask.cancel()
     }
 }
 

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.toast
-import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.ActivityPreviewBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
@@ -37,11 +36,13 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
 
         }
     }
+
     private lateinit var mBinding: ActivityPreviewBinding
 
     private var mPagerAdapter: PreviewFragmentPagerAdapter? = null
-    private var mThumbnailBeanList: MutableList<MediaBean> = mutableListOf()
-    private var mMediaItemBeanList: MutableList<MediaItem> = mutableListOf()
+    private var mThumbnailBeanList: MutableList<MediaItem> = mutableListOf()
+
+    //    private var mMediaItemBeanList: MutableList<MediaItem> = mutableListOf()
     private var mPosition: Int = 0
     private var mFromSave = false
 
@@ -56,13 +57,8 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
 
     private fun getIntentData() {
         val intent = this.intent
-        mThumbnailBeanList.addAll(MediaPicker.extraMap[EXTRA_THUMBNAIL_LIST] as Collection<MediaBean>)
+        mThumbnailBeanList.addAll(MediaPicker.extraMap[EXTRA_THUMBNAIL_LIST] as Collection<MediaItem>)
         MediaPicker.extraMap.remove(EXTRA_THUMBNAIL_LIST)
-        mThumbnailBeanList.map {
-            val itemBean = MediaItem(it)
-            itemBean.isChecked = false
-            mMediaItemBeanList.add(itemBean)
-        }
         mPosition = intent.getIntExtra(EXTRA_POSITION, 0)
     }
 
@@ -87,13 +83,8 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
         if (checkOutOfBoundary()) {
             return
         }
-        try {
-            mBinding.idVpImage.currentItem = mPosition
-            val thumbnailBean = mMediaItemBeanList[mPosition]
-            updateSelecctIcon(thumbnailBean)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        mBinding.idVpImage.currentItem = mPosition
+        updateSelecctIcon(mThumbnailBeanList[mPosition])
 
 
         mBinding.idVpImage.addOnPageChangeListener(object : LineIndicator.OnPageChangeListener,
@@ -108,7 +99,7 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
                 if (checkOutOfBoundary()) {
                     return
                 }
-                val thumbnailBean = mMediaItemBeanList[position]
+                val thumbnailBean = mThumbnailBeanList[position]
                 updateSelecctIcon(thumbnailBean)
             }
 
@@ -129,10 +120,15 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
                 if (checkOutOfBoundary()) {
                     return
                 }
-                val thumbnailBean = mMediaItemBeanList[mPosition]
+                val thumbnailBean = mThumbnailBeanList[mPosition]
                 val selected = thumbnailBean.isChecked
                 thumbnailBean.isChecked = !selected
                 updateSelecctIcon(thumbnailBean)
+
+                if (thumbnailBean.isChecked) {
+                    mCallback?.updateSelected(thumbnailBean)
+                    finish()
+                }
 
 //                postDelay({
 //                    val intent = Intent()
@@ -160,8 +156,17 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
         }
         return result
     }
+
+    private var mCallback: Callback? = null
+    fun setCallback(callback: Callback) {
+        mCallback = callback
+    }
+
+    interface Callback {
+        fun updateSelected(mediaItem: MediaItem)
+    }
 }
 
-class PreviewViewModel: ViewModel() {
+class PreviewViewModel : ViewModel() {
 
 }
