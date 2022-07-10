@@ -15,7 +15,7 @@ import app.allever.android.lib.widget.databinding.FragmentPreviewBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
 import app.allever.android.lib.widget.mediapicker.VideoViewHolder
 
-class PreviewFragment: AbstractFragment() {
+class PreviewFragment : AbstractFragment() {
 
     private val mViewModel by viewModels<PreviewFragmentViewModel>()
     private lateinit var mBinding: FragmentPreviewBinding
@@ -45,13 +45,18 @@ class PreviewFragment: AbstractFragment() {
         if (MediaType.isImage(mThumbnailBean?.data?.type ?: -1)) {
             //图片类型
             mBinding.idIvImage.visibility = View.VISIBLE
-            mBinding.idIvImage.load(mThumbnailBean?.data?.uri?:mThumbnailBean?.data?.path?:"")
+            mBinding.idIvImage.load(mThumbnailBean?.data?.uri ?: mThumbnailBean?.data?.path ?: "")
         } else if (MediaType.isVideo(mThumbnailBean?.data?.type ?: -1)) {
             //视频类型
             mBinding.idIvImage?.visibility = View.GONE
 
             mVideoViewHolder = VideoViewHolder()
-            mVideoViewHolder?.initVideo(mBinding.idVideoView, mThumbnailBean?.data?.uri, mThumbnailBean?.data?.path,  mBinding.idIvVideoController)
+            mVideoViewHolder?.initVideo(
+                mBinding.idVideoView,
+                mThumbnailBean?.data?.uri,
+                mThumbnailBean?.data?.path,
+                mBinding.idIvVideoController
+            )
         }
 
 //        if (mThumbnailBean?.isAutoPlay == true) {
@@ -76,6 +81,6 @@ class PreviewFragment: AbstractFragment() {
     }
 }
 
-class PreviewFragmentViewModel: ViewModel() {
+class PreviewFragmentViewModel : ViewModel() {
 
 }

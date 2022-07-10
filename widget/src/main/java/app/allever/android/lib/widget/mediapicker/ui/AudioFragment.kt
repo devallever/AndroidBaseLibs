@@ -85,6 +85,11 @@ class AudioFragment : AbstractFragment(), IMediaPicker {
     fun setSelectListener(selectListener: SelectListener?) {
         mSelectListener = selectListener
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mViewModel.adapter.release()
+    }
 }
 
 class AudioFragmentViewModel : ViewModel() {

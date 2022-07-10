@@ -68,8 +68,8 @@ public class LineIndicator extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
-        mMaxOffset = mWidth - mCursorSize * 2 ;
-        mPageLength = mMaxOffset  / (mPageCount - 1);
+        mMaxOffset = mWidth - mCursorSize * 2;
+        mPageLength = mMaxOffset / (mPageCount - 1);
         mOffset = mCurrentPage * mPageLength;
     }
 
@@ -86,33 +86,33 @@ public class LineIndicator extends View {
         super.onDraw(canvas);
 
         mPaint.setColor(mLineColor);
-        canvas.drawLine(0, mHeight/2, mWidth, mHeight/2, mPaint);
+        canvas.drawLine(0, mHeight / 2, mWidth, mHeight / 2, mPaint);
 
         mPaint.setColor(mCursorColor);
-        canvas.drawCircle(mOffset + mCursorSize, mHeight/2, mCursorSize, mPaint);
+        canvas.drawCircle(mOffset + mCursorSize, mHeight / 2, mCursorSize, mPaint);
 
     }
 
-    public void setColor(int cursorColor, int lineColor){
+    public void setColor(int cursorColor, int lineColor) {
         this.mCursorColor = cursorColor;
         this.mLineColor = lineColor;
     }
 
-    private void updateOffset(float x){
-        mOffset =  x - x % mPageLength;
+    private void updateOffset(float x) {
+        mOffset = x - x % mPageLength;
         if (mOffset < 0)
             mOffset = 0;
-        if(mOffset > mMaxOffset){
+        if (mOffset > mMaxOffset) {
             mOffset = mMaxOffset;
         }
         mCurrentPage = (int) (mOffset / mPageLength);
         invalidate();
-        if(mOnPageChangeListener != null){
+        if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageChange(mCurrentPage);
         }
     }
 
-    public void moveTo(int page){
+    public void moveTo(int page) {
         mCurrentPage = page;
         mOffset = mCurrentPage * mPageLength;
         invalidate();
@@ -127,22 +127,6 @@ public class LineIndicator extends View {
             return true;
         }
         return mGestureDetector.onTouchEvent(event);
-    }
-
-    private class SeekBarGestureListener extends
-            GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2,
-                                float distanceX, float distanceY) {
-            updateOffset(e2.getX());
-            return true;
-        }
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            mIsTouch = true;
-            return true;
-        }
     }
 
     public boolean isTouch() {
@@ -171,5 +155,21 @@ public class LineIndicator extends View {
 
     public interface OnPageChangeListener {
         void onPageChange(int page);
+    }
+
+    private class SeekBarGestureListener extends
+            GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float distanceX, float distanceY) {
+            updateOffset(e2.getX());
+            return true;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            mIsTouch = true;
+            return true;
+        }
     }
 }

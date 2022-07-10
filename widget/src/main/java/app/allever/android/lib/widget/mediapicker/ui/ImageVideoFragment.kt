@@ -34,7 +34,7 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker, PreviewActivity.Cal
     private var mSelectListener: SelectListener? = null
 
     private val mSetCallbackTask by lazy {
-        object : PollingTask(){
+        object : PollingTask() {
             override fun interval() = 100L
             override fun condition(): Boolean {
                 return ActivityHelper.getTopActivity() as? PreviewActivity != null
@@ -46,6 +46,7 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker, PreviewActivity.Cal
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
