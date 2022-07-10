@@ -311,6 +311,7 @@ class MediaPickerFragmentViewModel : ViewModel() {
         var imageCount = 0
         var videoCount = 0
         var audioCount = 0
+        val emptyList = mutableListOf<FolderBean>()
         mediaFolderList.map {
             if (typeList.contains(MediaHelper.TYPE_IMAGE)) {
                 val imageList = if (it.bucketId == null) {
@@ -353,6 +354,15 @@ class MediaPickerFragmentViewModel : ViewModel() {
                 it.audioMediaList.addAll(audioList)
 //                MediaPicker.cacheAllAudioBeanList.addAll(it.audioMediaList)
             }
+
+            //暂时解决目录出现空数据也显示在列表
+            if (it.audioCount <= 0 && it.videoCount <= 0 && it.photoCount <= 0) {
+                emptyList.add(it)
+            }
+        }
+
+        emptyList.map {
+            mediaFolderList.remove(it)
         }
 
         val endTime = System.currentTimeMillis()
