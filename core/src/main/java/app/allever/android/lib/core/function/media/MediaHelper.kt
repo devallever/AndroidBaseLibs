@@ -96,8 +96,8 @@ object MediaHelper {
 
     private const val SELECTION_FOR_MEDIA_TYPE = (
             MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-                    + " OR " +  MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-                    + " OR " +  MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
                     + " AND " + MediaStore.MediaColumns.SIZE + ">0")
 
     private fun getSelectionArgsForSingleMediaType(mediaType: Int): Array<String> {
@@ -124,7 +124,7 @@ object MediaHelper {
     private const val BUCKET_ORDER_BY = "$COLUMN_DATE_TAKEN DESC"
 
     fun getTypeName(@Type type: String): String {
-        when(type) {
+        when (type) {
             TYPE_IMAGE -> return "图片"
             TYPE_VIDEO -> return "视频"
             TYPE_AUDIO -> return "歌曲"
@@ -135,7 +135,11 @@ object MediaHelper {
     /**
      * 获取所有文件夹
      */
-    suspend fun getAllFolder(context: Context, @Type type: String = TYPE_ALL, includeGif: Boolean = false) =
+    suspend fun getAllFolder(
+        context: Context,
+        @Type type: String = TYPE_ALL,
+        includeGif: Boolean = false
+    ) =
         withContext(Dispatchers.IO) {
 
             val imageFolderList = mutableListOf<FolderBean>()
@@ -642,11 +646,11 @@ object MediaHelper {
         bucketId: String?,
         maxDuring: Long
     ) = withContext(Dispatchers.IO) {
-        val result1: ArrayList<MediaBean> = getImageMediaBeanFromBucketId(context, bucketId)
-        val result2: ArrayList<MediaBean> = getVideoMediaBeanFromBucketId(context, bucketId)
-        val result3: ArrayList<MediaBean> = getAudioMediaBeanFromBucketId(context, bucketId)
-        val result4 = doMediaBeanAlgorithm(result1, result2)
-        return@withContext doMediaBeanAlgorithm(result4, result3)
+        val imageList: ArrayList<MediaBean> = getImageMediaBeanFromBucketId(context, bucketId)
+        val videoList: ArrayList<MediaBean> = getVideoMediaBeanFromBucketId(context, bucketId)
+        val audioList: ArrayList<MediaBean> = getAudioMediaBeanFromBucketId(context, bucketId)
+        val imgaeAndVideoList = doMediaBeanAlgorithm(imageList, videoList)
+        return@withContext doMediaBeanAlgorithm(imgaeAndVideoList, audioList)
     }
 
     suspend fun getImageMediaBeanFromBucketId(
@@ -668,15 +672,15 @@ object MediaHelper {
         bucketId: String?,
         includeGif: Boolean
     ) = withContext(Dispatchers.IO) {
-        val result1: ArrayList<MediaBean> = ArrayList<MediaBean>()
+        val result: ArrayList<MediaBean> = ArrayList<MediaBean>()
         if (TextUtils.isEmpty(bucketId)) {
-            return@withContext result1
+            return@withContext result
         }
-        var c1: Cursor? = null
+        var cursor: Cursor? = null
         //Images.ImageColumns.DATA 是图片的绝对路径
         try {
-            val cr = context.contentResolver
-            c1 = cr.query(
+            val contentResolver = context.contentResolver
+            cursor = contentResolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 arrayOf(
                     MediaStore.Images.ImageColumns._ID,
@@ -688,50 +692,50 @@ object MediaHelper {
                 arrayOf(bucketId),
                 MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC" + ", " + MediaStore.Images.ImageColumns._ID + " ASC"
             )
-            if (c1 == null) {
-                return@withContext result1
+            if (cursor == null) {
+                return@withContext result
             }
-            if (c1.moveToFirst()) {
-                val idIndex = c1.getColumnIndex(MediaStore.Images.ImageColumns._ID)
-                val pathIndex = c1.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-                val dateIndex = c1.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN)
-                val degreeIndex = c1.getColumnIndex(MediaStore.Images.ImageColumns.ORIENTATION)
+            if (cursor.moveToFirst()) {
+                val idIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID)
+                val pathIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                val dateIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN)
+                val degreeIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.ORIENTATION)
                 do {
-                    val bb = MediaBean()
-                    bb.uri = (
-                        ContentUris.withAppendedId(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            c1.getInt(idIndex).toLong()
-                        )
-                    )
-                    val thumbPath = c1.getString(pathIndex)
+                    val mediaBean = MediaBean()
+                    mediaBean.uri = (
+                            ContentUris.withAppendedId(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                cursor.getInt(idIndex).toLong()
+                            )
+                            )
+                    val thumbPath = cursor.getString(pathIndex)
                     if (checkImageError(thumbPath)) {
                         continue
                     }
-                    bb.path = (thumbPath)
-                    bb.date = (c1.getLong(dateIndex))
+                    mediaBean.path = (thumbPath)
+                    mediaBean.date = (cursor.getLong(dateIndex))
                     //                    bb.setDegree(c1.getInt(degreeIndex));
-                    if (MediaFile.isGifFileType(bb.path)) {
+                    if (MediaFile.isGifFileType(mediaBean.path)) {
                         if (!includeGif) {
                             continue
                         }
-                        bb.type = (MediaType.TYPE_GIF)
-                    } else if (MediaFile.isJPGFileType(bb.path)) {
-                        bb.type = (MediaType.TYPE_JPG)
-                    } else if (MediaFile.isPNGFileType(bb.path)) {
-                        bb.type = (MediaType.TYPE_PNG)
+                        mediaBean.type = (MediaType.TYPE_GIF)
+                    } else if (MediaFile.isJPGFileType(mediaBean.path)) {
+                        mediaBean.type = (MediaType.TYPE_JPG)
+                    } else if (MediaFile.isPNGFileType(mediaBean.path)) {
+                        mediaBean.type = (MediaType.TYPE_PNG)
                     } else {
-                        bb.type = (MediaType.TYPE_OTHER_IMAGE)
+                        mediaBean.type = (MediaType.TYPE_OTHER_IMAGE)
                     }
-                    result1.add(bb)
-                } while (c1.moveToNext())
+                    result.add(mediaBean)
+                } while (cursor.moveToNext())
             }
         } catch (e: Throwable) {
             e.printStackTrace()
         } finally {
-            c1?.close()
+            cursor?.close()
         }
-        return@withContext result1
+        return@withContext result
     }
 
     /**
@@ -744,16 +748,16 @@ object MediaHelper {
     suspend fun getVideoMediaBeanFromBucketId(
         context: Context,
         bucketId: String?
-    ) = withContext(Dispatchers.IO){
+    ) = withContext(Dispatchers.IO) {
         val result2: ArrayList<MediaBean> = ArrayList<MediaBean>()
         if (TextUtils.isEmpty(bucketId)) {
             return@withContext result2
         }
-        var c2: Cursor? = null
+        var cursor: Cursor? = null
         //Images.ImageColumns.DATA 是图片的绝对路径
         try {
-            val cr = context.contentResolver
-            c2 = cr.query(
+            val contentResolver = context.contentResolver
+            cursor = contentResolver.query(
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 arrayOf(
                     MediaStore.Video.VideoColumns._ID,
@@ -765,23 +769,23 @@ object MediaHelper {
                 arrayOf(bucketId),
                 MediaStore.Video.VideoColumns.DATE_TAKEN + " DESC" + ", " + MediaStore.Video.VideoColumns._ID + " ASC"
             )
-            if (c2 == null) {
+            if (cursor == null) {
                 return@withContext result2
             }
-            if (c2.moveToFirst()) {
-                val idIndex = c2.getColumnIndex(MediaStore.Video.VideoColumns._ID)
-                val pathIndex = c2.getColumnIndex(MediaStore.Video.VideoColumns.DATA)
-                val dateIndex = c2.getColumnIndex(MediaStore.Video.VideoColumns.DATE_TAKEN)
-                val durationIndex = c2.getColumnIndex(MediaStore.Video.VideoColumns.DURATION)
+            if (cursor.moveToFirst()) {
+                val idIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns._ID)
+                val pathIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA)
+                val dateIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATE_TAKEN)
+                val durationIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DURATION)
                 do {
-                    val bb = MediaBean()
-                    bb.uri = (
-                        ContentUris.withAppendedId(
-                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                            c2.getInt(idIndex).toLong()
-                        )
-                    )
-                    val videoPath = c2.getString(pathIndex)
+                    val mediaBean = MediaBean()
+                    mediaBean.uri = (
+                            ContentUris.withAppendedId(
+                                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                cursor.getInt(idIndex).toLong()
+                            )
+                            )
+                    val videoPath = cursor.getString(pathIndex)
                     if (checkVideoError(videoPath)) {
                         logE(
                             TAG,
@@ -789,23 +793,23 @@ object MediaHelper {
                         )
                         continue
                     }
-                    bb.path = (videoPath)
+                    mediaBean.path = (videoPath)
 
                     //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
-                    val time = c2.getLong(durationIndex)
+                    val time = cursor.getLong(durationIndex)
                     if (time <= 0) {
                         continue
                     }
-                    bb.duration = (time)
-                    bb.date = (c2.getLong(dateIndex))
-                    bb.type = (MediaType.VIDEO)
-                    result2.add(bb)
-                } while (c2.moveToNext())
+                    mediaBean.duration = (time)
+                    mediaBean.date = (cursor.getLong(dateIndex))
+                    mediaBean.type = (MediaType.VIDEO)
+                    result2.add(mediaBean)
+                } while (cursor.moveToNext())
             }
         } catch (e: Throwable) {
             e.printStackTrace()
         } finally {
-            c2?.close()
+            cursor?.close()
         }
         return@withContext result2
     }
@@ -820,16 +824,16 @@ object MediaHelper {
     suspend fun getAudioMediaBeanFromBucketId(
         context: Context,
         bucketId: String?
-    ) = withContext(Dispatchers.IO){
-        val result2: ArrayList<MediaBean> = ArrayList<MediaBean>()
+    ) = withContext(Dispatchers.IO) {
+        val result: ArrayList<MediaBean> = ArrayList<MediaBean>()
         if (TextUtils.isEmpty(bucketId)) {
-            return@withContext result2
+            return@withContext result
         }
-        var c2: Cursor? = null
+        var cursor: Cursor? = null
         //Images.ImageColumns.DATA 是图片的绝对路径
         try {
-            val cr = context.contentResolver
-            c2 = cr.query(
+            val contentResolver = context.contentResolver
+            cursor = contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 arrayOf(
                     MediaStore.Audio.AudioColumns._ID,
@@ -844,55 +848,52 @@ object MediaHelper {
                 arrayOf(bucketId),
                 MediaStore.Audio.AudioColumns.DATE_TAKEN + " DESC" + ", " + MediaStore.Audio.AudioColumns._ID + " ASC"
             )
-            if (c2 == null) {
-                return@withContext result2
+            if (cursor == null) {
+                return@withContext result
             }
-            if (c2.moveToFirst()) {
-                val idIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns._ID)
-                val pathIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
-                val dateIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns.DATE_ADDED)
-                val durationIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION)
-                val titleIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE)
-                val artistIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST)
-                val albumIndex = c2.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM)
+            if (cursor.moveToFirst()) {
+                val idIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns._ID)
+                val pathIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
+                val dateIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATE_ADDED)
+                val durationIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION)
+                val titleIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE)
+                val artistIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST)
+                val albumIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM)
                 do {
-                    val bb = MediaBean()
-                    bb.uri = (
+                    val mediaBean = MediaBean()
+                    mediaBean.uri = (
                             ContentUris.withAppendedId(
                                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                                c2.getInt(idIndex).toLong()
+                                cursor.getInt(idIndex).toLong()
                             )
                             )
-                    val audioPath = c2.getString(pathIndex)
+                    val audioPath = cursor.getString(pathIndex)
                     if (checkAudioError(audioPath)) {
-                        logE(
-                            TAG,
-                            "error audio path = $audioPath"
-                        )
+                        logE(TAG, "error audio path = $audioPath")
                         continue
                     }
-                    bb.path = (audioPath)
+                    mediaBean.path = (audioPath)
 
                     //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
-                    val time = c2.getLong(durationIndex)
+                    val time = cursor.getLong(durationIndex)
                     if (time <= 0) {
                         continue
                     }
-                    bb.duration = (time)
-                    bb.date = (c2.getLong(dateIndex))
-                    bb.type = (MediaType.TYPE_AUDIO)
-                    bb.musicTitle = c2.getString(titleIndex)
-                    bb.musicArtist = c2.getString(artistIndex)
-                    bb.musicAlbum = c2.getString(albumIndex)
-                    result2.add(bb)
-                } while (c2.moveToNext())
+                    mediaBean.duration = (time)
+                    mediaBean.date = (cursor.getLong(dateIndex))
+                    mediaBean.type = (MediaType.TYPE_AUDIO)
+                    mediaBean.musicTitle = cursor.getString(titleIndex)
+                    mediaBean.musicArtist = cursor.getString(artistIndex)
+                    mediaBean.musicAlbum = cursor.getString(albumIndex)
+                    result.add(mediaBean)
+                } while (cursor.moveToNext())
             }
         } catch (e: Throwable) {
             e.printStackTrace()
         } finally {
-            c2?.close()
+            cursor?.close()
         }
-        return@withContext result2
+        return@withContext result
     }
 
 
