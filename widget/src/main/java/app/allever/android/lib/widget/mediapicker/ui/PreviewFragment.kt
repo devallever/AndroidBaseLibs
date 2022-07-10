@@ -13,7 +13,6 @@ import app.allever.android.lib.core.function.media.MediaType
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPreviewBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
-import app.allever.android.lib.widget.mediapicker.VideoViewHolder
 
 class PreviewFragment : AbstractFragment() {
 

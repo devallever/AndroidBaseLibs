@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.media.FolderBean
+import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
@@ -65,15 +66,14 @@ class AudioFragment : AbstractFragment(), IMediaPicker {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initData() {
-        lifecycleScope.launch {
-            mViewModel.list.clear()
-            mViewModel.adapter.setList(null)
-            mViewModel.list.addAll(mViewModel.fetchData(requireContext()))
-            mViewModel.adapter.setList(mViewModel.list)
-        }
+        fetchData()
     }
 
     override fun update(path: String) {
+        fetchData(path)
+    }
+
+    private fun fetchData(path: String = "") {
         lifecycleScope.launch {
             mViewModel.list.clear()
             mViewModel.adapter.setList(null)
@@ -96,9 +96,6 @@ class AudioFragmentViewModel : ViewModel() {
     val list = mutableListOf<MediaItem>()
     var mediaType: String = ""
     lateinit var adapter: AudioAdapter
-    fun init() {
-
-    }
 
     fun initExtra(bundle: Bundle?) {
         mediaType = bundle?.getString("MEDIA_TYPE") ?: ""
@@ -108,6 +105,23 @@ class AudioFragmentViewModel : ViewModel() {
         withContext(Dispatchers.IO) {
             val result = mutableListOf<MediaItem>()
 
+            result.addAll(fetchFromFolderCache(path))
+            if (result.isNotEmpty()) {
+                return@withContext result
+            }
+
+            result.addAll(fetchFromCache(path))
+            if (result.isNotEmpty()) {
+                return@withContext result
+            }
+
+            result.addAll(fetchFromPhone(context, path))
+            result
+        }
+
+    private suspend fun fetchFromFolderCache(path: String) =
+        withContext(Dispatchers.IO) {
+            val result = mutableListOf<MediaItem>()
             if (path.isNotEmpty()) {
                 var folderBean: FolderBean? = null
                 MediaPicker.cacheFolderList.map {
@@ -118,29 +132,39 @@ class AudioFragmentViewModel : ViewModel() {
                 }
 
                 folderBean?.let {
-                    it.audioMediaList.map {
-                        val mediaItem = MediaItem(it)
-                        result.add(mediaItem)
-                    }
+                    result.addAll(generateMediaItemList(it.audioMediaList))
                     if (result.isNotEmpty()) {
                         return@withContext result
                     }
                 }
             }
+            result
+        }
 
-            val isAll = path.isEmpty()
-            if (isAll && MediaPicker.cacheAllAudioBeanList.isNotEmpty()) {
-                MediaPicker.cacheAllAudioBeanList.map {
-                    val mediaItem = MediaItem(it)
-                    result.add(mediaItem)
-                }
-                return@withContext result
-            }
+    private suspend fun fetchFromCache(path: String) = withContext(Dispatchers.IO) {
+        val result = mutableListOf<MediaItem>()
+        val isAll = path.isEmpty()
+        if (isAll && MediaPicker.cacheAllAudioBeanList.isNotEmpty()) {
+            result.addAll(generateMediaItemList(MediaPicker.cacheAllAudioBeanList))
+            return@withContext result
+        }
+        result
+    }
 
+    private suspend fun fetchFromPhone(context: Context, path: String) =
+        withContext(Dispatchers.IO) {
+            val result = mutableListOf<MediaItem>()
             val list = MediaHelper.getAudioMedia(context, path, 0)
             if (path.isEmpty()) {
                 MediaPicker.cacheAllAudioBeanList.addAll(list)
             }
+            result.addAll(generateMediaItemList(list))
+            result
+        }
+
+    private suspend fun generateMediaItemList(list: MutableList<MediaBean>): Collection<MediaItem> =
+        withContext(Dispatchers.IO) {
+            val result = mutableListOf<MediaItem>()
             list.map {
                 val mediaItem = MediaItem(it)
                 result.add(mediaItem)

@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.media.FolderBean
+import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.function.work.PollingTask
 import app.allever.android.lib.core.helper.ActivityHelper
@@ -76,14 +77,9 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker, PreviewActivity.Cal
             }
 
             override fun onItemLongClick(mediaItem: MediaItem, position: Int) {
-                try {
-                    MediaPicker.extraMap[PreviewActivity.EXTRA_THUMBNAIL_LIST] = mViewModel.list
-                    PreviewActivity.startActivity(activity!!, position)
-                    mSetCallbackTask.start()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
+                MediaPicker.extraMap[PreviewActivity.EXTRA_THUMBNAIL_LIST] = mViewModel.list
+                PreviewActivity.startActivity(activity!!, position)
+                mSetCallbackTask.start()
             }
 
         })
@@ -107,15 +103,14 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker, PreviewActivity.Cal
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initData() {
-        lifecycleScope.launch {
-            mViewModel.list.clear()
-            mViewModel.adapter.setList(null)
-            mViewModel.list.addAll(mViewModel.fetchData(requireContext()))
-            mViewModel.adapter.setList(mViewModel.list)
-        }
+        fetchData()
     }
 
     override fun update(path: String) {
+        fetchData(path)
+    }
+
+    private fun fetchData(path: String = "") {
         lifecycleScope.launch {
             mViewModel.list.clear()
             mViewModel.adapter.setList(null)
@@ -144,9 +139,6 @@ class ImageVideoFragmentViewModel : ViewModel() {
     val list = mutableListOf<MediaItem>()
     var mediaType: String = ""
     lateinit var adapter: ImageVideoAdapter
-    fun init() {
-
-    }
 
     fun initExtra(bundle: Bundle?) {
         mediaType = bundle?.getString("MEDIA_TYPE") ?: ""
@@ -156,6 +148,24 @@ class ImageVideoFragmentViewModel : ViewModel() {
         withContext(Dispatchers.IO) {
             val result = mutableListOf<MediaItem>()
 
+            result.addAll(fetchFromFolderCache(path))
+            if (result.isNotEmpty()) {
+                return@withContext result
+            }
+
+            result.addAll(fetchFromCache(path))
+            if (result.isNotEmpty()) {
+                return@withContext result
+            }
+
+            result.addAll(fetchFromPhone(context, path))
+
+            result
+        }
+
+    private suspend fun fetchFromFolderCache(path: String) =
+        withContext(Dispatchers.IO) {
+            val result = mutableListOf<MediaItem>()
             var folderBean: FolderBean? = null
             if (path.isNotEmpty()) {
                 MediaPicker.cacheFolderList.map {
@@ -166,18 +176,12 @@ class ImageVideoFragmentViewModel : ViewModel() {
                 }
                 folderBean?.let {
                     if (mediaType == MediaHelper.TYPE_IMAGE) {
-                        it.imageMediaList.map {
-                            val mediaItem = MediaItem(it)
-                            result.add(mediaItem)
-                        }
+                        result.addAll(generateMediaItemList(it.imageMediaList))
                         if (result.isNotEmpty()) {
                             return@withContext result
                         }
                     } else if (mediaType == MediaHelper.TYPE_VIDEO) {
-                        it.videoMediaList.map {
-                            val mediaItem = MediaItem(it)
-                            result.add(mediaItem)
-                        }
+                        result.addAll(generateMediaItemList(it.videoMediaList))
                         if (result.isNotEmpty()) {
                             return@withContext result
                         }
@@ -185,42 +189,53 @@ class ImageVideoFragmentViewModel : ViewModel() {
                 }
             }
 
-            val isAll = path.isEmpty()
-            if (isAll) {
-                if (mediaType == MediaHelper.TYPE_IMAGE) {
-                    if (MediaPicker.cacheAllImageBeanList.isNotEmpty()) {
-                        MediaPicker.cacheAllImageBeanList.map {
-                            val mediaItem = MediaItem(it)
-                            result.add(mediaItem)
-                        }
-                        return@withContext result
-                    }
-                } else if (mediaType == MediaHelper.TYPE_VIDEO) {
-                    if (MediaPicker.cacheAllVideoBeanList.isNotEmpty()) {
-                        MediaPicker.cacheAllVideoBeanList.map {
-                            val mediaItem = MediaItem(it)
-                            result.add(mediaItem)
-                        }
-                        return@withContext result
-                    }
+            result
+        }
+
+    private suspend fun fetchFromCache(path: String) = withContext(Dispatchers.IO) {
+        val result = mutableListOf<MediaItem>()
+        val isAll = path.isEmpty()
+        if (isAll) {
+            if (mediaType == MediaHelper.TYPE_IMAGE) {
+                if (MediaPicker.cacheAllImageBeanList.isNotEmpty()) {
+                    result.addAll(generateMediaItemList(MediaPicker.cacheAllImageBeanList))
+                    return@withContext result
                 }
-
-            }
-
-            val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
-                MediaHelper.getVideoMedia(context, path, 0)
-            } else {
-                MediaHelper.getImageMedia(context, path)
-            }
-
-            if (path.isEmpty()) {
-                if (mediaType == MediaHelper.TYPE_IMAGE) {
-                    MediaPicker.cacheAllImageBeanList.addAll(list)
-                } else if (mediaType == MediaHelper.TYPE_VIDEO) {
-                    MediaPicker.cacheAllVideoBeanList.addAll(list)
+            } else if (mediaType == MediaHelper.TYPE_VIDEO) {
+                if (MediaPicker.cacheAllVideoBeanList.isNotEmpty()) {
+                    result.addAll(generateMediaItemList(MediaPicker.cacheAllVideoBeanList))
+                    return@withContext result
                 }
             }
+        }
+        result
+    }
 
+    private suspend fun fetchFromPhone(context: Context, path: String) = withContext(Dispatchers.IO) {
+        val result = mutableListOf<MediaItem>()
+        val list = if (mediaType == MediaHelper.TYPE_VIDEO) {
+            MediaHelper.getVideoMedia(context, path, 0)
+        } else {
+            MediaHelper.getImageMedia(context, path)
+        }
+
+        //缓存
+        if (path.isEmpty()) {
+            if (mediaType == MediaHelper.TYPE_IMAGE) {
+                MediaPicker.cacheAllImageBeanList.addAll(list)
+            } else if (mediaType == MediaHelper.TYPE_VIDEO) {
+                MediaPicker.cacheAllVideoBeanList.addAll(list)
+            }
+        }
+
+        result.addAll(generateMediaItemList(list))
+
+        result
+    }
+
+    private suspend fun generateMediaItemList(list: MutableList<MediaBean>): Collection<MediaItem> =
+        withContext(Dispatchers.IO) {
+            val result = mutableListOf<MediaItem>()
             list.map {
                 val mediaItem = MediaItem(it)
                 result.add(mediaItem)

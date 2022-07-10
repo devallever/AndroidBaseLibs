@@ -24,7 +24,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnSeekCompleteListener {
         override fun onCompletion(mp: MediaPlayer?) {
-            onPlayerListeners?.map {
+            onPlayerListeners.map {
                 it.onCompletion()
             }
         }
@@ -39,7 +39,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
         }
 
         override fun onPrepared(mp: MediaPlayer?) {
-            onPlayerListeners?.map {
+            onPlayerListeners.map {
                 it.onPrepared()
             }
         }
@@ -50,7 +50,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
 
     private var onPlayerListeners = Collections.synchronizedList(ArrayList<OnPlayerListener>())
     private val WHAT_PROGRESS = 1
-    private var handler = Handler(Looper.getMainLooper(), Handler.Callback { msg ->
+    private var handler = Handler(Looper.getMainLooper()) { msg ->
         when (msg.what) {
             WHAT_PROGRESS -> {
                 onPlayerListeners?.map {
@@ -60,7 +60,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
             }
         }
         false
-    })
+    }
 
     init {
         mediaPlayer.setOnCompletionListener(playerListener)
@@ -205,13 +205,13 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
     }
 
     private fun notifyProgress(time: Int) {
-        onPlayerListeners?.map {
+        onPlayerListeners.map {
             it.onProgress(time)
         }
     }
 
     private fun notifyError(info: String) {
-        onPlayerListeners?.map {
+        onPlayerListeners.map {
             it.onError(info)
         }
     }

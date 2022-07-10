@@ -1,4 +1,4 @@
-package app.allever.android.lib.widget.mediapicker
+package app.allever.android.lib.widget.mediapicker.ui
 
 import android.animation.Animator
 import android.animation.ObjectAnimator

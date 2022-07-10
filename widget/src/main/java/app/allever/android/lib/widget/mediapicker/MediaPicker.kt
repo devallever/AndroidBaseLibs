@@ -11,10 +11,17 @@ object MediaPicker {
 
     private val mMediaPickerListenerSet = mutableListOf<MediaPickerListener>()
 
+    /**
+     * 缓存目录/全部图片/全部视频/全部音乐
+     */
     val cacheFolderList = mutableListOf<FolderBean>()
     val cacheAllImageBeanList = mutableListOf<MediaBean>()
     val cacheAllVideoBeanList = mutableListOf<MediaBean>()
     val cacheAllAudioBeanList = mutableListOf<MediaBean>()
+
+    /**
+     * intent: 1MB限制
+     */
     val extraMap = mutableMapOf<String, Any>()
 
     fun launchPickerActivity(

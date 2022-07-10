@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
@@ -19,94 +20,71 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
 
     companion object {
         const val EXTRA_THUMBNAIL_LIST = "EXTRA_THUMBNAIL_LIST"
-        const val EXTRA_POSITION = "dfgdfg"
-        const val EXTRA_FROM_SAVE = "snassfla"
+        const val EXTRA_POSITION = "EXTRA_POSITION"
 
         fun startActivity(
             context: Activity,
             position: Int
         ) {
-            try {
-                val intent = Intent(context, PreviewActivity::class.java)
-                intent.putExtra(EXTRA_POSITION, position)
-                context.startActivity(intent)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
+            val intent = Intent(context, PreviewActivity::class.java)
+            intent.putExtra(EXTRA_POSITION, position)
+            context.startActivity(intent)
         }
     }
 
     private lateinit var mBinding: ActivityPreviewBinding
 
-    private var mPagerAdapter: PreviewFragmentPagerAdapter? = null
-    private var mThumbnailBeanList: MutableList<MediaItem> = mutableListOf()
+    private val mViewModel by viewModels<PreviewViewModel>()
 
-    //    private var mMediaItemBeanList: MutableList<MediaItem> = mutableListOf()
-    private var mPosition: Int = 0
-    private var mFromSave = false
+    private var mCallback: Callback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_preview)
-        getIntentData()
+
+        mViewModel.initExtra(intent)
 
         initView()
-
-    }
-
-    private fun getIntentData() {
-        val intent = this.intent
-        mThumbnailBeanList.addAll(MediaPicker.extraMap[EXTRA_THUMBNAIL_LIST] as Collection<MediaItem>)
-        MediaPicker.extraMap.remove(EXTRA_THUMBNAIL_LIST)
-        mPosition = intent.getIntExtra(EXTRA_POSITION, 0)
     }
 
     private fun initView() {
         mBinding.ivBack.setOnClickListener(this)
-
         mBinding.ivSelect.setOnClickListener(this)
-//        if (mFromSave) {
-//            mIvSelect?.visibility = View.GONE
-//        } else {
-//            mIvSelect?.visibility = View.VISIBLE
-//        }
 
-        mPagerAdapter = PreviewFragmentPagerAdapter(
+        mViewModel.pagerAdapter = PreviewFragmentPagerAdapter(
             supportFragmentManager,
-            mThumbnailBeanList
+            mViewModel.mediaItemList
         )
-        mBinding.idVpImage.adapter = mPagerAdapter
-
-        mPagerAdapter?.notifyDataSetChanged()
-
-        if (checkOutOfBoundary()) {
-            return
-        }
-        mBinding.idVpImage.currentItem = mPosition
-        updateSelecctIcon(mThumbnailBeanList[mPosition])
-
-
+        mBinding.idVpImage.adapter = mViewModel.pagerAdapter
         mBinding.idVpImage.addOnPageChangeListener(object : LineIndicator.OnPageChangeListener,
             ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
-                if (checkOutOfBoundary()) {
+                if (mViewModel.checkOutOfBoundary()) {
                     return
                 }
-                val fragment = mPagerAdapter?.currentFragment as? PreviewFragment
+                val fragment = mViewModel.pagerAdapter?.currentFragment as? PreviewFragment
                 fragment?.pause()
-                mPosition = position
-                if (checkOutOfBoundary()) {
+                mViewModel.position = position
+                if (mViewModel.checkOutOfBoundary()) {
                     return
                 }
-                val thumbnailBean = mThumbnailBeanList[position]
-                updateSelecctIcon(thumbnailBean)
+                val thumbnailBean = mViewModel.mediaItemList[position]
+                updateSelectIcon(thumbnailBean)
             }
 
             override fun onPageScrollStateChanged(p0: Int) {}
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
             override fun onPageChange(page: Int) {}
         })
+
+        mViewModel.pagerAdapter?.notifyDataSetChanged()
+
+        if (mViewModel.checkOutOfBoundary()) {
+            return
+        }
+        mBinding.idVpImage.currentItem = mViewModel.position
+
+        updateSelectIcon(mViewModel.mediaItemList[mViewModel.position])
 
     }
 
@@ -117,31 +95,23 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
             }
 
             R.id.iv_select -> {
-                if (checkOutOfBoundary()) {
+                if (mViewModel.checkOutOfBoundary()) {
                     return
                 }
-                val thumbnailBean = mThumbnailBeanList[mPosition]
+                val thumbnailBean = mViewModel.mediaItemList[mViewModel.position]
                 val selected = thumbnailBean.isChecked
                 thumbnailBean.isChecked = !selected
-                updateSelecctIcon(thumbnailBean)
+                updateSelectIcon(thumbnailBean)
 
                 if (thumbnailBean.isChecked) {
                     mCallback?.updateSelected(thumbnailBean)
                     finish()
                 }
-
-//                postDelay({
-//                    val intent = Intent()
-//                    intent.putExtra(EXTRA_RESULT_POSITION, mPosition)
-//                    intent.putExtra(EXTRA_RESULT_CHECK, thumbnailBean.isChecked)
-//                    setResult(Activity.RESULT_OK, intent)
-//                    finish()
-//                }, 300)
             }
         }
     }
 
-    private fun updateSelecctIcon(thumbnailBean: MediaItem) {
+    private fun updateSelectIcon(thumbnailBean: MediaItem) {
         if (thumbnailBean.isChecked) {
             mBinding.ivSelect.setImageResource(R.drawable.icon_album_select)
         } else {
@@ -149,15 +119,6 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
         }
     }
 
-    private fun checkOutOfBoundary(): Boolean {
-        val result = mPosition !in 0 until mThumbnailBeanList.size
-        if (result) {
-            toast("Can not display this photo or video.")
-        }
-        return result
-    }
-
-    private var mCallback: Callback? = null
     fun setCallback(callback: Callback) {
         mCallback = callback
     }
@@ -168,5 +129,22 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
 }
 
 class PreviewViewModel : ViewModel() {
+    var pagerAdapter: PreviewFragmentPagerAdapter? = null
+    var mediaItemList: MutableList<MediaItem> = mutableListOf()
 
+    var position: Int = 0
+
+    fun initExtra(intent: Intent?) {
+        mediaItemList.addAll(MediaPicker.extraMap[PreviewActivity.EXTRA_THUMBNAIL_LIST] as Collection<MediaItem>)
+        MediaPicker.extraMap.remove(PreviewActivity.EXTRA_THUMBNAIL_LIST)
+        position = intent?.getIntExtra(PreviewActivity.EXTRA_POSITION, 0) ?: 0
+    }
+
+    fun checkOutOfBoundary(): Boolean {
+        val result = position !in 0 until mediaItemList.size
+        if (result) {
+            toast("Can not display this photo or video.")
+        }
+        return result
+    }
 }
