@@ -164,6 +164,7 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
     }
 
     private fun initFolder() {
+        mViewModel.folderAdapter = FolderAdapter(mViewModel.typeList)
         mBinding.recyclerViewFolder.layoutManager = LinearLayoutManager(requireContext())
         mBinding.recyclerViewFolder.adapter = mViewModel.folderAdapter
         mViewModel.folderAdapter.setOnItemClickListener { adapter, view, position ->
@@ -239,10 +240,8 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
             folderList.map {
                 log("total count = ${it.total}")
             }
+            mViewModel.folderList.addAll(folderList)
             mViewModel.folderAdapter.setList(folderList)
-//            mViewModel.fragmentList.map {
-//                (it as? IMediaPicker)?.update("")
-//            }
         }
     }
 
@@ -282,7 +281,7 @@ class MediaPickerFragmentViewModel : ViewModel() {
 
     //目录列表数据
     var folderList = mutableListOf<FolderBean>()
-    val folderAdapter = FolderAdapter()
+    lateinit var folderAdapter: FolderAdapter
 
     val selectedList = mutableListOf<MediaItem>()
 

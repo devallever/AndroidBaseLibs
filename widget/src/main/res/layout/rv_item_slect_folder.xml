@@ -30,64 +30,84 @@
             android:textSize="16sp"
             tools:ignore="RtlHardcoded" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="24dp"
             android:layout_below="@+id/tv_album_name"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@id/iv_image"
             android:layout_toRightOf="@id/iv_image"
+            android:orientation="horizontal"
             tools:ignore="RtlHardcoded">
 
-            <ImageView
-                android:id="@+id/iv_video"
-                style="@style/item_select_album_iv_count_style"
-                android:src="@drawable/ic_album_video_flag"
-                android:tint="#000000" />
+            <LinearLayout
+                android:id="@+id/videoContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left">
 
-            <TextView
-                android:id="@+id/tv_video_count"
-                style="@style/item_select_album_tv_count_style"
-                android:layout_toEndOf="@+id/iv_video"
-                android:layout_toRightOf="@+id/iv_video"
-                tools:ignore="RtlHardcoded" />
+                <ImageView
+                    android:id="@+id/iv_video"
+                    style="@style/item_select_album_iv_count_style"
+                    android:src="@drawable/ic_album_video_flag"
+                    android:tint="#000000"
+                    android:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/iv_photo"
-                style="@style/item_select_album_iv_count_style"
-                android:layout_marginStart="76dp"
-                android:layout_marginLeft="76dp"
-                android:src="@drawable/ic_album_image_flag"
-                android:tint="#000000"
-                tools:ignore="RtlHardcoded" />
+                <TextView
+                    android:id="@+id/tv_video_count"
+                    style="@style/item_select_album_tv_count_style"
+                    tools:ignore="RtlHardcoded" />
 
-            <TextView
-                android:id="@+id/tv_photo_count"
-                style="@style/item_select_album_tv_count_style"
-                android:layout_toEndOf="@id/iv_photo"
-                android:layout_toRightOf="@id/iv_photo"
-                tools:ignore="RtlHardcoded" />
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/iv_audio"
-                style="@style/item_select_album_iv_count_style"
-                android:layout_marginStart="76dp"
-                android:layout_marginLeft="76dp"
-                android:layout_toRightOf="@+id/iv_photo"
-                android:src="@drawable/ic_album_image_flag"
-                android:tint="#000000"
-                tools:ignore="RtlHardcoded" />
+            <LinearLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left">
 
-            <TextView
-                android:id="@+id/tv_audio_count"
-                style="@style/item_select_album_tv_count_style"
-                android:layout_toEndOf="@id/iv_audio"
-                android:layout_toRightOf="@id/iv_audio"
-                tools:ignore="RtlHardcoded" />
+                <ImageView
+                    android:id="@+id/iv_photo"
+                    style="@style/item_select_album_iv_count_style"
+                    android:src="@drawable/ic_album_image_flag"
+                    android:tint="#000000" />
 
+                <TextView
+                    android:id="@+id/tv_photo_count"
+                    style="@style/item_select_album_tv_count_style"
+                    tools:ignore="RtlHardcoded" />
 
-        </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/audioContainer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left">
+
+                <ImageView
+                    android:id="@+id/iv_audio"
+                    style="@style/item_select_album_iv_count_style"
+                    android:src="@drawable/ic_album_image_flag"
+                    android:tint="#000000"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/tv_audio_count"
+                    style="@style/item_select_album_tv_count_style"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
