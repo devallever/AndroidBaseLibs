@@ -25,6 +25,7 @@
             android:layout_marginTop="12dp"
             android:layout_toEndOf="@id/iv_image"
             android:layout_toRightOf="@id/iv_image"
+            android:singleLine="true"
             android:text="全部"
             android:textColor="#000000"
             android:textSize="16sp"
@@ -92,7 +93,7 @@
                 <ImageView
                     android:id="@+id/iv_audio"
                     style="@style/item_select_album_iv_count_style"
-                    android:src="@drawable/ic_album_image_flag"
+                    android:src="@drawable/ic_album_audio_flag"
                     android:tint="#000000"
                     tools:ignore="RtlHardcoded" />
 

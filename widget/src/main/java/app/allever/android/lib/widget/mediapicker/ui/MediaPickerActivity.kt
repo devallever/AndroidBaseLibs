@@ -11,6 +11,7 @@ import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.FragmentHelper
+import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.ActivityMediaPickerBinding
 import app.allever.android.lib.widget.mediapicker.MediaPicker
@@ -25,6 +26,7 @@ class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
 
     private lateinit var mBinding: ActivityMediaPickerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        StatusBarCompat.changeToLightStatusBar(this)
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_media_picker)
         mViewModel.initExtra(intent)
