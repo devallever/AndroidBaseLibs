@@ -146,10 +146,10 @@ object MediaPicker {
             allFolderBean.total = audioCount + imageCount + videoCount
             allFolderBean.name = "全部"
             mediaFolderList.add(0, allFolderBean)
-//            synchronized(this) {
+            synchronized(this) {
                 cacheFolderList.clear()
                 cacheFolderList.addAll(mediaFolderList)
-//            }
+            }
             mediaFolderList
         }
 
@@ -175,7 +175,7 @@ object MediaPicker {
         }
 
         //缓存
-//        synchronized(this) {
+        synchronized(this) {
             if (path.isEmpty()) {
                 when (mediaType) {
                     MediaHelper.TYPE_IMAGE -> {
@@ -191,7 +191,7 @@ object MediaPicker {
                         cacheAllAudioBeanList.addAll(list)
                     }
                 }
-//            }
+            }
         }
         val endTime = System.currentTimeMillis()
         log("fetchFromPhone 耗时：${endTime - startTime}")

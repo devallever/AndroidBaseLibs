@@ -43,8 +43,14 @@ class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
         super.finish()
         CoroutineHelper.DEFAULT.launch {
             MediaPicker.fetchFromPhone(App.context, MediaHelper.TYPE_IMAGE)
+        }
+        CoroutineHelper.DEFAULT.launch {
             MediaPicker.fetchFromPhone(App.context, MediaHelper.TYPE_VIDEO)
+        }
+        CoroutineHelper.DEFAULT.launch {
             MediaPicker.fetchFromPhone(App.context, MediaHelper.TYPE_AUDIO)
+        }
+        CoroutineHelper.DEFAULT.launch {
             MediaPicker.fetchFolderList(App.context, mViewModel.typeList)
         }
     }
