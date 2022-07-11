@@ -12,7 +12,7 @@
         <activity
             android:name=".mediapicker.ui.PreviewActivity"
             android:launchMode="singleTask"
-            android:theme="@style/MediaPickerTheme"
+            android:theme="@style/MediaPickerPreviewTheme"
             android:screenOrientation="portrait"/>
     </application>
 </manifest>

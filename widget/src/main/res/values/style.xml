@@ -17,6 +17,10 @@
 <!--        <item name="android:windowFullscreen">true</item>-->
     </style>
 
+    <style name="MediaPickerPreviewTheme" parent="MediaPickerTheme">
+        <item name="android:statusBarColor">#000000</item>
+    </style>
+
     <style name="item_select_album_iv_count_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
