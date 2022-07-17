@@ -69,6 +69,7 @@ dependencies {
     api coil
     api coilGif
     api coilSvg
+    api coilVideo
 
     api basePopup
 }

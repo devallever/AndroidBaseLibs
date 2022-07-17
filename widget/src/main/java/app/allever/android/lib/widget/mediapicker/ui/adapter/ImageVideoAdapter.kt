@@ -3,6 +3,7 @@ package app.allever.android.lib.widget.mediapicker.ui.adapter
 import android.view.ViewGroup
 import app.allever.android.lib.core.function.imageloader.load
 import app.allever.android.lib.core.function.media.MediaType
+import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.DisplayHelper
 import app.allever.android.lib.core.util.TimeUtils
 import app.allever.android.lib.widget.R
@@ -11,6 +12,7 @@ import app.allever.android.lib.widget.mediapicker.MediaItem
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
@@ -67,14 +69,18 @@ class ImageVideoAdapter :
     override fun convert(holder: BaseDataBindingHolder<RvItemImageVideoBinding>, item: MediaItem) {
         val binding = holder.dataBinding ?: return
         val position = data.indexOf(item)
-
         if (MediaType.isVideo(item.data.type)) {
             holder.setVisible(R.id.tvDuration, true)
             holder.setText(
                 R.id.tvDuration,
                 TimeUtils.formatTime(item.data.duration, TimeUtils.FORMAT_mm_ss)
             )
-            binding.ivImg.load(item.data.videoThumbnail ?: item.data.uri ?: "")
+            CoroutineHelper.MAIN.launch {
+//                val bitmap = MediaStore.Images.Media.getBitmap(App.context.contentResolver, item.data.uri);
+//                val bitmap = BitmapFactory.decodeStream(App.context.contentResolver.openInputStream(item.data.uri!!));
+//                binding.ivImg.load(bitmap)
+                binding.ivImg.load(item.data.uri ?: item.data.path)
+            }
         } else {
             holder.setVisible(R.id.tvDuration, false)
             binding.ivImg.load(item.data.uri ?: item.data.path)

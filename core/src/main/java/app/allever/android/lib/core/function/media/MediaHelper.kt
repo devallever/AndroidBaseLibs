@@ -327,6 +327,28 @@ object MediaHelper {
         imageFolderList
     }
 
+    /**
+     * 获取本地视频的第一帧
+     *
+     * @param localPath
+     * @return
+     */
+    suspend fun getLocalVideoBitmap(uri: Uri?) = withContext(Dispatchers.IO) {
+        var bitmap: Bitmap? = null
+        val retriever = MediaMetadataRetriever()
+        try {
+            //根据文件路径获取缩略图
+            retriever.setDataSource(App.context, uri)
+            //获得第一帧图片
+            bitmap = retriever.frameAtTime
+        } catch (e: java.lang.IllegalArgumentException) {
+            e.printStackTrace()
+        } finally {
+            retriever.release()
+        }
+        return@withContext bitmap
+    }
+
     suspend fun getImageMedia(context: Context, path: String, includeGif: Boolean = true) =
         withContext(Dispatchers.IO) {
             val result: MutableList<MediaBean> = mutableListOf()

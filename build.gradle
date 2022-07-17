@@ -120,6 +120,7 @@ ext {
     coil = "io.coil-kt:coil:2.1.0"
     coilGif = "io.coil-kt:coil-gif:2.1.0"
     coilSvg = "io.coil-kt:coil-svg:2.1.0"
+    coilVideo = "io.coil-kt:coil-video:2.1.0"
 
     autoSize = "com.github.JessYanCoding:AndroidAutoSize:1.2.1"
 
