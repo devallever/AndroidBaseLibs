@@ -42,6 +42,8 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
         RippleHelper.addRippleView(findViewById(R.id.btnBaseActivity))
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelector))
+        RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImageVideo))
+        RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImage))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -144,6 +146,21 @@ class MainActivity : AbstractActivity() {
 //                    }
                 }
             }
+        }
+
+        findViewById<View>(R.id.btnMediaSelectorImageVideo).setOnClickListener {
+            MediaPicker.launchPickerActivity(
+                MediaHelper.TYPE_IMAGE,
+                MediaHelper.TYPE_VIDEO,
+                mediaPickerListener = mediaPickerListener
+            )
+        }
+
+        findViewById<View>(R.id.btnMediaSelectorImage).setOnClickListener {
+            MediaPicker.launchPickerActivity(
+                MediaHelper.TYPE_IMAGE,
+                mediaPickerListener = mediaPickerListener
+            )
         }
 
 

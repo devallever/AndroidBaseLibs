@@ -54,5 +54,10 @@ dependencies {
     implementation materialDialogCore
     implementation materialDialogBottomSheets
     implementation flycoTabLayout
-    api chrisbanesPhotoView
+    api (chrisbanesPhotoView) {
+        //androidx.core已经包含了下面这些
+        exclude(group:"com.android.support", module: "support-annotations")
+        exclude(group:"com.android.support", module: "support-compat")
+        exclude(group:"com.android.support", module: "support-core-utils")
+    }
 }

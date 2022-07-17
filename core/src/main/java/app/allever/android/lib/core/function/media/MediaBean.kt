@@ -1,5 +1,6 @@
 package app.allever.android.lib.core.function.media
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
@@ -20,6 +21,9 @@ class MediaBean() : Parcelable {
     var uri: Uri? = null
     var type: Int = MediaType.TYPE_OTHER_IMAGE
     var duration: Long = 0
+    var width = 0
+    var height = 0
+    var videoThumbnail: Bitmap? = null
 
     /**
      * 文件名

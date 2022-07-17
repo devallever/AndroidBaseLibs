@@ -3,8 +3,13 @@ package app.allever.android.lib.core.function.media
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
+import android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT
+import android.media.ThumbnailUtils.extractThumbnail
 import android.net.Uri
 import android.provider.MediaStore
+import android.provider.MediaStore.Images.Thumbnails.MINI_KIND
 import android.text.TextUtils
 import androidx.annotation.StringDef
 import app.allever.android.lib.core.app.App
@@ -13,6 +18,8 @@ import app.allever.android.lib.core.util.FileUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import kotlin.math.roundToInt
+
 
 object MediaHelper {
 
@@ -126,14 +133,18 @@ object MediaHelper {
         MediaStore.Images.ImageColumns._ID,
         MediaStore.Images.ImageColumns.DATA,
         MediaStore.Images.ImageColumns.DATE_TAKEN,
-        MediaStore.Images.ImageColumns.ORIENTATION
+        MediaStore.Images.ImageColumns.ORIENTATION,
+        MediaStore.Images.ImageColumns.WIDTH,
+        MediaStore.Images.ImageColumns.HEIGHT
     )
 
     private val VIDEO_REJECTION_ARRAY = arrayOf(
         MediaStore.Video.VideoColumns._ID,
         MediaStore.Video.VideoColumns.DATA,
         MediaStore.Video.VideoColumns.DATE_TAKEN,
-        MediaStore.Video.VideoColumns.DURATION
+        MediaStore.Video.VideoColumns.DURATION,
+        MediaStore.Video.VideoColumns.WIDTH,
+        MediaStore.Video.VideoColumns.HEIGHT
     )
 
     private val AUDIO_REJECTION_ARRAY = arrayOf(
@@ -526,6 +537,8 @@ object MediaHelper {
                     val dateIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN)
                     val degreeIndex =
                         cursor.getColumnIndex(MediaStore.Images.ImageColumns.ORIENTATION)
+                    val widthIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.WIDTH)
+                    val heightIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.HEIGHT)
                     do {
                         val mediaBean = MediaBean()
                         mediaBean.uri = (
@@ -541,6 +554,8 @@ object MediaHelper {
                         mediaBean.path = (thumbPath)
                         mediaBean.date = (cursor.getLong(dateIndex))
                         mediaBean.degree = (cursor.getInt(degreeIndex))
+                        mediaBean.width = cursor.getInt(widthIndex)
+                        mediaBean.height = cursor.getInt(heightIndex)
                         when {
                             MediaFile.isGifFileType(mediaBean.path) -> {
                                 mediaBean.type = (MediaType.TYPE_GIF)
@@ -583,6 +598,8 @@ object MediaHelper {
                     val dateIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATE_TAKEN)
                     val durationIndex =
                         cursor.getColumnIndex(MediaStore.Video.VideoColumns.DURATION)
+                    val widthIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns.WIDTH)
+                    val heightIndex = cursor.getColumnIndex(MediaStore.Video.VideoColumns.HEIGHT)
                     do {
                         val mediaBean = MediaBean()
                         mediaBean.uri = (
@@ -598,6 +615,15 @@ object MediaHelper {
                         mediaBean.path = (videoPath)
                         mediaBean.date = (cursor.getLong(dateIndex))
                         mediaBean.type = (MediaType.TYPE_VIDEO)
+                        mediaBean.width = cursor.getInt(widthIndex)
+                        mediaBean.height = cursor.getInt(heightIndex)
+//                        log("video size = ${mediaBean.width} x ${mediaBean.height}")
+                        try {
+                            mediaBean.videoThumbnail =
+                                createVideoThumbnail(App.context, mediaBean, MINI_KIND)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
 
                         //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
                         val time = cursor.getLong(durationIndex)
@@ -745,5 +771,47 @@ object MediaHelper {
             k++
         }
         return@withContext result
+    }
+
+    private fun createVideoThumbnail(context: Context, mediaBean: MediaBean, kind: Int): Bitmap? {
+        var bitmap: Bitmap? = null
+        val retriever = MediaMetadataRetriever()
+        try {
+            retriever.setDataSource(context, mediaBean.uri)
+            return retriever.getFrameAtTime(1000)
+        } catch (ex: IllegalArgumentException) {
+            ex.printStackTrace()
+            // Assume this is a corrupt video file
+        } catch (ex: RuntimeException) {
+            ex.printStackTrace()
+            // Assume this is a corrupt video file.
+        } finally {
+            try {
+                retriever.release()
+            } catch (ex: RuntimeException) {
+                // Ignore failures while cleaning up.
+            }
+        }
+        if (bitmap == null) return null
+        if (kind == MediaStore.Images.Thumbnails.MINI_KIND) {
+            // Scale down the bitmap if it's too large.
+            val width = bitmap.width
+            val height = bitmap.height
+            val max = width.coerceAtLeast(height)
+            if (max > 512) {
+                val scale = 512f / max
+                val w = (scale * width).roundToInt()
+                val h = (scale * height).roundToInt()
+                bitmap = Bitmap.createScaledBitmap(bitmap, w, h, true)
+            }
+        } else if (kind == MediaStore.Images.Thumbnails.MICRO_KIND) {
+            bitmap = extractThumbnail(
+                bitmap,
+                mediaBean.width / 10,
+                mediaBean.height / 10,
+                OPTIONS_RECYCLE_INPUT
+            )
+        }
+        return bitmap
     }
 }

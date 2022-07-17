@@ -67,7 +67,6 @@ class ImageVideoAdapter :
     override fun convert(holder: BaseDataBindingHolder<RvItemImageVideoBinding>, item: MediaItem) {
         val binding = holder.dataBinding ?: return
         val position = data.indexOf(item)
-        binding.ivImg.load(item.data.uri ?: item.data.path)
 
         if (MediaType.isVideo(item.data.type)) {
             holder.setVisible(R.id.tvDuration, true)
@@ -75,8 +74,10 @@ class ImageVideoAdapter :
                 R.id.tvDuration,
                 TimeUtils.formatTime(item.data.duration, TimeUtils.FORMAT_mm_ss)
             )
+            binding.ivImg.load(item.data.videoThumbnail ?: item.data.uri ?: "")
         } else {
             holder.setVisible(R.id.tvDuration, false)
+            binding.ivImg.load(item.data.uri ?: item.data.path)
         }
 
         binding.root.setOnClickListener {
