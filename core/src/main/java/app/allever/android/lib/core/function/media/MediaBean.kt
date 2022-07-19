@@ -46,25 +46,29 @@ class MediaBean() : Parcelable {
     var musicAlbum = ""
 
     constructor(parcel: Parcel) : this() {
-        path = parcel.readString().toString()
         date = parcel.readLong()
         degree = parcel.readInt()
         uri = parcel.readParcelable(Uri::class.java.classLoader)
         type = parcel.readInt()
         duration = parcel.readLong()
-        name = parcel.readString().toString()
-        musicTitle = parcel.readString().toString()
-        musicArtist = parcel.readString().toString()
-        musicAlbum = parcel.readString().toString()
+        width = parcel.readInt()
+        height = parcel.readInt()
+        videoThumbnail = parcel.readParcelable(Bitmap::class.java.classLoader)
+        name = parcel.readString()?:""
+        musicTitle = parcel.readString()?:""
+        musicArtist = parcel.readString()?:""
+        musicAlbum = parcel.readString()?:""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(path)
         parcel.writeLong(date)
         parcel.writeInt(degree)
         parcel.writeParcelable(uri, flags)
         parcel.writeInt(type)
         parcel.writeLong(duration)
+        parcel.writeInt(width)
+        parcel.writeInt(height)
+        parcel.writeParcelable(videoThumbnail, flags)
         parcel.writeString(name)
         parcel.writeString(musicTitle)
         parcel.writeString(musicArtist)
@@ -84,4 +88,5 @@ class MediaBean() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 }

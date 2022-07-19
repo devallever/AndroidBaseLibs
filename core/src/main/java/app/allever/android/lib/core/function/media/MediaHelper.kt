@@ -9,7 +9,6 @@ import android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT
 import android.media.ThumbnailUtils.extractThumbnail
 import android.net.Uri
 import android.provider.MediaStore
-import android.provider.MediaStore.Images.Thumbnails.MINI_KIND
 import android.text.TextUtils
 import androidx.annotation.StringDef
 import app.allever.android.lib.core.app.App
@@ -618,12 +617,12 @@ object MediaHelper {
                         mediaBean.width = cursor.getInt(widthIndex)
                         mediaBean.height = cursor.getInt(heightIndex)
 //                        log("video size = ${mediaBean.width} x ${mediaBean.height}")
-                        try {
-                            mediaBean.videoThumbnail =
-                                createVideoThumbnail(App.context, mediaBean, MINI_KIND)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+//                        try {
+//                            mediaBean.videoThumbnail =
+//                                createVideoThumbnail(App.context, mediaBean, MINI_KIND)
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
 
                         //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
                         val time = cursor.getLong(durationIndex)
