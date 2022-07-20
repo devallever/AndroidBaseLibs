@@ -40,20 +40,20 @@ android {
 dependencies {
     api project(path: ':core')
 
-    implementation  refreshLayoutKernel
-    implementation  refreshHeaderClassics   //经典刷新头
+    api  refreshLayoutKernel
+    api  refreshHeaderClassics   //经典刷新头
 //    implementation  'io.github.scwang90:refresh-header-radar:2.0.5'       //雷达刷新头
 //    implementation  'io.github.scwang90:refresh-header-falsify:2.0.5'     //虚拟刷新头
 //    implementation  'io.github.scwang90:refresh-header-material:2.0.5'    //谷歌刷新头
 //    implementation  'io.github.scwang90:refresh-header-two-level:2.0.5'   //二级刷新头
 //    implementation  'io.github.scwang90:refresh-footer-ball:2.0.5'        //球脉冲加载
 //    implementation  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
-    implementation baseRecyclerViewAdapterHelper
-    implementation youthBanner
-    implementation circleImageView
-    implementation materialDialogCore
-    implementation materialDialogBottomSheets
-    implementation flycoTabLayout
+    api baseRecyclerViewAdapterHelper
+    api youthBanner
+    api circleImageView
+    api materialDialogCore
+    api materialDialogBottomSheets
+    api flycoTabLayout
     api (chrisbanesPhotoView) {
         //androidx.core已经包含了下面这些
         exclude(group:"com.android.support", module: "support-annotations")

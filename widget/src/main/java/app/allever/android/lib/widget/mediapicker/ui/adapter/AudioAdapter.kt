@@ -7,6 +7,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.function.imageloader.loadCircle
+import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.RvItemAudioBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
@@ -128,9 +129,8 @@ class AudioAdapter :
 
         checkSelected(holder, item)
 
+        ViewHelper.setVisible(binding.ivPlayPause, item.playing)
         if (item.playing) {
-            binding.tvTitle.text = "正在播放：${item.data.musicTitle}"
-            binding.ivPlayPause.setImageResource(R.drawable.icon_edit_music_online_pause)
             val magnify = 10000
             var toDegrees = 360f
             var duration = 3000L
@@ -146,8 +146,6 @@ class AudioAdapter :
             animation.interpolator = LinearInterpolator()
             binding.ivCover.startAnimation(animation)
         } else {
-            binding.tvTitle.text = item.data.musicTitle
-            binding.ivPlayPause.setImageResource(R.drawable.icon_edit_music_online_play)
             binding.ivCover.clearAnimation()
         }
     }
