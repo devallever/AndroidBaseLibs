@@ -6,6 +6,7 @@ import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import app.allever.android.lib.core.ext.logE
+import app.allever.android.lib.core.function.imageloader.loadCircle
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.RvItemAudioBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
@@ -29,10 +30,11 @@ class AudioAdapter :
 
         fun play() {
             val isi = currentPlayItemStateInfo
+            val position = data.indexOf(isi)
             if (isi != null) {
                 songPlayer.play()
                 isi.playing = true
-                notifyDataSetChanged()
+                setData(position, isi)
 //                onItemListener?.play(isi)
             }
         }
@@ -40,7 +42,7 @@ class AudioAdapter :
         fun pause() {
             val isi = currentPlayItemStateInfo
             val position = data.indexOf(isi)
-            if (isi != null  && position >= 0) {
+            if (isi != null && position >= 0) {
                 songPlayer.pause()
                 isi.playing = false
                 setData(position, isi)
@@ -96,6 +98,10 @@ class AudioAdapter :
         binding.tvIndex.text = "${(position + 1)}"
         binding.tvTitle.text = item.data.musicTitle
         binding.tvInfo.text = "${item.data.musicArtist} - ${item.data.musicAlbum}"
+        binding.ivCover.loadCircle(
+            item.data.musicCoverBitmap ?: R.drawable.ic_music_cover_bg,
+            errorResId = R.drawable.ic_music_cover_bg
+        )
 
         binding.ivSelect.setOnClickListener {
             item.isChecked = !item.isChecked
@@ -123,10 +129,11 @@ class AudioAdapter :
         checkSelected(holder, item)
 
         if (item.playing) {
-            binding.ivCover.setImageResource(R.drawable.icon_edit_music_online_pause)
+            binding.tvTitle.text = "正在播放：${item.data.musicTitle}"
+            binding.ivPlayPause.setImageResource(R.drawable.icon_edit_music_online_pause)
             val magnify = 10000
             var toDegrees = 360f
-            var duration = 1000L
+            var duration = 3000L
             toDegrees *= magnify
             duration *= magnify
             val animation = RotateAnimation(
@@ -139,7 +146,8 @@ class AudioAdapter :
             animation.interpolator = LinearInterpolator()
             binding.ivCover.startAnimation(animation)
         } else {
-            binding.ivCover.setImageResource(R.drawable.icon_edit_music_online_play)
+            binding.tvTitle.text = item.data.musicTitle
+            binding.ivPlayPause.setImageResource(R.drawable.icon_edit_music_online_play)
             binding.ivCover.clearAnimation()
         }
     }

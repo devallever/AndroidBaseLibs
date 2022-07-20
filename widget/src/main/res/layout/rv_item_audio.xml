@@ -18,13 +18,25 @@
                 android:id="@+id/tvIndex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/ivCover"
-                app:layout_constraintLeft_toLeftOf="@+id/ivCover"
-                app:layout_constraintRight_toRightOf="@+id/ivCover"
-                app:layout_constraintTop_toTopOf="@+id/ivCover" />
+                app:layout_constraintBottom_toBottomOf="@+id/ivPlayPause"
+                app:layout_constraintLeft_toLeftOf="@+id/ivPlayPause"
+                app:layout_constraintRight_toRightOf="@+id/ivPlayPause"
+                app:layout_constraintTop_toTopOf="@+id/ivPlayPause" />
 
             <ImageView
                 android:id="@+id/ivCover"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="10dp"
+                android:padding="2dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_music_cover_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivPlayPause"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="10dp"
@@ -46,7 +58,7 @@
                 android:text="标题"
                 android:textColor="#000000"
                 android:textSize="14sp"
-                app:layout_constraintLeft_toRightOf="@+id/ivCover"
+                app:layout_constraintLeft_toRightOf="@+id/ivPlayPause"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -59,7 +71,7 @@
                 android:text="赵丽颖 - 《花千骨》- 电视剧原声带"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/ivCover" />
+                app:layout_constraintLeft_toRightOf="@+id/ivPlayPause" />
 
             <ImageView
                 android:id="@+id/ivSelect"

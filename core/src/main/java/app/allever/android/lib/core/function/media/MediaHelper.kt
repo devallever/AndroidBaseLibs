@@ -4,6 +4,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT
 import android.media.ThumbnailUtils.extractThumbnail
@@ -153,7 +154,8 @@ object MediaHelper {
         MediaStore.Audio.AudioColumns.DURATION,
         MediaStore.Audio.AudioColumns.TITLE,
         MediaStore.Audio.AudioColumns.ARTIST,
-        MediaStore.Audio.AudioColumns.ALBUM
+        MediaStore.Audio.AudioColumns.ALBUM,
+        MediaStore.Audio.AudioColumns.ALBUM_ID
     )
 
     fun getTypeName(@Type type: String): String {
@@ -682,6 +684,7 @@ object MediaHelper {
                     val titleIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE)
                     val artistIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST)
                     val albumIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM)
+                    val albumIdIndex = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM_ID)
                     do {
                         val mediaBean = MediaBean()
                         mediaBean.uri = (
@@ -700,6 +703,24 @@ object MediaHelper {
                         mediaBean.musicTitle = cursor.getString(titleIndex)
                         mediaBean.musicArtist = cursor.getString(artistIndex)
                         mediaBean.musicAlbum = cursor.getString(albumIndex)
+                        val albumId = cursor.getLong(albumIdIndex)
+                        mediaBean.musicCoverUri = getMediaStoreAlbumCoverUri(albumId)
+                        log("music cover uri = ${mediaBean.musicCoverUri}")
+                        val inputStream = try {
+                            mediaBean.musicCoverUri?.let {
+                                App.context.contentResolver.openInputStream(
+                                    it
+                                )
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+
+                        val option = BitmapFactory.Options()
+                        option.inPreferredConfig = Bitmap.Config.RGB_565
+                        mediaBean.musicCoverBitmap = BitmapFactory.decodeStream(inputStream)
+
 
                         //有些文件后缀为视频格式，却不是视频文件，长度为0， 需要排除
                         val time = cursor.getLong(durationIndex)
@@ -834,5 +855,10 @@ object MediaHelper {
             )
         }
         return bitmap
+    }
+
+    private fun getMediaStoreAlbumCoverUri(albumId: Long): Uri? {
+        val artworkUri = Uri.parse("content://media/external/audio/albumart")
+        return ContentUris.withAppendedId(artworkUri, albumId)
     }
 }
