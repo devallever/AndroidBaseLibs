@@ -49,6 +49,7 @@ class MediaBean() : Parcelable {
     var musicCoverBitmap: Bitmap? = null
 
     constructor(parcel: Parcel) : this() {
+        path = parcel.readString() ?: ""
         date = parcel.readLong()
         degree = parcel.readInt()
         uri = parcel.readParcelable(Uri::class.java.classLoader)
@@ -66,6 +67,7 @@ class MediaBean() : Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(path)
         parcel.writeLong(date)
         parcel.writeInt(degree)
         parcel.writeParcelable(uri, flags)
