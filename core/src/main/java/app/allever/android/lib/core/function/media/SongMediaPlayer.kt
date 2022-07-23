@@ -1,10 +1,11 @@
-package app.allever.android.lib.widget.mediapicker
+package app.allever.android.lib.core.function.media
 
 import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import app.allever.android.lib.core.function.work.PollingTask2
 import java.util.*
 
 class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
@@ -16,6 +17,8 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
     }
 
     private val mediaPlayer: MediaPlayer = MediaPlayer()
+
+    private var isPrepared = false
 
     private val playerListener = object :
         MediaPlayer.OnCompletionListener,
@@ -39,6 +42,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
         }
 
         override fun onPrepared(mp: MediaPlayer?) {
+            isPrepared = true
             onPlayerListeners.map {
                 it.onPrepared()
             }
@@ -108,6 +112,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
 
     fun reset() {
         try {
+            isPrepared = false
             mediaPlayer.reset()
             notifyMsgProgress(true)
         } catch (e: Exception) {
@@ -126,8 +131,10 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
 
     fun play() {
         try {
-            mediaPlayer.start()
-            notifyMsgProgress()
+            PollingTask2(200, condition = { isPrepared }, execute = {
+                mediaPlayer.start()
+                notifyMsgProgress()
+            }).start()
         } catch (e: Exception) {
             notifyError("error: start: ${e.message}")
         }

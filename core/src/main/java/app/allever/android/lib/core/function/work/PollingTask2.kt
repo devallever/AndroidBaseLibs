@@ -9,15 +9,22 @@ import app.allever.android.lib.core.app.App
  */
 class PollingTask2(
     private val interval: Long = 2000,
+    private val maxRetry: Int = 3,
     private val condition: () -> Boolean,
     private val execute: () -> Unit = {}
 ) {
+    private var retryCount = 0
+
     private val task = Runnable {
         start()
     }
 
     fun start() {
         if (!condition()) {
+            retryCount ++
+            if (retryCount > maxRetry) {
+                return
+            }
             App.mainHandler.postDelayed(task, interval)
             return
         }

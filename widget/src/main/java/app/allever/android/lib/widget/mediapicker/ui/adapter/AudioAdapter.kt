@@ -7,11 +7,11 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.core.function.imageloader.loadCircle
+import app.allever.android.lib.core.function.media.SongMediaPlayer
 import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.RvItemAudioBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
-import app.allever.android.lib.widget.mediapicker.SongMediaPlayer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
