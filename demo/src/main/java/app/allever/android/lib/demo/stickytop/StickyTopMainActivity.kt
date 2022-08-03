@@ -14,6 +14,9 @@ class StickyTopMainActivity : BaseActivity<ActivityStickyTopMainBinding, StickyT
         binding.btnBaseStickyTopWithTwoView.setOnClickListener {
             ActivityHelper.startActivity<BaseTwoViewStickyTopActivity> { }
         }
+        binding.btnStickyTopWithRemoveAddView.setOnClickListener {
+            ActivityHelper.startActivity<RemoveAddViewStickyTopActivity> {  }
+        }
     }
 
     override fun getContentMvvmConfig() =
