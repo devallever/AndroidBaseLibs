@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:gravity="center"
+        android:background="#80ff0000"
+        android:text="Header"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:id="@+id/rvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+</layout>

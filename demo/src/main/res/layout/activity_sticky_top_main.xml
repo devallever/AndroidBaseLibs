@@ -29,6 +29,12 @@
                 android:layout_height="wrap_content"
                 android:text="移除/添加View 显示吸顶" />
 
+            <Button
+                android:id="@+id/btnRecyclerViewHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recycler View Header" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
