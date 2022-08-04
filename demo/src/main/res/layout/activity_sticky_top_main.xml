@@ -35,6 +35,12 @@
                 android:layout_height="wrap_content"
                 android:text="Recycler View Header" />
 
+            <Button
+                android:id="@+id/btnCoordinator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CoordinatorLayout + AppBarLayout" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -20,6 +20,10 @@ class StickyTopMainActivity : BaseActivity<ActivityStickyTopMainBinding, StickyT
         binding.btnRecyclerViewHeader.setOnClickListener {
             ActivityHelper.startActivity<RecyclerViewHeaderStickyTopActivity> { }
         }
+
+        binding.btnCoordinator.setOnClickListener {
+            ActivityHelper.startActivity<CoordinatorStickyTopActivity> { }
+        }
     }
 
     override fun getContentMvvmConfig() =

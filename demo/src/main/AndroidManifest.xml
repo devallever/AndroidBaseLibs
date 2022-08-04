@@ -17,5 +17,7 @@
         <activity
             android:name=".stickytop.RecyclerViewHeaderStickyTopActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".stickytop.CoordinatorStickyTopActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 </manifest>
