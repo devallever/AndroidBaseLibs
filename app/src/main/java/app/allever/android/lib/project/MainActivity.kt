@@ -16,7 +16,6 @@ import app.allever.android.lib.core.function.work.PollingTask2
 import app.allever.android.lib.core.function.work.TimerTask
 import app.allever.android.lib.core.function.work.TimerTask2
 import app.allever.android.lib.core.helper.ActivityHelper
-import app.allever.android.lib.demo.DemoMainActivity
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.demo.MvvmActivity
@@ -45,7 +44,6 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelector))
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImageVideo))
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImage))
-        RippleHelper.addRippleView(findViewById(R.id.btnDemo))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -164,11 +162,6 @@ class MainActivity : AbstractActivity() {
                 mediaPickerListener = mediaPickerListener
             )
         }
-
-        findViewById<View>(R.id.btnDemo).setOnClickListener {
-            ActivityHelper.startActivity<DemoMainActivity>()
-        }
-
 
         object : TimerTask() {
             override fun delay() = 3 * 1000L
