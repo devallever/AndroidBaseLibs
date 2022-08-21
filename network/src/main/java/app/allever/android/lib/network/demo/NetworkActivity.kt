@@ -3,12 +3,18 @@ package app.allever.android.lib.network.demo
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
-import app.allever.android.lib.core.ext.toast
+import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.network.HttpConfig
-import app.allever.android.lib.core.helper.GsonHelper
+import app.allever.android.lib.core.function.network.ResponseCallback
+import app.allever.android.lib.core.function.network.response.NetResponse
+import app.allever.android.lib.core.helper.GsonHelper.toJson
 import app.allever.android.lib.network.ApiService
 import app.allever.android.lib.network.R
+import app.allever.android.lib.network.demo.NetRepository.getBannerCall
 import kotlinx.coroutines.launch
 
 class NetworkActivity : AbstractActivity() {
@@ -22,24 +28,77 @@ class NetworkActivity : AbstractActivity() {
             .header("KEY", "VALUE")
             .init(ApiService)
 
-        tvResult = findViewById<TextView>(R.id.tvResult)
+        tvResult = findViewById(R.id.tvResult)
         findViewById<View>(R.id.btnSend).setOnClickListener {
-            toast("发送请求")
-            send()
+            sendForJava()
+        }
+
+        findViewById<View>(R.id.btnSendKotlin).setOnClickListener {
+            sendKotlin()
+        }
+
+        findViewById<View>(R.id.btnSendKotlinLiveData1).setOnClickListener {
+            sendKotlinLiveData1()
+        }
+
+        findViewById<View>(R.id.btnSendKotlinLiveData2).setOnClickListener {
+            sendKotlinLiveData2()
+        }
+
+        findViewById<View>(R.id.btnClear).setOnClickListener {
+            tvResult.text = ""
+        }
+
+
+        bannerMultiLiveData.observe(this) {
+            updateUi(it)
+        }
+
+        bannerLiveData.observe(this) {
+            updateUi(it)
         }
     }
 
-    private fun send() {
-        mainCoroutine.launch {
-//            val result = NetRepository.getBanner(BannerResponseCache())
-//            result.let {
-//                tvResult.text = GsonHelper.toJson(it)
-//            }
+    private fun sendForJava() {
+        getBannerCall(BannerResponseCache(), object : ResponseCallback<List<BannerData>> {
+            override fun onFail(response: NetResponse<List<BannerData>>) {
+                log(response.getMsg())
+                updateUi(response as BaseResponse<List<BannerData>>)
+            }
 
-            //LiveData方式
-            NetRepository.getBannerForLiveData(BannerResponseCache()).observe(this@NetworkActivity) {
-                tvResult.text = GsonHelper.toJson(it)
+            override fun onSuccess(response: NetResponse<List<BannerData>>) {
+                log(response.getMsg())
+                updateUi(response as BaseResponse<List<BannerData>>)
+            }
+        })
+    }
+
+    private fun sendKotlin() {
+        lifecycleScope.launch {
+            bannerMultiLiveData.value = NetRepository.getBanner(BannerResponseCache())
+        }
+    }
+
+    private val bannerMultiLiveData = MutableLiveData<BaseResponse<List<BannerData>>>()
+
+    private val bannerRequestLiveData = MutableLiveData<Any?>(null)
+    private val bannerLiveData = Transformations.switchMap(bannerRequestLiveData) {
+        NetRepository.getBannerWithLiveData(BannerResponseCache())
+    }
+
+    private fun sendKotlinLiveData1() {
+        lifecycleScope.launch {
+            NetRepository.getBannerForLiveData(BannerResponseCache()).value?.let {
+                updateUi(it)
             }
         }
+    }
+
+    private fun sendKotlinLiveData2() {
+        bannerRequestLiveData.value = null
+    }
+
+    private fun updateUi(it: BaseResponse<List<BannerData>>) {
+        tvResult.text = toJson(it)
     }
 }

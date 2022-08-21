@@ -2,6 +2,7 @@ package app.allever.android.lib.core.function.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.logE
@@ -92,7 +93,7 @@ abstract class NetworkHandler {
      * @param responseCache 缓存类，null表示不使用缓存
      * @param block 高阶函数，执行相应都网络请求
      */
-    inline fun <T : NetResponse<*>> requestLiveData(
+    inline suspend fun <T : NetResponse<*>> requestLiveData(
         responseClz: Class<*>?,
         responseCache: ResponseCache<*>? = null,
         block: () -> T
@@ -129,6 +130,45 @@ abstract class NetworkHandler {
             return liveData
         }
     }
+
+    /**
+     * kotlin协程方式请求
+     * @param responseClz 响应体的class类型
+     * @param responseCache 缓存类，null表示不使用缓存
+     * @param block 高阶函数，执行相应都网络请求
+     */
+    inline fun <T : NetResponse<*>> requestLiveData2(
+        responseClz: Class<*>?,
+        responseCache: ResponseCache<*>? = null,
+        crossinline block: suspend () -> T
+    )  = liveData {
+            try {
+                if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
+                    val response = responseCache?.getCache<T>()
+                    response?.let {
+                        log("使用缓存: ${response.data}")
+                        emit(it)
+                        return@liveData
+                    }
+                }
+
+                val response = block()
+                if (isSuccessCode(response.getCode())) {
+                    responseCache?.cacheResponse(response)
+                }
+                emit(response)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                logE(e.message)
+                val exception = ExceptionHandle.handleException(e)
+                val response = responseClz?.newInstance()
+                log("responseClz = ${response?.javaClass?.simpleName}")
+                if (response is NetResponse<*>) {
+                    response.setData(exception.code, exception.message ?: "", null)
+                }
+                emit(response as T)
+            }
+        }
 
     /**
      * java回调方式请求

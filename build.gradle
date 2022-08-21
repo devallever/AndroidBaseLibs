@@ -40,9 +40,11 @@ ext {
     androidXRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     androidXViewPager2 = "androidx.viewpager2:viewpager2:1.1.0-alpha01"
 
-    androidXLifecycle = "androidx.lifecycle:lifecycle-extensions:2.2.0"
     androidXLifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     androidXLifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    //LiveData
+    androidXLifeCycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
 
     kotlinxCoroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
     kotlinxCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"

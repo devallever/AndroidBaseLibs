@@ -60,6 +60,7 @@ dependencies {
     api androidXLifecycleViewModelKtx
     //activity-ktx
     api androidXActivityKtx
+    api androidXLifeCycleLiveDataKtx
 
     api mmkv
 
