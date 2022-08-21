@@ -1,5 +1,7 @@
 package app.allever.android.lib.core.function.network
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.logE
@@ -81,6 +83,50 @@ abstract class NetworkHandler {
                 response.setData(exception.code, exception.message ?: "", null)
             }
             return response as? T?
+        }
+    }
+
+    /**
+     * kotlin协程方式请求
+     * @param responseClz 响应体的class类型
+     * @param responseCache 缓存类，null表示不使用缓存
+     * @param block 高阶函数，执行相应都网络请求
+     */
+    inline fun <T : NetResponse<*>> requestLiveData(
+        responseClz: Class<*>?,
+        responseCache: ResponseCache<*>? = null,
+        block: () -> T
+    ): LiveData<T> {
+        val liveData = MutableLiveData<T>()
+        try {
+            if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
+                val response = responseCache?.getCache<T>()
+                response?.let {
+                    log("使用缓存: ${response.data}")
+                    liveData.value = it
+                    return liveData
+                }
+            }
+
+            val response = block()
+            if (isSuccessCode(response.getCode())) {
+                responseCache?.cacheResponse(response)
+            }
+            liveData.value = response
+            return liveData
+        } catch (e: Exception) {
+            e.printStackTrace()
+            logE(e.message)
+            val exception = ExceptionHandle.handleException(e)
+            val response = responseClz?.newInstance()
+            log("responseClz = ${response?.javaClass?.simpleName}")
+            if (response is NetResponse<*>) {
+                response.setData(exception.code, exception.message ?: "", null)
+            }
+            response?.let {
+                liveData.value = it as T
+            }
+            return liveData
         }
     }
 
