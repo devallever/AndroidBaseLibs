@@ -1,35 +1,21 @@
 package app.allever.android.lib.project
 
 import android.content.Context
-import android.view.View
 import app.allever.android.lib.core.base.AbstractPopupWindow
 import app.allever.android.lib.core.helper.DisplayHelper
+import app.allever.android.lib.project.databinding.DialogFirstBinding
 
-class NotificationWindow(context: Context) : AbstractPopupWindow(context) {
+class NotificationWindow(context: Context) : AbstractPopupWindow<DialogFirstBinding>(context) {
 
-    private lateinit var mRootView: View
+    override fun getParams() = Params(
+        R.layout.dialog_first,
+        DisplayHelper.getScreenWidth() - DisplayHelper.dip2px(20),
+        DisplayHelper.dip2px(88)
+    )
 
-    init {
-        initView()
-    }
-
-    override fun getWidth() = DisplayHelper.getScreenWidth() - DisplayHelper.dip2px(20)
-
-    override fun getHeight() = DisplayHelper.dip2px(88)
-
-    private fun initView() {
-        //在显示之前，设置背景色+ 阴影
-        setContentView(R.layout.dialog_first)
-        mPopupWindow.elevation = DisplayHelper.dip2px(20).toFloat()
-        mRootView = mPopupWindow.contentView.findViewById(R.id.rootView)
-
-        mRootView.setOnClickListener {
+    override fun initView() {
+        mBinding.rootView.setOnClickListener {
             hide()
         }
-    }
-
-    override fun onSingleTapUp() {
-        super.onSingleTapUp()
-        mPopupWindow.dismiss()
     }
 }

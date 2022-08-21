@@ -5,16 +5,150 @@ import android.content.Context
 import android.view.*
 import android.view.animation.TranslateAnimation
 import android.widget.PopupWindow
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.DisplayHelper
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 
-open class AbstractPopupWindow(ctx: Context) : BaseDialog(ctx), IDialog {
+abstract class AbstractPopupWindow<DB : ViewDataBinding>(ctx: Context) : BaseDialog(ctx), IDialog {
 
-    private val mDismissDelay = 300L
-    private val mAnimationDuration = 100L
+    protected var mBinding: DB
+    protected var mParams: Params
+    protected val mDismissDelay = 300L
+    protected val mAnimationDuration = 100L
     protected var yOffset = 0
+
+    //需要在构建PopupWindow的时候穿进去宽高，否则有黑色底色
+    protected var mPopupWindow: PopupWindow
+    protected lateinit var anchor: View
+
+    protected val mHideTask = Runnable {
+        hide()
+    }
+
+    init {
+        mParams = getParams()
+        mPopupWindow = PopupWindow(mParams.width, mParams.height)
+        mBinding =
+            DataBindingUtil.inflate(LayoutInflater.from(App.context), mParams.layoutId, null, false)
+        mPopupWindow.contentView = mBinding.root
+        mPopupWindow.elevation = DisplayHelper.dip2px(20).toFloat()
+        val gestureDetector =
+            GestureDetector(ctxRef.get(), CustomDetector(mPopupWindow.contentView))
+        mPopupWindow.contentView.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event) }
+        initView()
+    }
+
+    protected open fun onSingleTapUp() {
+        mPopupWindow.dismiss()
+    }
+
+    fun setWidth(width: Int) {
+        mPopupWindow.width = width
+    }
+
+    fun setHeight(height: Int) {
+        mPopupWindow.height = height
+    }
+
+    fun setAnchorView(anchor: View) {
+        this.anchor = anchor
+    }
+
+    override fun show() {
+        show(anchor)
+    }
+
+    open fun show(anchor: View) {
+        if (isShowing()) {
+            resetRunnable()
+        } else {
+            showAtLocation(
+                anchor,
+                Gravity.TOP,
+                0,
+                0
+            )
+        }
+    }
+
+    open fun showAtLocation(anchor: View, gravity: Int, xOffset: Int, yOffset: Int) {
+        this.yOffset = yOffset
+        performTranslate(
+            mPopupWindow.contentView,
+            fromXDelta = 0F,
+            toXDelta = 0F,
+            -mParams.height.toFloat(),
+            toYDelta = 0F,
+            duration = mDismissDelay,
+            repeatCount = 0
+        )
+        val activity = (anchor.context as? Activity)
+        if (activity?.isFinishing == true || activity?.isDestroyed == true) {
+            return
+        }
+        mPopupWindow.showAtLocation(anchor, gravity, xOffset, yOffset)
+        resetRunnable()
+    }
+
+    private fun performExitAnimation() {
+        performTranslate(
+            mPopupWindow.contentView,
+            fromXDelta = 0F,
+            toXDelta = 0F,
+            fromYDelta = 0F,
+            -mParams.height.toFloat(),
+            duration = mDismissDelay,
+            repeatCount = 0
+        )
+    }
+
+    protected fun removeRunnable() {
+        App.mainHandler.removeCallbacks(mHideTask)
+    }
+
+    protected fun resetRunnable() {
+        removeRunnable()
+        App.mainHandler.postDelayed(mHideTask, 8000)
+    }
+
+    override fun isShowing(): Boolean {
+        return mPopupWindow.isShowing
+    }
+
+    override fun hide() {
+        performExitAnimation()
+        App.mainHandler.postDelayed({
+            mPopupWindow.dismiss()
+        }, mDismissDelay)
+    }
+
+    fun performTranslate(
+        view: View,
+        fromXDelta: Float,
+        toXDelta: Float,
+        fromYDelta: Float,
+        toYDelta: Float,
+        duration: Long,
+        repeatCount: Int
+    ) {
+        val translateAnimation = TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta)
+        translateAnimation.fillAfter = true
+        translateAnimation.duration = duration
+        translateAnimation.repeatCount = repeatCount
+        view.startAnimation(translateAnimation)
+    }
+
+    abstract fun getParams(): Params
+
+    abstract fun initView()
+
+    /**
+     *
+     */
+    class Params(val layoutId: Int, val width: Int, val height: Int, val enableAnim: Boolean = true)
 
     inner class CustomDetector(view: View) : GestureDetector.SimpleOnGestureListener() {
 
@@ -58,8 +192,8 @@ open class AbstractPopupWindow(ctx: Context) : BaseDialog(ctx), IDialog {
         }
 
         private fun moveToTop() {
-            val toY = DisplayHelper.dip2px(getHeight())
-            if (ctxRef.get() != null) {
+            val toY = DisplayHelper.dip2px(mParams.height)
+            ctxRef.get()?.let {
                 performTranslate(
                     0F,
                     0F,
@@ -108,127 +242,6 @@ open class AbstractPopupWindow(ctx: Context) : BaseDialog(ctx), IDialog {
                 mPopupWindow.dismiss()
             }, mDismissDelay)
         }
-    }
-
-    protected val mHideTask = Runnable {
-        hide()
-    }
-
-    //需要在构建PopupWindow的时候穿进去宽高，否则有黑色底色
-    protected var mPopupWindow = PopupWindow(getWidth(), getHeight())
-    protected lateinit var anchor: View
-
-    open fun getWidth(): Int {
-        return WindowManager.LayoutParams.WRAP_CONTENT
-    }
-
-    open fun getHeight(): Int {
-        return WindowManager.LayoutParams.WRAP_CONTENT
-    }
-
-    protected open fun onSingleTapUp() {
-    }
-
-    fun setContentView(resId: Int) {
-        mPopupWindow.contentView = LayoutInflater.from(ctxRef.get()).inflate(resId, null)
-        val gestureDetector = GestureDetector(ctxRef.get(), CustomDetector(mPopupWindow.contentView))
-        mPopupWindow.contentView.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event) }
-    }
-
-    fun setWidth(width: Int) {
-        mPopupWindow.width = width
-    }
-
-    fun setHeight(height: Int) {
-        mPopupWindow.height = height
-    }
-
-    fun setAnchorView(anchor: View) {
-        this.anchor = anchor
-    }
-
-    override fun show() {
-        show(anchor)
-    }
-
-    open fun show(anchor: View) {
-        if (isShowing()) {
-            resetRunnable()
-        } else {
-            showAtLocation(
-                anchor,
-                Gravity.TOP,
-                0,
-                0
-            )
-        }
-    }
-
-    open fun showAtLocation(anchor: View, gravity: Int, xOffset: Int, yOffset: Int) {
-        this.yOffset = yOffset
-        performTranslate(
-            mPopupWindow.contentView,
-            fromXDelta = 0F,
-            toXDelta = 0F,
-            -getHeight().toFloat(),
-            toYDelta = 0F,
-            duration = mDismissDelay,
-            repeatCount = 0
-        )
-        val activity = (anchor.context as? Activity)
-        if (activity?.isFinishing == true || activity?.isDestroyed == true) {
-            return
-        }
-        mPopupWindow.showAtLocation(anchor, gravity, xOffset, yOffset)
-        resetRunnable()
-    }
-
-    private fun performExitAnimation() {
-        performTranslate(
-            mPopupWindow.contentView,
-            fromXDelta = 0F,
-            toXDelta = 0F,
-            fromYDelta = 0F,
-            -getHeight().toFloat(),
-            duration = mDismissDelay,
-            repeatCount = 0
-        )
-    }
-
-    protected fun removeRunnable() {
-        App.mainHandler.removeCallbacks(mHideTask)
-    }
-
-    protected fun resetRunnable() {
-        removeRunnable()
-        App.mainHandler.postDelayed(mHideTask, 8000)
-    }
-
-    override fun isShowing(): Boolean {
-        return mPopupWindow.isShowing
-    }
-
-    override fun hide() {
-        performExitAnimation()
-        App.mainHandler.postDelayed({
-            mPopupWindow.dismiss()
-        }, mDismissDelay)
-    }
-
-    fun performTranslate(
-        view: View,
-        fromXDelta: Float,
-        toXDelta: Float,
-        fromYDelta: Float,
-        toYDelta: Float,
-        duration: Long,
-        repeatCount: Int
-    ) {
-        val translateAnimation = TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta)
-        translateAnimation.fillAfter = true
-        translateAnimation.duration = duration
-        translateAnimation.repeatCount = repeatCount
-        view.startAnimation(translateAnimation)
     }
 }
 
