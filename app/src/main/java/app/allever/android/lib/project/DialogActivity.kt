@@ -13,6 +13,7 @@ class DialogActivity: BaseActivity<ActivityDialogBinding, DialogViewModel>() {
         RippleHelper.addRippleView(binding.btnBottomDialog)
         RippleHelper.addRippleView(binding.btnCenterDialog)
         RippleHelper.addRippleView(binding.btnNotificationPopWindow)
+        RippleHelper.addRippleView(binding.btnAbstractPopupWindow)
         binding.btnBottomDialog.setOnClickListener {
             BottomDialog().show(supportFragmentManager)
         }
@@ -20,8 +21,12 @@ class DialogActivity: BaseActivity<ActivityDialogBinding, DialogViewModel>() {
             CenterDialog(this).show()
         }
         val firstPopWindow = FirstPopWindow(this)
+        val firstPopWindow2 = FirstPopWindow(this)
         binding.btnNotificationPopWindow.setOnClickListener {
             firstPopWindow.show(offsetYDp = 42)
+        }
+        binding.btnAbstractPopupWindow.setOnClickListener {
+            NotificationWindow(this).show(window.decorView)
         }
     }
 }

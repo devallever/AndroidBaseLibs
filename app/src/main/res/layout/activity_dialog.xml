@@ -46,6 +46,24 @@
                 android:text="Notification PopWindow"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/btnNotificationPopWindow2"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Notification PopWindow 2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnAbstractPopupWindow"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="AbstractPopupWindow"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
     </ScrollView>
