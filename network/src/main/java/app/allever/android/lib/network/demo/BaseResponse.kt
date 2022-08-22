@@ -14,11 +14,4 @@ open class BaseResponse<DATA> : NetResponse<DATA>() {
         this.errorMsg = msg
         this.data = data
     }
-//
-//    override fun <T : NetResponse<DATA>> generateResponse(code: Int, msg: String, data: DATA?): T {
-//        this.errorCode = code
-//        this.errorMsg = msg
-//        this.data = data
-//        return this as T
-//    }
 }
