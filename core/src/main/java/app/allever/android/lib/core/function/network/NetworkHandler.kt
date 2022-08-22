@@ -18,7 +18,6 @@ import app.allever.android.lib.core.helper.NetworkHelper
 abstract class NetworkHandler {
     @Deprecated("Java调用直接用回调就好了")
     inline fun <T : NetResponse<*>> requestForJava(block: () -> T): T? {
-        val result: T
         return try {
             val response = block()
             response
@@ -58,7 +57,7 @@ abstract class NetworkHandler {
     inline fun <T : NetResponse<*>> request(
         responseCache: ResponseCache<*>? = null,
         block: () -> T
-    ): T? {
+    ): T {
         try {
             if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
                 val response = responseCache?.getCache<T>()
@@ -82,7 +81,7 @@ abstract class NetworkHandler {
             if (response is NetResponse<*>) {
                 response.setData(exception.code, exception.message ?: "", null)
             }
-            return response as? T?
+            return response as T
         }
     }
 
@@ -97,36 +96,8 @@ abstract class NetworkHandler {
         block: () -> T
     ): LiveData<T> {
         val liveData = MutableLiveData<T>()
-        try {
-            if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
-                val response = responseCache?.getCache<T>()
-                response?.let {
-                    log("使用缓存: ${response.data}")
-                    liveData.value = it
-                    return liveData
-                }
-            }
-
-            val response = block()
-            if (isSuccessCode(response.getCode())) {
-                responseCache?.cacheResponse(response)
-            }
-            liveData.value = response
-            return liveData
-        } catch (e: Exception) {
-            e.printStackTrace()
-            logE(e.message)
-            val exception = ExceptionHandle.handleException(e)
-            val response = HttpConfig.baseResponseClz.newInstance()
-            log("responseClz = ${response?.javaClass?.simpleName}")
-            if (response is NetResponse<*>) {
-                response.setData(exception.code, exception.message ?: "", null)
-            }
-            response?.let {
-                liveData.value = it as T
-            }
-            return liveData
-        }
+        liveData.value = request(responseCache, block)
+        return liveData
     }
 
     /**
@@ -138,34 +109,34 @@ abstract class NetworkHandler {
     inline fun <T : NetResponse<*>> requestLiveData2(
         responseCache: ResponseCache<*>? = null,
         crossinline block: suspend () -> T
-    )  = liveData {
-            try {
-                if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
-                    val response = responseCache?.getCache<T>()
-                    response?.let {
-                        log("使用缓存: ${response.data}")
-                        emit(it)
-                        return@liveData
-                    }
+    ) = liveData {
+        try {
+            if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
+                val response = responseCache?.getCache<T>()
+                response?.let {
+                    log("使用缓存: ${response.data}")
+                    emit(it)
+                    return@liveData
                 }
-
-                val response = block()
-                if (isSuccessCode(response.getCode())) {
-                    responseCache?.cacheResponse(response)
-                }
-                emit(response)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                logE(e.message)
-                val exception = ExceptionHandle.handleException(e)
-                val response = HttpConfig.baseResponseClz.newInstance()
-                log("responseClz = ${response?.javaClass?.simpleName}")
-                if (response is NetResponse<*>) {
-                    response.setData(exception.code, exception.message ?: "", null)
-                }
-                emit(response as T)
             }
+
+            val response = block()
+            if (isSuccessCode(response.getCode())) {
+                responseCache?.cacheResponse(response)
+            }
+            emit(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            logE(e.message)
+            val exception = ExceptionHandle.handleException(e)
+            val response = HttpConfig.baseResponseClz.newInstance()
+            log("responseClz = ${response?.javaClass?.simpleName}")
+            if (response is NetResponse<*>) {
+                response.setData(exception.code, exception.message ?: "", null)
+            }
+            emit(response as T)
         }
+    }
 
     /**
      * java回调方式请求
