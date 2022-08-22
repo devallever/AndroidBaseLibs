@@ -56,7 +56,6 @@ abstract class NetworkHandler {
      * @param block 高阶函数，执行相应都网络请求
      */
     inline fun <T : NetResponse<*>> request(
-        responseClz: Class<*>?,
         responseCache: ResponseCache<*>? = null,
         block: () -> T
     ): T? {
@@ -78,7 +77,7 @@ abstract class NetworkHandler {
             e.printStackTrace()
             logE(e.message)
             val exception = ExceptionHandle.handleException(e)
-            val response = responseClz?.newInstance()
+            val response = HttpConfig.baseResponseClz.newInstance()
             log("responseClz = ${response?.javaClass?.simpleName}")
             if (response is NetResponse<*>) {
                 response.setData(exception.code, exception.message ?: "", null)
@@ -94,7 +93,6 @@ abstract class NetworkHandler {
      * @param block 高阶函数，执行相应都网络请求
      */
     inline suspend fun <T : NetResponse<*>> requestLiveData(
-        responseClz: Class<*>?,
         responseCache: ResponseCache<*>? = null,
         block: () -> T
     ): LiveData<T> {
@@ -119,7 +117,7 @@ abstract class NetworkHandler {
             e.printStackTrace()
             logE(e.message)
             val exception = ExceptionHandle.handleException(e)
-            val response = responseClz?.newInstance()
+            val response = HttpConfig.baseResponseClz.newInstance()
             log("responseClz = ${response?.javaClass?.simpleName}")
             if (response is NetResponse<*>) {
                 response.setData(exception.code, exception.message ?: "", null)
@@ -138,7 +136,6 @@ abstract class NetworkHandler {
      * @param block 高阶函数，执行相应都网络请求
      */
     inline fun <T : NetResponse<*>> requestLiveData2(
-        responseClz: Class<*>?,
         responseCache: ResponseCache<*>? = null,
         crossinline block: suspend () -> T
     )  = liveData {
@@ -161,7 +158,7 @@ abstract class NetworkHandler {
                 e.printStackTrace()
                 logE(e.message)
                 val exception = ExceptionHandle.handleException(e)
-                val response = responseClz?.newInstance()
+                val response = HttpConfig.baseResponseClz.newInstance()
                 log("responseClz = ${response?.javaClass?.simpleName}")
                 if (response is NetResponse<*>) {
                     response.setData(exception.code, exception.message ?: "", null)
@@ -188,30 +185,6 @@ abstract class NetworkHandler {
         }
 
         requestTask.run()
-    }
-
-    @Deprecated("没处理异常时候的返回，弃用")
-    inline fun <T : NetResponse<*>> request(
-        responseCache: ResponseCache<*>? = null,
-        block: () -> T
-    ): T? {
-        try {
-            if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
-                val response = responseCache?.getCache<T>()
-                response?.let {
-                    log("使用缓存: ${response.data}")
-                    return response
-                }
-            }
-
-            val response = block()
-            responseCache?.cacheResponse(response)
-            return response
-        } catch (e: Exception) {
-            e.printStackTrace()
-            logE(e.message)
-            return null
-        }
     }
 
     fun <T> showMessageIfFail(result: Result<T>) {

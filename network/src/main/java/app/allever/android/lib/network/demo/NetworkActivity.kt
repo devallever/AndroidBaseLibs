@@ -24,6 +24,7 @@ class NetworkActivity : AbstractActivity() {
         setContentView(R.layout.activity_network)
 
         HttpConfig.baseUrl("https://www.wanandroid.com/")
+            .baseResponseClass(BaseResponse::class.java)
             .interceptor(GlobalInterceptor())
             .header("KEY", "VALUE")
             .init(ApiService)

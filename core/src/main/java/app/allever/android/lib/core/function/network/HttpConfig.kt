@@ -7,6 +7,8 @@ object HttpConfig {
 
     var baseUrl: String = ""
 
+    lateinit var baseResponseClz: Class<*>
+
     val interceptors = mutableSetOf<Interceptor>()
     val networkInterceptors = mutableListOf<Interceptor>()
 
@@ -24,6 +26,11 @@ object HttpConfig {
 
     fun baseUrl(baseUrl: String): HttpConfig {
         HttpConfig.baseUrl = baseUrl
+        return this
+    }
+
+    fun baseResponseClass(clazz: Class<*>): HttpConfig {
+        baseResponseClz = clazz
         return this
     }
 

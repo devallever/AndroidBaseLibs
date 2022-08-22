@@ -38,7 +38,7 @@ object NetRepository : NetworkHandler() {
      * kotlin协程
      */
     suspend fun getBanner(responseCache: ResponseCache<*>? = null) =
-        request(BaseResponse::class.java, responseCache) {
+        request(responseCache) {
             wanAndroidApi.getBanner()
         }
 
@@ -46,7 +46,7 @@ object NetRepository : NetworkHandler() {
      * kotlin协程 + LiveData 方式一
      */
     suspend fun getBannerForLiveData(responseCache: ResponseCache<*>? = null) =
-        requestLiveData(BaseResponse::class.java, responseCache) {
+        requestLiveData(responseCache) {
             wanAndroidApi.getBanner()
         }
 
@@ -54,7 +54,7 @@ object NetRepository : NetworkHandler() {
      * kotlin协程 + LiveData 方式一
      */
     fun getBannerWithLiveData(responseCache: ResponseCache<*>? = null) =
-        requestLiveData2(BaseResponse::class.java, responseCache) {
+        requestLiveData2(responseCache) {
             wanAndroidApi.getBanner()
         }
 
