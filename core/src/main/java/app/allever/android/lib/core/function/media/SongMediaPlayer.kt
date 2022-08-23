@@ -131,7 +131,7 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
 
     fun play() {
         try {
-            PollingTask2(200, condition = { isPrepared }, execute = {
+            PollingTask2(null,200, condition = { isPrepared }, execute = {
                 mediaPlayer.start()
                 notifyMsgProgress()
             }).start()

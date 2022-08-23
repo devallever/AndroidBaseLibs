@@ -168,11 +168,11 @@ class MainActivity : AbstractActivity() {
             override fun execute() = toast("执行定时任务 TimerTask")
         }.start()
 
-        TimerTask2(6000) {
+        TimerTask2(this, 6000) {
 //            toast("执行定时任务 TimerTask2")
         }.start()
 
-        object : PollingTask() {
+        object : PollingTask(this) {
             override fun interval() = 1000L
             override fun condition() = true
             override fun execute() {
@@ -181,7 +181,7 @@ class MainActivity : AbstractActivity() {
             }
         }.start()
 
-        PollingTask2(1000, condition = {
+        PollingTask2(lifecycleOwner = this, 1000, condition = {
             true
         }) {
             log("执行轮训任务 PollingTask2")
