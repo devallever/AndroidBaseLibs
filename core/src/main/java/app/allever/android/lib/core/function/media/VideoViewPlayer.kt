@@ -264,7 +264,7 @@ class VideoViewHandler : MediaPlayer.OnCompletionListener, MediaPlayer.OnPrepare
     private lateinit var mMediaBean: MediaBean
     private var mStatusListener: StatusListener? = null
 
-    private val timerTask = TimerTask2(1000L, true) {
+    private val timerTask = TimerTask2(null,  1000L, true) {
         mStatusListener?.onVideoPlaying(mMediaPlayer?.currentPosition ?: 0)
     }
 
