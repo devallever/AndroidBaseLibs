@@ -2,6 +2,7 @@ package app.allever.android.lib.widget.demo
 
 import android.graphics.Color
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity
@@ -9,6 +10,7 @@ import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.bottomnavigationbar.BottomNavigationBar
 import app.allever.android.lib.widget.bottomnavigationbar.NavigationBarItem
+import app.allever.android.lib.widget.databinding.ActivityRefreshRecyclerViewBinding
 import app.allever.android.lib.widget.demo.adapter.UserItemAdapter
 import app.allever.android.lib.widget.demo.adapter.bean.UserItem
 import app.allever.android.lib.widget.recycler.RefreshRVAdapter
@@ -21,22 +23,26 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RefreshRVActivity : AbstractActivity() {
+    lateinit var mBinding: ActivityRefreshRecyclerViewBinding
     private val mAdapter: RefreshRVAdapter<UserItem, BaseViewHolder> by lazy {
-        RefreshRVAdapter(UserItemAdapter() as BaseQuickAdapter<UserItem, BaseViewHolder>)
+        RefreshRVAdapter(
+            UserItemAdapter() as BaseQuickAdapter<UserItem, BaseViewHolder>,
+            mBinding.refreshRV as RefreshRecyclerView<UserItem>
+        )
     }
 
     private lateinit var bottomNavigationBar: BottomNavigationBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_refresh_recycler_view)
+        mBinding = DataBindingUtil.inflate(layoutInflater, R.layout.activity_refresh_recycler_view, null, false)
+        setContentView(mBinding.root)
         initView()
         initBottomNavigationData()
     }
 
     private fun initView() {
         bottomNavigationBar = findViewById(R.id.bottomNavigationBar)
-        mAdapter.bindRv(findViewById(R.id.refreshRV))
 //        mAdapter.refreshRV.setAdapter(mAdapter, object : RefreshRecyclerView.Listener<UserItem> {
 //            override fun loadData(currentPage: Int, isLoadMore: Boolean) {
 //                loadUser(currentPage, isLoadMore)
@@ -58,7 +64,7 @@ class RefreshRVActivity : AbstractActivity() {
 
 
         //新方式
-        mAdapter.refreshRV.setAdapter(mAdapter)
+        mBinding.refreshRV.setAdapter(mAdapter)
             .dataFetchListener(object : RefreshRecyclerView.DataFetchListener<UserItem> {
                 override fun loadData(currentPage: Int, isLoadMore: Boolean) {
                     loadUser(currentPage, isLoadMore)
