@@ -2,8 +2,10 @@ package app.allever.android.lib.network.demo
 
 import app.allever.android.lib.core.ext.logE
 import app.allever.android.lib.network.BuildConfig
-import okhttp3.*
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import java.io.IOException
@@ -20,7 +22,7 @@ class GlobalInterceptor : Interceptor {
         val request = requestBuilder.build()
         val response = chain.proceed(request)
         val responseBody = response.body
-        val responseBodyString = if (responseBody == null) "null" else responseBody.string()
+        val responseBodyString = responseBody?.string() ?: "null"
         if (BuildConfig.DEBUG) {
             logE("LogInterceptor", "请求链接= " + request.url)
             request.headers.toMultimap().map {

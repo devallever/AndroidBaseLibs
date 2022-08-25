@@ -8,13 +8,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.function.network.HttpConfig
 import app.allever.android.lib.core.function.network.ResponseCallback
 import app.allever.android.lib.core.function.network.response.NetResponse
 import app.allever.android.lib.core.helper.GsonHelper.toJson
 import app.allever.android.lib.network.ApiService
 import app.allever.android.lib.network.R
-import app.allever.android.lib.network.demo.NetRepository.getBannerCall
 import kotlinx.coroutines.launch
 
 class NetworkActivity : AbstractActivity() {
@@ -61,10 +61,10 @@ class NetworkActivity : AbstractActivity() {
     }
 
     private fun sendForJava() {
-        getBannerCall(BannerResponseCache(), object : ResponseCallback<List<BannerData>> {
+        NetRepository.getBannerCall(BannerResponseCache(), object : ResponseCallback<List<BannerData>> {
             override fun onFail(response: NetResponse<List<BannerData>>) {
                 log(response.getMsg())
-                updateUi(response as BaseResponse<List<BannerData>>)
+                updateUi((response as? BaseResponse<List<BannerData>>)?:return)
             }
 
             override fun onSuccess(response: NetResponse<List<BannerData>>) {
@@ -76,7 +76,13 @@ class NetworkActivity : AbstractActivity() {
 
     private fun sendKotlin() {
         lifecycleScope.launch {
-            bannerMultiLiveData.value = NetRepository.getBanner(BannerResponseCache())
+            val result = NetRepository.getBanner(BannerResponseCache())
+            if (result.success()) {
+                //处理数据
+                bannerMultiLiveData.value = result
+            } else {
+                toast(result.errorMsg)
+            }
         }
     }
 
@@ -84,7 +90,8 @@ class NetworkActivity : AbstractActivity() {
 
     private val bannerRequestLiveData = MutableLiveData<Any?>(null)
     private val bannerLiveData = Transformations.switchMap(bannerRequestLiveData) {
-        NetRepository.getBannerWithLiveData(BannerResponseCache())
+        val result = NetRepository.getBannerWithLiveData(BannerResponseCache())
+        result
     }
 
     private fun sendKotlinLiveData1() {
