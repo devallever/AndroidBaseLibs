@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 
+/**
+ * Bitmap辅助类
+ */
 public class BitmapUtils {
 
     public static String saveBitmap2File(Bitmap bitmap, String path) {

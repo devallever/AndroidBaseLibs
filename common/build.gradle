@@ -45,4 +45,6 @@ dependencies {
     api project(path: ':permission-permissionx')
     api project(path: ':datastore-mmkv')
     api project(path: ':imageloader-glide')
+
+    api eventBus
 }

@@ -39,5 +39,5 @@ dependencies {
     api retrofit2ConverterScalars
     api okhttp3LoggingInterceptor
 
-    implementation mmkv
+    api mmkv
 }

@@ -51,6 +51,9 @@ import java.io.OutputStream;
 import app.allever.android.lib.core.app.App;
 
 /**
+ *
+ * 图片辅助类：缩放/裁剪/旋转/水印...
+ *
  * <pre>
  *     author: Blankj
  *     blog  : http://blankj.com
