@@ -22,8 +22,8 @@ import java.io.IOException
 
 object ImageLoader {
 
-    private lateinit var mLoaderEngine: ILoader
-    private lateinit var mBuilder: Builder
+    private var mLoaderEngine: ILoader? = null
+    private var mBuilder: Builder? = null
 
     private val mDownloadRequestSet = mutableSetOf<String>()
 
@@ -34,8 +34,8 @@ object ImageLoader {
     fun init(context: Context, loaderEngine: ILoader, builder: Builder) {
         mLoaderEngine = loaderEngine
         mBuilder = builder
-        mLoaderEngine.init(context)
-        FileUtils.createDir(mBuilder.cacheDir)
+        mLoaderEngine?.init(context)
+        FileUtils.createDir(mBuilder?.cacheDir)
     }
 
     /**
@@ -49,11 +49,11 @@ object ImageLoader {
         resource: Any,
         imageView: ImageView,
         loadOrigin: Boolean = true,
-        errorResId: Int? = mBuilder.errorResId,
-        placeholder: Int? = mBuilder.placeholder
+        errorResId: Int? = mBuilder?.errorResId,
+        placeholder: Int? = mBuilder?.placeholder
     ) {
         loadInternal(resource, loadOrigin) {
-            mLoaderEngine.load(it ?: resource, imageView, errorResId, placeholder)
+            mLoaderEngine?.load(it ?: resource, imageView, errorResId, placeholder)
             downloadInternal(it, resource)
         }
     }
@@ -64,11 +64,11 @@ object ImageLoader {
         borderWidth: Int? = 0,
         borderColor: Int? = Color.parseColor("#00000000"),
         loadOrigin: Boolean = true,
-        errorResId: Int? = mBuilder.errorResId,
-        placeholder: Int? = mBuilder.placeholder
+        errorResId: Int? = mBuilder?.errorResId,
+        placeholder: Int? = mBuilder?.placeholder
     ) {
         loadInternal(resource, loadOrigin) {
-            mLoaderEngine.loadCircle(
+            mLoaderEngine?.loadCircle(
                 it ?: resource,
                 imageView,
                 borderWidth,
@@ -85,18 +85,18 @@ object ImageLoader {
         imageView: ImageView,
         radius: Float? = DisplayHelper.dip2px(10).toFloat(),
         loadOrigin: Boolean = true,
-        errorResId: Int? = mBuilder.errorResId,
-        placeholder: Int? = mBuilder.placeholder
+        errorResId: Int? = mBuilder?.errorResId,
+        placeholder: Int? = mBuilder?.placeholder
     ) {
         loadInternal(resource, loadOrigin) {
-            mLoaderEngine.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
+            mLoaderEngine?.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
             downloadInternal(it, resource)
         }
     }
 
     fun loadGif(resource: Any, imageView: ImageView) {
         loadInternal(resource, true) {
-            mLoaderEngine.loadGif(it ?: resource, imageView)
+            mLoaderEngine?.loadGif(it ?: resource, imageView)
             downloadInternal(it, resource)
         }
     }
@@ -108,7 +108,7 @@ object ImageLoader {
         loadOrigin: Boolean = true,
     ) {
         loadInternal(resource, loadOrigin) {
-            mLoaderEngine.loadBlur(it ?: resource, imageView, radius)
+            mLoaderEngine?.loadBlur(it ?: resource, imageView, radius)
             downloadInternal(it, resource)
         }
     }
@@ -159,7 +159,7 @@ object ImageLoader {
                     }
                 })
 
-//                mLoaderEngine.download(url) { success, originFile ->
+//                mLoaderEngine?.download(url) { success, originFile ->
 //                    mDownloadRequestSet.remove(url)
 //                    CoroutineHelper.mainCoroutine.launch {
 //                        saveCache(success, url, originFile)
@@ -192,12 +192,12 @@ object ImageLoader {
 
     suspend fun clearCache() {
         withContext(Dispatchers.IO) {
-            FileUtils.deleteAllInDir(mBuilder.cacheDir)
+            FileUtils.deleteAllInDir(mBuilder?.cacheDir)
         }
     }
 
-    fun errorResId() = mBuilder.errorResId
-    fun placeholder() = mBuilder.placeholder
+    fun errorResId() = mBuilder?.errorResId
+    fun placeholder() = mBuilder?.placeholder
 
     private fun downloadInternal(file: File?, resource: Any) {
         if (resource is String && resource.startsWith("http")) {
@@ -257,7 +257,7 @@ object ImageLoader {
     }
 
     private fun getCacheFilePath(url: String): String {
-        return "${mBuilder.cacheDir}${File.separator}${MD5.getMD5Str(url)}"
+        return "${mBuilder?.cacheDir}${File.separator}${MD5.getMD5Str(url)}"
     }
 
     fun checkCanLoad(imageView: ImageView): Boolean {
