@@ -44,6 +44,7 @@ class MainActivity : AbstractActivity() {
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelector))
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImageVideo))
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImage))
+        RippleHelper.addRippleView(findViewById(R.id.btnImageCompress))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -161,6 +162,10 @@ class MainActivity : AbstractActivity() {
                 MediaHelper.TYPE_IMAGE,
                 mediaPickerListener = mediaPickerListener
             )
+        }
+
+        findViewById<View>(R.id.btnImageCompress).setOnClickListener {
+            ActivityHelper.startActivity<ImageCompressActivity>()
         }
 
         object : TimerTask() {

@@ -204,6 +204,9 @@ ext {
     baseRecyclerViewAdapterHelper = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
 
     basePopup = "io.github.razerdp:BasePopup:3.2.0"
+
+    //鲁班图片压缩
+    luban = "top.zibin:Luban:1.1.8"
 //Other---------------------------------------------------------------------------------------------
 }
 

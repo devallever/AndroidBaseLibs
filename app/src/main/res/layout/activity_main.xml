@@ -127,6 +127,15 @@
                 android:text="媒体选择器(图片)"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/btnImageCompress"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="图片压缩"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
 
