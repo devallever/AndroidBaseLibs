@@ -11,6 +11,8 @@ import app.allever.android.lib.widget.mediapicker.ui.MediaPickerActivity
 import app.allever.android.lib.widget.mediapicker.ui.MediaPickerDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 object MediaPicker {
 
@@ -34,12 +36,40 @@ object MediaPicker {
         mediaPickerListener: MediaPickerListener? = null
     ) {
         mediaPickerListener?.let {
+            mMediaPickerListenerSet.clear()
             mMediaPickerListenerSet.add(mediaPickerListener)
         }
         ActivityHelper.startActivity<MediaPickerActivity> {
             putStringArrayListExtra(MediaPickerActivity.EXTRA_MEDIA_TYPE_LIST, vararg2List(*type))
         }
     }
+
+    suspend fun launchPickerActivity(
+        vararg type: String
+    ): PickerResult = suspendCoroutine {
+
+        mMediaPickerListenerSet.clear()
+        mMediaPickerListenerSet.add(object : MediaPickerListener {
+            override fun onPicked(
+                all: MutableList<MediaBean>,
+                imageList: MutableList<MediaBean>,
+                videoList: MutableList<MediaBean>,
+                audioList: MutableList<MediaBean>
+            ) {
+                val result = PickerResult()
+                result.all.addAll(all)
+                result.imageList.addAll(imageList)
+                result.videoList.addAll(videoList)
+                result.audioList.addAll(audioList)
+                it.resume(result)
+            }
+        })
+
+        ActivityHelper.startActivity<MediaPickerActivity> {
+            putStringArrayListExtra(MediaPickerActivity.EXTRA_MEDIA_TYPE_LIST, vararg2List(*type))
+        }
+    }
+
 
     /**
      * 弹窗方式还没做好

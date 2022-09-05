@@ -25,6 +25,7 @@ import app.allever.android.lib.project.databinding.ActivityMainBinding
 import app.allever.android.lib.widget.demo.RefreshRVActivity
 import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.mediapicker.MediaPickerListener
+import app.allever.android.lib.widget.mediapicker.PickerResult
 import app.allever.android.lib.widget.ripple.RippleHelper
 import kotlinx.coroutines.launch
 
@@ -102,13 +103,15 @@ class MainActivity : AbstractActivity() {
         }
 
         findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
+            lifecycleScope.launch {
+                val result = MediaPicker.launchPickerActivity(
+                    MediaHelper.TYPE_IMAGE,
+                    MediaHelper.TYPE_VIDEO,
+                    MediaHelper.TYPE_AUDIO
+                )
+                handleResult(result)
+            }
 
-            MediaPicker.launchPickerActivity(
-                MediaHelper.TYPE_IMAGE,
-                MediaHelper.TYPE_VIDEO,
-                MediaHelper.TYPE_AUDIO,
-                mediaPickerListener = mediaPickerListener
-            )
 //            MediaPicker.launchPickerDialog(
 //                supportFragmentManager,
 //                MediaHelper.TYPE_IMAGE,
@@ -150,18 +153,23 @@ class MainActivity : AbstractActivity() {
         }
 
         findViewById<View>(R.id.btnMediaSelectorImageVideo).setOnClickListener {
-            MediaPicker.launchPickerActivity(
-                MediaHelper.TYPE_IMAGE,
-                MediaHelper.TYPE_VIDEO,
-                mediaPickerListener = mediaPickerListener
-            )
+            lifecycleScope.launch {
+                val result = MediaPicker.launchPickerActivity(
+                    MediaHelper.TYPE_IMAGE,
+                    MediaHelper.TYPE_VIDEO
+                )
+
+                handleResult(result)
+            }
+
         }
 
         findViewById<View>(R.id.btnMediaSelectorImage).setOnClickListener {
-            MediaPicker.launchPickerActivity(
-                MediaHelper.TYPE_IMAGE,
-                mediaPickerListener = mediaPickerListener
-            )
+            lifecycleScope.launch {
+                val result = MediaPicker.launchPickerActivity(MediaHelper.TYPE_IMAGE)
+                handleResult(result)
+            }
+
         }
 
         findViewById<View>(R.id.btnImageCompress).setOnClickListener {
@@ -194,6 +202,15 @@ class MainActivity : AbstractActivity() {
         }.start()
 
 
+    }
+
+    private fun handleResult(result: PickerResult) {
+        val builder = StringBuilder()
+        result.all.map {
+            builder.append(it.path).append("\n")
+            log("选中：${it.path}")
+        }
+        toastLong(builder.toString())
     }
 
     override fun onResume() {

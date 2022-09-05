@@ -13,8 +13,9 @@ import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.mediapicker.MediaPickerListener
 import kotlinx.coroutines.launch
 
-class ImageCompressActivity: BaseActivity<ActivityImageCompressBinding, ImageCompressViewModel>() {
-    override fun getContentMvvmConfig() = MvvmConfig(R.layout.activity_image_compress, BR.imageCompressVM)
+class ImageCompressActivity : BaseActivity<ActivityImageCompressBinding, ImageCompressViewModel>() {
+    override fun getContentMvvmConfig() =
+        MvvmConfig(R.layout.activity_image_compress, BR.imageCompressVM)
 
     override fun init() {
         initTopBar("图片压缩")
@@ -39,10 +40,18 @@ class ImageCompressActivity: BaseActivity<ActivityImageCompressBinding, ImageCom
         }
 
         binding.btnSelectPhoto.setOnClickListener {
-            MediaPicker.launchPickerActivity(
-                MediaHelper.TYPE_IMAGE,
-                mediaPickerListener = mediaPickerListener
-            )
+            lifecycleScope.launch {
+                val result = MediaPicker.launchPickerActivity(MediaHelper.TYPE_IMAGE)
+                val builder = StringBuilder()
+                pathList.clear()
+                result.all.map {
+                    pathList.add(it.path)
+                    builder.append(it.path).append("\n")
+                    log("选中：${it.path}")
+                }
+                binding.tvSelectPhotoList.text = builder.toString()
+            }
+
         }
 
         binding.btnCompress.setOnClickListener {
@@ -60,7 +69,7 @@ class ImageCompressActivity: BaseActivity<ActivityImageCompressBinding, ImageCom
 
 }
 
-class ImageCompressViewModel: BaseViewModel() {
+class ImageCompressViewModel : BaseViewModel() {
     override fun init() {
 
     }
