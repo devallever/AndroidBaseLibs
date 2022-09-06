@@ -6,6 +6,8 @@ import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.media.FolderBean
 import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
+import app.allever.android.lib.core.function.mediapicker.IMediaPickerEngine
+import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.widget.mediapicker.ui.MediaPickerActivity
 import app.allever.android.lib.widget.mediapicker.ui.MediaPickerDialog
@@ -14,7 +16,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-object MediaPicker {
+object MediaPicker: IMediaPickerEngine {
 
     private val mMediaPickerListenerSet = mutableListOf<MediaPickerListener>()
 
@@ -295,4 +297,27 @@ object MediaPicker {
             }
             result
         }
+
+
+    override suspend fun launchPicker(context: Context, vararg type: String): MediaPickerResult {
+        return suspendCoroutine {
+            mMediaPickerListenerSet.clear()
+            mMediaPickerListenerSet.add(object : MediaPickerListener {
+                override fun onPicked(
+                    all: MutableList<MediaBean>,
+                    imageList: MutableList<MediaBean>,
+                    videoList: MutableList<MediaBean>,
+                    audioList: MutableList<MediaBean>
+                ) {
+                    val result = MediaPickerResult()
+                    result.list.addAll(all)
+                    it.resume(result)
+                }
+            })
+
+            ActivityHelper.startActivity<MediaPickerActivity> {
+                putStringArrayListExtra(MediaPickerActivity.EXTRA_MEDIA_TYPE_LIST, vararg2List(*type))
+            }
+        }
+    }
 }

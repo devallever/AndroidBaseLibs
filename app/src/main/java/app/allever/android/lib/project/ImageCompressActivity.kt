@@ -5,11 +5,10 @@ import app.allever.android.lib.common.BaseActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.imagecompress.ImageCompress
 import app.allever.android.lib.core.function.media.MediaBean
-import app.allever.android.lib.core.function.media.MediaHelper
+import app.allever.android.lib.core.function.mediapicker.MediaPickerHelper
 import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.base.MvvmConfig
 import app.allever.android.lib.project.databinding.ActivityImageCompressBinding
-import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.mediapicker.MediaPickerListener
 import kotlinx.coroutines.launch
 
@@ -41,10 +40,10 @@ class ImageCompressActivity : BaseActivity<ActivityImageCompressBinding, ImageCo
 
         binding.btnSelectPhoto.setOnClickListener {
             lifecycleScope.launch {
-                val result = MediaPicker.launchPickerActivity(MediaHelper.TYPE_IMAGE)
+                val result = MediaPickerHelper.launchPicker(this@ImageCompressActivity, MediaPickerHelper.TYPE_IMAGE)
                 val builder = StringBuilder()
                 pathList.clear()
-                result.all.map {
+                result.list.map {
                     pathList.add(it.path)
                     builder.append(it.path).append("\n")
                     log("选中：${it.path}")

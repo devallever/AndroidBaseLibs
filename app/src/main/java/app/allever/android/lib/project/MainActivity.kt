@@ -11,6 +11,8 @@ import app.allever.android.lib.core.ext.toastLong
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
 import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
+import app.allever.android.lib.core.function.mediapicker.MediaPickerHelper
+import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
 import app.allever.android.lib.core.function.work.PollingTask
 import app.allever.android.lib.core.function.work.PollingTask2
 import app.allever.android.lib.core.function.work.TimerTask
@@ -23,9 +25,7 @@ import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
 import app.allever.android.lib.project.databinding.ActivityMainBinding
 import app.allever.android.lib.widget.demo.RefreshRVActivity
-import app.allever.android.lib.widget.mediapicker.MediaPicker
 import app.allever.android.lib.widget.mediapicker.MediaPickerListener
-import app.allever.android.lib.widget.mediapicker.PickerResult
 import app.allever.android.lib.widget.ripple.RippleHelper
 import kotlinx.coroutines.launch
 
@@ -104,10 +104,10 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
             lifecycleScope.launch {
-                val result = MediaPicker.launchPickerActivity(
-                    MediaHelper.TYPE_IMAGE,
-                    MediaHelper.TYPE_VIDEO,
-                    MediaHelper.TYPE_AUDIO
+                val result = MediaPickerHelper.launchPicker(this@MainActivity,
+                    MediaPickerHelper.TYPE_IMAGE,
+                    MediaPickerHelper.TYPE_VIDEO,
+                    MediaPickerHelper.TYPE_AUDIO
                 )
                 handleResult(result)
             }
@@ -154,9 +154,9 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.btnMediaSelectorImageVideo).setOnClickListener {
             lifecycleScope.launch {
-                val result = MediaPicker.launchPickerActivity(
-                    MediaHelper.TYPE_IMAGE,
-                    MediaHelper.TYPE_VIDEO
+                val result = MediaPickerHelper.launchPicker(this@MainActivity,
+                    MediaPickerHelper.TYPE_IMAGE,
+                    MediaPickerHelper.TYPE_VIDEO
                 )
 
                 handleResult(result)
@@ -166,7 +166,7 @@ class MainActivity : AbstractActivity() {
 
         findViewById<View>(R.id.btnMediaSelectorImage).setOnClickListener {
             lifecycleScope.launch {
-                val result = MediaPicker.launchPickerActivity(MediaHelper.TYPE_IMAGE)
+                val result = MediaPickerHelper.launchPicker(this@MainActivity, MediaHelper.TYPE_IMAGE)
                 handleResult(result)
             }
 
@@ -204,9 +204,9 @@ class MainActivity : AbstractActivity() {
 
     }
 
-    private fun handleResult(result: PickerResult) {
+    private fun handleResult(result: MediaPickerResult) {
         val builder = StringBuilder()
-        result.all.map {
+        result.list.map {
             builder.append(it.path).append("\n")
             log("选中：${it.path}")
         }
