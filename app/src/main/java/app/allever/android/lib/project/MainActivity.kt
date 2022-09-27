@@ -1,10 +1,8 @@
 package app.allever.android.lib.project
 
-import android.os.Bundle
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import app.allever.android.lib.core.base.AbstractActivity
+import app.allever.android.lib.common.BaseActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.ext.toastLong
@@ -20,6 +18,7 @@ import app.allever.android.lib.core.function.work.TimerTask2
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
+import app.allever.android.lib.mvvm.base.MvvmConfig
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
@@ -29,11 +28,27 @@ import app.allever.android.lib.widget.mediapicker.MediaPickerListener
 import app.allever.android.lib.widget.ripple.RippleHelper
 import kotlinx.coroutines.launch
 
-class MainActivity : AbstractActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
+
+    private fun handleResult(result: MediaPickerResult) {
+        val builder = StringBuilder()
+        result.list.map {
+            builder.append(it.path).append("\n")
+            log("选中：${it.path}")
+        }
+        toastLong(builder.toString())
+    }
+
+
+    override fun isSupportSwipeBack(): Boolean {
+        return false
+    }
+
+    override fun getContentMvvmConfig(): MvvmConfig  = MvvmConfig(R.layout.activity_main, BR.mainVM)
+
+    override fun init() {
+        initTopBar(getString(R.string.app_name), false)
         RippleHelper.addRippleView(findViewById(R.id.btnMvvm))
         RippleHelper.addRippleView(findViewById(R.id.btnMvp))
         RippleHelper.addRippleView(findViewById(R.id.btnNetwork))
@@ -202,24 +217,6 @@ class MainActivity : AbstractActivity() {
         }.start()
 
 
-    }
-
-    private fun handleResult(result: MediaPickerResult) {
-        val builder = StringBuilder()
-        result.list.map {
-            builder.append(it.path).append("\n")
-            log("选中：${it.path}")
-        }
-        toastLong(builder.toString())
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        toast("栈顶Activity = ${ActivityHelper.getTopActivity()?.javaClass?.simpleName}")
-    }
-
-    override fun isSupportSwipeBack(): Boolean {
-        return false
     }
 }
 

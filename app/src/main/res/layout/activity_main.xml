@@ -5,6 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
+    <data>
+        <variable
+            name="mainVM"
+            type="app.allever.android.lib.project.MainViewModel" />
+    </data>
+
     <ScrollView
 
         android:layout_width="match_parent"

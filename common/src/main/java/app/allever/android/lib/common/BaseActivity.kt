@@ -13,65 +13,34 @@ import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.mvvm.base.BaseMvvmActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.base.MvvmConfig
-import org.greenrobot.eventbus.EventBus
 
 abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
     BaseMvvmActivity<ActivityBaseBinding, VM>() {
     protected lateinit var binding: DB
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        initStatusBar()
-
-        super.onCreate(savedInstanceState)
-
-        initBinding()
-
-        adaptStatusBar()
-
-        setVisibility(mBinding.topBar, showTopBar())
-
-        init()
-
-        mViewModel.init()
-
-        if (enableEventBus()) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (enableEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
-    }
-
-    override fun getMvvmConfig() = MvvmConfig(R.layout.activity_base, -1)
-
-    protected fun parentBinding(): ActivityBaseBinding = mBinding
-
-    private fun initStatusBar() {
         //透明状态栏
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        if (showTopBar()) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
 
-        StatusBarCompat.translucentStatusBar(this, true)
+        if (showTopBar())
+            StatusBarCompat.translucentStatusBar(this, true)
         //状态栏颜色
         if (isDarkMode()) {
             StatusBarCompat.cancelLightStatusBar(this)
         } else {
             StatusBarCompat.changeToLightStatusBar(this)
         }
-    }
 
-    private fun initBinding() {
+        super.onCreate(savedInstanceState)
+
         val contentConfig = getContentMvvmConfig()
         binding = DataBindingUtil.inflate(layoutInflater, contentConfig.layoutId, null, false)
         parentBinding().contentContainer.addView(binding.root)
+        init()
+        mViewModel.init()
         mBinding.setVariable(contentConfig.bindingVariable, mViewModel)
-    }
-
-    private fun adaptStatusBar() {
         if (enableAdaptStatusBar()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 StatusBarCompat.setStatusBarColor(this, Color.parseColor("#000000"))
@@ -79,7 +48,13 @@ abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
                 adaptStatusBarView(mBinding.statusBar)
             }
         }
+        setVisibility(mBinding.topBar, showTopBar())
+        setVisibility(mBinding.statusBar, showStatusBar())
     }
+
+    override fun getMvvmConfig() = MvvmConfig(R.layout.activity_base, -1)
+
+    protected fun parentBinding(): ActivityBaseBinding = mBinding
 
     abstract fun getContentMvvmConfig(): MvvmConfig
 
@@ -87,8 +62,11 @@ abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
 
     protected open fun showTopBar(): Boolean = true
 
-    protected open fun initTopBar(title: String?, leftClickListener: Runnable? = null) {
+    protected open fun showStatusBar(): Boolean = true
+
+    protected open fun initTopBar(title: String?, showBackIcon: Boolean = true, leftClickListener: Runnable? = null) {
         ViewHelper.setVisible(mBinding.tvTitle, !TextUtils.isEmpty(title))
+        ViewHelper.setVisible(mBinding.ivBack, showBackIcon)
         mBinding.tvTitle.text = title
         val ivBack: View = findViewById(R.id.ivBack)
         ivBack.setOnClickListener {
