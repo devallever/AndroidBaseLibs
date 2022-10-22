@@ -276,6 +276,22 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 外部处理调用加载更多, 比如外层也有SmartRefreshLayout
+     */
+    fun handleLoadMore() {
+        log("加载第 $mCurrentPage 页")
+        handleLoadOrRefresh(true)
+    }
+
+    /**
+     * 外部处理调用刷新, 比如外层也有SmartRefreshLayout
+     */
+    fun handleRefresh() {
+        log("加载第 0 页")
+        handleLoadOrRefresh(false)
+    }
+
     interface DataFetchListener<Item> {
         /**
          * @param currentPage 加载第n页数据
