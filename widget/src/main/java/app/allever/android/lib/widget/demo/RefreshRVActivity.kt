@@ -13,10 +13,7 @@ import app.allever.android.lib.widget.bottomnavigationbar.NavigationBarItem
 import app.allever.android.lib.widget.databinding.ActivityRefreshRecyclerViewBinding
 import app.allever.android.lib.widget.demo.adapter.UserItemAdapter
 import app.allever.android.lib.widget.demo.adapter.bean.UserItem
-import app.allever.android.lib.widget.recycler.RefreshRVAdapter
 import app.allever.android.lib.widget.recycler.RefreshRecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,12 +21,7 @@ import kotlinx.coroutines.withContext
 
 class RefreshRVActivity : AbstractActivity() {
     lateinit var mBinding: ActivityRefreshRecyclerViewBinding
-    private val mAdapter: RefreshRVAdapter<UserItem, BaseViewHolder> by lazy {
-        RefreshRVAdapter(
-            UserItemAdapter() as BaseQuickAdapter<UserItem, BaseViewHolder>,
-            mBinding.refreshRV as RefreshRecyclerView<UserItem>
-        )
-    }
+    private val mAdapter =  UserItemAdapter()
 
     private lateinit var bottomNavigationBar: BottomNavigationBar
 
@@ -43,18 +35,19 @@ class RefreshRVActivity : AbstractActivity() {
 
     private fun initView() {
         bottomNavigationBar = findViewById(R.id.bottomNavigationBar)
-//        mAdapter.refreshRV.setAdapter(mAdapter, object : RefreshRecyclerView.Listener<UserItem> {
-//            override fun loadData(currentPage: Int, isLoadMore: Boolean) {
-//                loadUser(currentPage, isLoadMore)
-//            }
+//        mAdapter.refreshRV.setAdapter(mAdapter)
+//            .dataFetchListener(object : RefreshRecyclerView.DataFetchListener<UserItem> {
+//                override fun loadData(currentPage: Int, isLoadMore: Boolean) {
+//                    loadUser(currentPage, isLoadMore)
+//                }
 //
-//            override suspend fun fetchData(
-//                currentPage: Int,
-//                isLoadMore: Boolean
-//            ): MutableList<UserItem> {
-//                return fetchUser(currentPage, isLoadMore)
-//            }
-//        })
+//                override suspend fun fetchData(
+//                    currentPage: Int,
+//                    isLoadMore: Boolean
+//                ): MutableList<UserItem> {
+//                    return fetchUser(currentPage, isLoadMore)
+//                }
+//            })
 //            .enableViewPager(true)
 //            .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
 //                override fun onPageChanged(position: Int, item: UserItem) {
@@ -172,9 +165,9 @@ class RefreshRVActivity : AbstractActivity() {
                 list.add(user)
             }
             if (isLoadMore) {
-                mAdapter.refreshRV.loadMoreData(list)
+                mAdapter.refreshRV?.loadMoreData(list)
             } else {
-                mAdapter.refreshRV.refreshData(list)
+                mAdapter.refreshRV?.refreshData(list)
             }
         }
     }

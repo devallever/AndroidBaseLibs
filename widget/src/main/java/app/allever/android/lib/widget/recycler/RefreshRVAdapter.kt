@@ -6,8 +6,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 /**
  * 创建RefreshRVAdapter
  */
-open class RefreshRVAdapter<Item, VH : BaseViewHolder>(
-    val adapter: BaseQuickAdapter<Item, VH>,
-    val refreshRV: RefreshRecyclerView<Item>
-) {
+abstract class RefreshRVAdapter<Item, VH : BaseViewHolder>(layoutId: Int, data: MutableList<Item>? = null) :
+    BaseQuickAdapter<Item, VH>(layoutId, data) {
+
+    var refreshRV: RefreshRecyclerView<Item>? = null
 }

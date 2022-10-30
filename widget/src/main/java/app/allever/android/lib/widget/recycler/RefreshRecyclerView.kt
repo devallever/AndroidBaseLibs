@@ -81,7 +81,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
 //                            Toast.makeText(context, "position = $position", Toast.LENGTH_SHORT).show()
                             mLastSwitchPagerPosition = position
                             if (mEnableViewPager) {
-                                refreshRVAdapter?.adapter?.data?.get(position)
+                                refreshRVAdapter?.data?.get(position)
                                     ?.let { mPageChangeListener?.onPageChanged(position, it) }
                             }
                         }
@@ -181,7 +181,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         executeLoadData: Boolean = false
     ): RefreshRecyclerView<Item> {
         recyclerView?.layoutManager = layoutManager ?: LinearLayoutManager(context)
-        recyclerView?.adapter = refreshRVAdapter.adapter
+        recyclerView?.adapter = refreshRVAdapter
         mEnableViewPager = enableViewPager
         enableViewPager(enableViewPager)
 
@@ -191,8 +191,9 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         footer?.let {
             refreshLayout?.setRefreshFooter(footer)
         }
-        refreshRVAdapter.adapter.setList(list)
-        refreshRVAdapter.adapter.setEmptyView(emptyResId)
+        refreshRVAdapter.setList(list)
+        refreshRVAdapter.setEmptyView(emptyResId)
+        refreshRVAdapter.refreshRV = this
         this.refreshRVAdapter = refreshRVAdapter
         this.mDataFetchListener = dataFetchListener
         this.mCurrentPage = 0
@@ -237,12 +238,12 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
     }
 
     fun emptyView(layoutId: Int): RefreshRecyclerView<Item> {
-        refreshRVAdapter?.adapter?.setEmptyView(layoutId)
+        refreshRVAdapter?.setEmptyView(layoutId)
         return this
     }
 
     fun emptyView(view: View): RefreshRecyclerView<Item> {
-        refreshRVAdapter?.adapter?.setEmptyView(view)
+        refreshRVAdapter?.setEmptyView(view)
         return this
     }
 
@@ -319,8 +320,8 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
      */
     @SuppressLint("NotifyDataSetChanged")
     fun loadMoreData(list: MutableList<Item>) {
-        refreshRVAdapter?.adapter?.data?.addAll(list)
-        refreshRVAdapter?.adapter?.notifyDataSetChanged()
+        refreshRVAdapter?.data?.addAll(list)
+        refreshRVAdapter?.notifyDataSetChanged()
         refreshLayout?.finishLoadMore(true)
         if (list.isEmpty() || mIsDataSourceFromFetchData) {
             refreshLayout?.finishLoadMoreWithNoMoreData()
@@ -332,7 +333,7 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
      * @param list 数据源
      */
     fun refreshData(list: MutableList<Item>) {
-        refreshRVAdapter?.adapter?.setList(list)
+        refreshRVAdapter?.setList(list)
         refreshLayout?.finishRefresh(true)
     }
 
