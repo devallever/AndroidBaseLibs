@@ -4,10 +4,11 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity
-import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.widget.R
+import app.allever.android.lib.widget.VerticalDragView
 import app.allever.android.lib.widget.bottomnavigationbar.BottomNavigationBar
 import app.allever.android.lib.widget.bottomnavigationbar.NavigationBarItem
 import app.allever.android.lib.widget.databinding.ActivityRefreshRecyclerViewBinding
@@ -70,13 +71,35 @@ class RefreshRVActivity : AbstractActivity() {
                     return fetchUser(currentPage, isLoadMore)
                 }
             })
-            .enableViewPager(true)
-            .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
-                override fun onPageChanged(position: Int, item: UserItem) {
-                    toast("position = $position, item = $item")
-                }
-            })
+            .enableViewPager(false)
+            .enableRefresh(false)
+//            .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
+//                override fun onPageChanged(position: Int, item: UserItem) {
+//                    toast("position = $position, item = $item")
+//                }
+//            })
             .execute()
+
+
+        var scrolling = false
+        mBinding.verticalDragView.setScrollListener(object: VerticalDragView.ScrollListener {
+            override fun childViewScrolling(): Boolean {
+                return scrolling
+            }
+        })
+        mBinding.refreshRV.recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                scrolling = true
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    scrolling = mBinding.refreshRV.recyclerView?.canScrollVertically(-1) == false
+                }
+            }
+        })
     }
 
     private fun initBottomNavigationData() {

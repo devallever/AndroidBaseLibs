@@ -10,10 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <app.allever.android.lib.widget.recycler.RefreshRecyclerView
-            android:id="@+id/refreshRV"
+
+        <app.allever.android.lib.widget.VerticalDragView
+            android:id="@+id/verticalDragView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationBar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="#80ff0000"/>
+                <app.allever.android.lib.widget.recycler.RefreshRecyclerView
+                    android:id="@+id/refreshRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </app.allever.android.lib.widget.VerticalDragView>
+
 
         <app.allever.android.lib.widget.bottomnavigationbar.BottomNavigationBar
             android:id="@+id/bottomNavigationBar"

@@ -222,6 +222,5 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
 class MainViewModel : BaseViewModel() {
     override fun init() {
-
     }
 }
