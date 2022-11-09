@@ -1,20 +1,21 @@
 package app.allever.android.lib.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.widget.ListViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.customview.widget.ViewDragHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import app.allever.android.lib.core.helper.DisplayHelper;
 
 /**
  * date  5/25/21  11:01 AM
@@ -25,16 +26,49 @@ public class VerticalDragView extends FrameLayout {
     private ViewDragHelper mDragHelper;
     //可以拖动的View
     private View mDragView;
-    //拖动范围
-    int menuHeight = DisplayHelper.INSTANCE.getScreenHeight();
 
     private float mDownY;
-    private boolean mMenuIsOpen = false;
 
-    private ScrollListener mScrollListener;
+    /**
+     * 可滚动的控件
+     */
+    private View mChildCanScrollAbleView;
+    private boolean mChildScrolling = false;
 
-    public void setScrollListener(ScrollListener scrollListener) {
-        mScrollListener = scrollListener;
+    /**
+     * 传入内部滚动的子View, 解决滑动冲突
+     *
+     * @param view
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void setChildCanScrollView(View view) {
+        mChildCanScrollAbleView = view;
+        if (mChildCanScrollAbleView instanceof RecyclerView) {
+            ((RecyclerView) mChildCanScrollAbleView).addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        mChildScrolling = !((RecyclerView) mChildCanScrollAbleView).canScrollVertically(-1);
+                    }
+                }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    mChildScrolling = true;
+
+                }
+            });
+        } else if (view instanceof ScrollView || view instanceof NestedScrollView){
+            mChildCanScrollAbleView.setOnScrollChangeListener(new OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    //TODO 未处理其他滚动控件
+                }
+            });
+        }
+
     }
 
     public VerticalDragView(@NonNull Context context) {
@@ -58,11 +92,6 @@ public class VerticalDragView extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-
-        if (mMenuIsOpen) {
-            return true;
-        }
-
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mDownY = ev.getY();
@@ -89,8 +118,8 @@ public class VerticalDragView extends FrameLayout {
         if (mDragView instanceof ListView) {
             return ListViewCompat.canScrollList((ListView) mDragView, -1);
         }
-        if (mScrollListener != null) {
-            return !mScrollListener.childViewScrolling();
+        if (mChildCanScrollAbleView != null) {
+            return !mChildScrolling;
         }
 
         return mDragView.canScrollVertically(-1);
@@ -99,55 +128,25 @@ public class VerticalDragView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-//        //获取子View个数
-//        int childCount = getChildCount();
-//        if (childCount != 2) {
-//            throw new RuntimeException("VerticalDragView must include 2 child view");
-//        }
         //拖动View
         mDragView = getChildAt(0);
     }
-
-
-//    @Override
-//    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-//        super.onLayout(changed, left, top, right, bottom);
-//        if (changed) {
-//            menuHeight = getChildAt(0).getMeasuredHeight();
-//        }
-//    }
 
     private ViewDragHelper.Callback mCallback = new ViewDragHelper.Callback() {
         @Override
         public boolean tryCaptureView(@NonNull View child, int pointerId) {
             //指定子 View 是否可以拖动
-            return child == mDragView;
+            return true;
         }
 
         @Override
         public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
-            //垂直滑动移动的位置
-            if (top <= 0) {
-                top = 0;
-            }
-
-            if (top >= menuHeight) {
-                top = menuHeight;
-            }
             return top;
         }
 
         @Override
         public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
-            if (mDragView.getTop() > menuHeight) {
-                //滚动到菜单的高度（打开）
-                mDragHelper.settleCapturedViewAt(0, menuHeight);
-                mMenuIsOpen = true;
-            } else {
-                //滚动到0（关闭）
-                mDragHelper.settleCapturedViewAt(0, 0);
-                mMenuIsOpen = false;
-            }
+            mDragHelper.settleCapturedViewAt(0, 0);
             invalidate();
         }
     };
@@ -156,12 +155,6 @@ public class VerticalDragView extends FrameLayout {
     public void computeScroll() {
         if (mDragHelper.continueSettling(true)) {
             invalidate();
-        }
-    }
-
-    public interface ScrollListener {
-        public default boolean childViewScrolling() {
-            return false;
         }
     }
 }

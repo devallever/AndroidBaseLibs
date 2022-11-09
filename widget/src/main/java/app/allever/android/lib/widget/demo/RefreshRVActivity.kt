@@ -81,25 +81,7 @@ class RefreshRVActivity : AbstractActivity() {
             .execute()
 
 
-        var scrolling = false
-        mBinding.verticalDragView.setScrollListener(object: VerticalDragView.ScrollListener {
-            override fun childViewScrolling(): Boolean {
-                return scrolling
-            }
-        })
-        mBinding.refreshRV.recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                scrolling = true
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    scrolling = mBinding.refreshRV.recyclerView?.canScrollVertically(-1) == false
-                }
-            }
-        })
+        mBinding.verticalDragView.setChildCanScrollView(mBinding.refreshRV?.recyclerView)
     }
 
     private fun initBottomNavigationData() {
