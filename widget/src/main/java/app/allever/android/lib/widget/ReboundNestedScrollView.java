@@ -16,8 +16,10 @@ import androidx.core.widget.NestedScrollView;
  * Created by kele on 2021/2/22.
  * E-mail:984127585@qq.com
  * ================================
+ * Android 阻尼回弹效果简单实现（类似iOS）
+ * https://www.jianshu.com/p/69e13edd9d0f
  */
-public class DampingReboundNestedScrollView extends NestedScrollView {
+public class ReboundNestedScrollView extends NestedScrollView {
 
     // y方向上当前触摸点的前一次记录位置
     private int previousY = 0;
@@ -37,16 +39,16 @@ public class DampingReboundNestedScrollView extends NestedScrollView {
     //水平移动搞定距离
     private float moveHeight;
 
-    public DampingReboundNestedScrollView(Context context) {
+    public ReboundNestedScrollView(Context context) {
         this(context,null);
 
     }
 
-    public DampingReboundNestedScrollView(Context context, AttributeSet attrs) {
+    public ReboundNestedScrollView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public DampingReboundNestedScrollView(Context context, AttributeSet attrs, int defStyle) {
+    public ReboundNestedScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setFillViewport(true);
     }

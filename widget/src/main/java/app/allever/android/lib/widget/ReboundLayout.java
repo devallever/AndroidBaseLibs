@@ -20,8 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * date  5/25/21  11:01 AM
  * author  DarrenHang
+ *
+ * 神奇的 ViewDragHelper，让你轻松定制拥有拖拽能力的 ViewGroup
+ * https://cloud.tencent.com/developer/article/1383108
+ *
+ *
  */
-public class VerticalDragView extends FrameLayout {
+public class ReboundLayout extends FrameLayout {
 
     private ViewDragHelper mDragHelper;
     //可以拖动的View
@@ -71,15 +76,15 @@ public class VerticalDragView extends FrameLayout {
 
     }
 
-    public VerticalDragView(@NonNull Context context) {
+    public ReboundLayout(@NonNull Context context) {
         this(context, null);
     }
 
-    public VerticalDragView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ReboundLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public VerticalDragView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ReboundLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mDragHelper = ViewDragHelper.create(this, mCallback);
     }

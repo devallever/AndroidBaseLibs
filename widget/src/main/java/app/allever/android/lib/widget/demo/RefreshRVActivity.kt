@@ -4,11 +4,9 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity
 import app.allever.android.lib.widget.R
-import app.allever.android.lib.widget.VerticalDragView
 import app.allever.android.lib.widget.bottomnavigationbar.BottomNavigationBar
 import app.allever.android.lib.widget.bottomnavigationbar.NavigationBarItem
 import app.allever.android.lib.widget.databinding.ActivityRefreshRecyclerViewBinding
