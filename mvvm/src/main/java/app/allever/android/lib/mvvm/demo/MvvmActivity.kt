@@ -11,5 +11,6 @@ class MvvmActivity : BaseMvvmActivity<ActivityMvvmBinding, MainViewModel>() {
 
     override fun init() {
         mViewModel.login()
+        mBinding.tvTitle.text = ""
     }
 }
