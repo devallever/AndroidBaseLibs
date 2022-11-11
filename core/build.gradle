@@ -62,6 +62,9 @@ dependencies {
     api androidXActivityKtx
     api androidXLifeCycleLiveDataKtx
 
+    //相机
+    api androidXExifInterface
+
     api mmkv
 
     api gson

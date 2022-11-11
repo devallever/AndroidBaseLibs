@@ -43,6 +43,8 @@ ext {
     androidXLifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     androidXLifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
+    androidXExifInterface = "androidx.exifinterface:exifinterface:1.3.3"
+
     //LiveData
     androidXLifeCycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
 
