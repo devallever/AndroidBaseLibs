@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
@@ -14,15 +14,13 @@ android {
         versionName rootProject.ext.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            //项目根目录：../../../../../../
-            //output.outputFileName = new File("../../../../../../", fileName)
         }
     }
 
@@ -40,20 +38,19 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':core')
+    implementation project(path: ':common')
 
+    // CameraX core library
+    def camerax_version = "1.0.0"
+    implementation "androidx.camera:camera-core:1.0.0"
 
-    api project(path: ':core')
-    api project(path: ':common')
-    implementation project(path: ':mvp')
-    implementation project(path: ':cropper')
-    implementation project(path: ':permission-andpermission')
-    implementation project(path: ':ad-admob')
-    implementation project(path: ':ad-facebook')
-    implementation project(path: ':ad-amazon')
-    implementation project(path: ':ad-mimo')
-    implementation project(path: ':imagecompress-luban')
-    implementation project(path: ':camera-x')
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // CameraX Camera2 extensions
+    implementation "androidx.camera:camera-camera2:1.0.0"
+
+    // CameraX Lifecycle library
+    implementation "androidx.camera:camera-lifecycle:1.0.0"
+
+    // CameraX View class
+    implementation 'androidx.camera:camera-view:1.0.0-alpha26'
 }

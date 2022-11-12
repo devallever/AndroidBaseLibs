@@ -11,7 +11,7 @@
             type="app.allever.android.lib.project.MainViewModel" />
     </data>
 
-    <ScrollView
+    <app.allever.android.lib.widget.ReboundNestedScrollView
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -68,6 +68,15 @@
                 android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="Permission"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnCamera"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Camera"
                 android:textStyle="bold" />
 
             <TextView
@@ -145,6 +154,6 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </app.allever.android.lib.widget.ReboundNestedScrollView>
 
 </layout>

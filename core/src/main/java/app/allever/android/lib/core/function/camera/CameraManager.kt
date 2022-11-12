@@ -12,56 +12,58 @@ import java.io.*
 @SuppressLint("StaticFieldLeak")
 object CameraManager : ICameraProxy {
 
-    private lateinit var cameraProxy: ICameraProxy
+    private var cameraProxy: ICameraProxy? = null
     lateinit var context: Context
 
     fun init(context: Context) {
-        app.allever.android.lib.core.function.camera.CameraManager.context = context.applicationContext
+        this.context = context.applicationContext
     }
 
     fun injectProxy(cameraProxy: ICameraProxy) {
-        app.allever.android.lib.core.function.camera.CameraManager.cameraProxy = cameraProxy
+        this.cameraProxy = cameraProxy
     }
 
     override fun openCamera() {
-        cameraProxy.openCamera()
+        cameraProxy?.openCamera()
     }
 
     override fun openCamera(@CameraFacing.STATE cameraFacing: Int) {
-        cameraProxy.openCamera(cameraFacing)
+        cameraProxy?.openCamera(cameraFacing)
     }
 
     override fun closeCamera() {
-        cameraProxy.closeCamera()
+        cameraProxy?.closeCamera()
     }
 
     override fun release() {
-        cameraProxy.release()
+        cameraProxy?.release()
     }
 
     override fun setPreview(view: View) {
-        cameraProxy.setPreview(view)
+        cameraProxy?.setPreview(view)
     }
 
     override fun setLifeCycleOwner(lifecycleOwner: LifecycleOwner) {
-        cameraProxy.setLifeCycleOwner(lifecycleOwner)
+        cameraProxy?.setLifeCycleOwner(lifecycleOwner)
     }
 
     override fun takePicture() {
-        cameraProxy.takePicture()
+        cameraProxy?.takePicture()
     }
 
     override fun setCameraListener(listener: CameraListener?) {
-        cameraProxy.setCameraListener(listener)
+        cameraProxy?.setCameraListener(listener)
     }
 
     override fun getDisplayOrientation(context: Context?, cameraId: Int): Int {
-        return cameraProxy.getDisplayOrientation(context, cameraId)
+        return cameraProxy?.getDisplayOrientation(context, cameraId) ?: 0
     }
 
-    override fun getSupportPreviewSize(): MutableList<Size> = cameraProxy.getSupportPreviewSize()
+    override fun getSupportPreviewSize(): MutableList<Size> =
+        cameraProxy?.getSupportPreviewSize() ?: mutableListOf()
 
-    override fun getSupportPictureSize(): MutableList<Size> = cameraProxy.getSupportPictureSize()
+    override fun getSupportPictureSize(): MutableList<Size> =
+        cameraProxy?.getSupportPictureSize() ?: mutableListOf()
 
 
     fun getCameraCount(context: Context?): Int {

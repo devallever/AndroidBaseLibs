@@ -2,6 +2,7 @@ package app.allever.android.lib.project
 
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import app.allever.android.lib.camerax.demo.CameraActivity
 import app.allever.android.lib.common.BaseActivity
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
@@ -54,6 +55,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         RippleHelper.addRippleView(findViewById(R.id.btnNetwork))
         RippleHelper.addRippleView(findViewById(R.id.btnDialog))
         RippleHelper.addRippleView(findViewById(R.id.btnPermission))
+        RippleHelper.addRippleView(findViewById(R.id.btnCamera))
         RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
         RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
         RippleHelper.addRippleView(findViewById(R.id.btnBaseActivity))
@@ -83,6 +85,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         findViewById<View>(R.id.btnPermission).setOnClickListener {
 //            ActivityHelper.startActivity(AndPermissionActivity::class.java)
             ActivityHelper.startActivity(PermissionXActivity::class.java)
+        }
+
+        findViewById<View>(R.id.btnCamera).setOnClickListener {
+            ActivityHelper.startActivity(CameraActivity::class.java)
         }
 
         findViewById<View>(R.id.btnRefreshRV).setOnClickListener {

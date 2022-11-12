@@ -1,6 +1,7 @@
 package app.allever.android.lib.project
 
 import app.allever.android.lib.core.app.App
+import app.allever.android.lib.core.function.camera.CameraManager
 import app.allever.android.lib.core.function.datastore.DataStore
 import app.allever.android.lib.core.function.imagecompress.ImageCompress
 import app.allever.android.lib.core.function.imageloader.ImageLoader
@@ -23,6 +24,7 @@ class MyApp : App() {
             PermissionHelper.init(DefaultPermissionEngine)
             Widget.init(this)
             MediaPickerHelper.init(MediaPicker)
+            CameraManager.init(this)
         }
     }
 }
