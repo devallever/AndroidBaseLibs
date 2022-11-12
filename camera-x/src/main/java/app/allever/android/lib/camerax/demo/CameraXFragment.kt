@@ -59,6 +59,12 @@ class CameraXFragment : BaseMvvmFragment<FragmentCameraXBinding, CameraXViewMode
             CameraManager.setLifeCycleOwner(this)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CameraManager.closeCamera()
+        CameraManager.release()
+    }
 }
 
 class CameraXViewModel() : BaseViewModel() {

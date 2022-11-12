@@ -59,7 +59,8 @@ class CameraProxyImpl : ICameraProxy {
                 additionalDegree = 180
             }
             val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-            val degree: Int = getDisplayOrientation(mPreviewRef.get()?.context, mCameraId) + additionalDegree
+            val degree: Int =
+                getDisplayOrientation(mPreviewRef.get()?.context, mCameraId) + additionalDegree
 
             val rotateBitmap: Bitmap? = CameraManager.getRotateBitmap(bitmap, degree.toFloat())
             mListener?.onTakePicture(data, rotateBitmap, mCamera?.parameters?.pictureFormat!!)
@@ -82,7 +83,7 @@ class CameraProxyImpl : ICameraProxy {
         if (mCamera != null) {
             return
         }
-        mCameraId = when(cameraFacing) {
+        mCameraId = when (cameraFacing) {
             CameraFacing.FACE_BACK -> CameraInfo.CAMERA_FACING_BACK
             else -> CameraInfo.CAMERA_FACING_FRONT
         }
@@ -110,7 +111,8 @@ class CameraProxyImpl : ICameraProxy {
 
             //最佳大小
             previewSize = Size(1920, 1080)
-            val bestSupportSize = getBestSupportedSize(params.supportedPreviewSizes, Point(1920, 1080))
+            val bestSupportSize =
+                getBestSupportedSize(params.supportedPreviewSizes, Point(1920, 1080))
             log("最佳大小 = ${bestSupportSize.width} x ${bestSupportSize.height}")
             params.setPreviewSize(bestSupportSize.width, bestSupportSize.height)
             params.setPictureSize(bestSupportSize.width, bestSupportSize.height)

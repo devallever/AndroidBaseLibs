@@ -58,6 +58,12 @@ class Camera2Fragment : BaseMvvmFragment<FragmentCamera2Binding, Camera2ViewMode
             CameraManager.setPreview(mBinding.surfaceView)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CameraManager.closeCamera()
+        CameraManager.release()
+    }
 }
 
 class Camera2ViewModel() : BaseViewModel() {

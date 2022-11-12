@@ -95,12 +95,16 @@ class Camera2ProxyImpl : ICameraProxy {
 
             // Selects appropriate preview size and configures view finder
             val previewSize = getPreviewOutputSize(
-                mPreviewRef.get()!!.display, mCharacteristics, SurfaceHolder::class.java)
+                mPreviewRef.get()!!.display, mCharacteristics, SurfaceHolder::class.java
+            )
             log("View finder size: ${mPreviewRef.get()!!.width} x ${mPreviewRef.get()!!.height}")
             log("Selected preview size: $previewSize")
 
             if (mPreviewRef.get() is AutoFitSurfaceView) {
-                (mPreviewRef.get() as AutoFitSurfaceView).setAspectRatio(previewSize.width, previewSize.height)
+                (mPreviewRef.get() as AutoFitSurfaceView).setAspectRatio(
+                    previewSize.width,
+                    previewSize.height
+                )
             }
 
             if (ActivityCompat.checkSelfPermission(
@@ -121,7 +125,8 @@ class Camera2ProxyImpl : ICameraProxy {
             sizeArr.map {
                 log("size = ${it.width} x ${it.height}")
             }
-            val size = configMap.getOutputSizes(ImageFormat.JPEG)?.maxByOrNull { it.height * it.width }!!
+            val size =
+                configMap.getOutputSizes(ImageFormat.JPEG)?.maxByOrNull { it.height * it.width }!!
             mImageReader = ImageReader.newInstance(
                 size.width, size.height, ImageFormat.JPEG, IMAGE_BUFFER_SIZE
             )
@@ -170,7 +175,7 @@ class Camera2ProxyImpl : ICameraProxy {
             val buffer = image.planes[0].buffer
             val bytes = ByteArray(buffer.remaining()).apply { buffer.get(this) }
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            val degree = when(mCameraFacing) {
+            val degree = when (mCameraFacing) {
                 CameraFacing.FACE_BACK -> 90f
                 else -> 270f
             }
@@ -185,16 +190,20 @@ class Camera2ProxyImpl : ICameraProxy {
             addTarget(mImageReader.surface)
         }
 
-        mCameraSession.capture(captureRequest.build(), object : CameraCaptureSession.CaptureCallback() {
-            override fun onCaptureCompleted(
-                session: CameraCaptureSession,
-                request: CaptureRequest,
-                result: TotalCaptureResult
-            ) {
-                super.onCaptureCompleted(session, request, result)
-                log("onCaptureCompleted")
-            }
-        }, mImageReaderHandler)
+        mCameraSession.capture(
+            captureRequest.build(),
+            object : CameraCaptureSession.CaptureCallback() {
+                override fun onCaptureCompleted(
+                    session: CameraCaptureSession,
+                    request: CaptureRequest,
+                    result: TotalCaptureResult
+                ) {
+                    super.onCaptureCompleted(session, request, result)
+                    log("onCaptureCompleted")
+                }
+            },
+            mImageReaderHandler
+        )
 
     }
 

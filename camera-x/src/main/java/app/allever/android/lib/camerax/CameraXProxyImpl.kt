@@ -80,7 +80,7 @@ class CameraXProxyImpl : ICameraProxy {
             log("拍照保存成功")
             val photoFile = File(mPreviewRef.get()?.context?.cacheDir, "camerax_capture_temp")
             val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
-            val degree = when(mCameraFacing) {
+            val degree = when (mCameraFacing) {
                 CameraFacing.FACE_BACK -> 90f
                 else -> 270f
             }
