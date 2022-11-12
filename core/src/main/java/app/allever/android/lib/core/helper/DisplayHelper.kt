@@ -5,6 +5,8 @@ import android.app.Service
 import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
+import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import app.allever.android.lib.core.app.App
 
@@ -125,5 +127,16 @@ object DisplayHelper {
         }
 
         return height
+    }
+
+    /**
+     * 设置全屏显示
+     */
+    fun setFullScreen(window: Window) {
+        // 全屏显示
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
     }
 }
