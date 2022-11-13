@@ -27,7 +27,7 @@ object AppRepository{
      */
     fun getBannerCall(
         responseCache: ResponseCache<*>? = null,
-        callback: ResponseCallback<List<BannerData>>
+        callback: ResponseCallback<List<BannerData>>? = null
     ) {
         HttpHelper.enqueue(responseCache, callback) {
             wanAndroidApi.getBannerCall().enqueue(RetrofitCallback(responseCache, callback))

@@ -10,14 +10,14 @@ import retrofit2.Response
 
 class RetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
 
-    private var responseCallback: ResponseCallback<DATA>
+    private var responseCallback: ResponseCallback<DATA>? = null
     private var responseCache: ResponseCache<*>? = null
 
-    constructor(responseCallback: ResponseCallback<DATA>) {
+    constructor(responseCallback: ResponseCallback<DATA>?) {
         this.responseCallback = responseCallback
     }
 
-    constructor(responseCache: ResponseCache<*>?, responseCallback: ResponseCallback<DATA>) {
+    constructor(responseCache: ResponseCache<*>? = null, responseCallback: ResponseCallback<DATA>? = null) {
         this.responseCallback = responseCallback
         this.responseCache = responseCache
     }

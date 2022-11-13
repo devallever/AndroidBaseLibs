@@ -143,19 +143,19 @@ object HttpHelper {
      */
     fun <DATA, R : NetResponse<DATA>> enqueue(
         responseCache: ResponseCache<*>? = null,
-        callback: ResponseCallback<DATA>,
-        requestTask: Runnable
+        callback: ResponseCallback<DATA>? = null,
+        requestTask: Runnable? = null
     ) {
         if (!NetworkHelper.isNetworkAvailable(App.context) || responseCache != null) {
             val response = responseCache?.getCache<R>()
             response?.let {
                 log("使用缓存: ${GsonHelper.toJson(response)}")
-                callback.onSuccess(response)
+                callback?.onSuccess(response)
                 return
             }
         }
 
-        requestTask.run()
+        requestTask?.run()
     }
 
     fun <T> showMessageIfFail(result: Result<T>) {
@@ -174,32 +174,26 @@ object HttpHelper {
 
     fun <DATA, R : NetResponse<DATA>> handleSuccessCallback(
         responseCache: ResponseCache<*>? = null,
-        requestResult: R?,
-        callback: ResponseCallback<DATA>?
+        requestResult: R? = null,
+        callback: ResponseCallback<DATA>? = null
     ) {
-        if (callback == null) {
-            return
-        }
         if (requestResult == null) {
             val defaultResponse = DefaultNetResponse<DATA>(-1, "没有返回数据")
-            callback.onFail(defaultResponse)
+            callback?.onFail(defaultResponse)
             return
         }
 
-        callback.onSuccess(requestResult)
+        callback?.onSuccess(requestResult)
 
         if (isSuccessCode(requestResult.getCode())) {
             responseCache?.cacheResponse(requestResult)
         }
     }
 
-    fun <DATA> handleFailCallback(callback: ResponseCallback<DATA>?, t: Throwable?) {
-        if (callback == null) {
-            return
-        }
+    fun <DATA> handleFailCallback(callback: ResponseCallback<DATA>? = null, t: Throwable? = null) {
         val exception = ExceptionHandle.handleException(t)
         val defaultNetResponse =
             exception.message?.let { DefaultNetResponse<DATA>(exception.code, it) }
-        defaultNetResponse?.let { callback.onFail(it) }
+        defaultNetResponse?.let { callback?.onFail(it) }
     }
 }
