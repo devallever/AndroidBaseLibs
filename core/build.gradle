@@ -79,5 +79,7 @@ dependencies {
 
     api basePopup
 
+    api paging3
+
     api "androidx.datastore:datastore-preferences:1.0.0"
 }
