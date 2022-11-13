@@ -36,7 +36,7 @@ public class NetActivityJava extends AbstractActivity {
         findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NetRepository.INSTANCE.getBannerCall(new BannerResponseCache(), new ResponseCallback<List<BannerData>>() {
+                AppRepository.INSTANCE.getBannerCall(new BannerResponseCache(), new ResponseCallback<List<BannerData>>() {
                     @Override
                     public void onFail(@NonNull NetResponse<List<BannerData>> response) {
                         LoggerKt.log(response.getMsg());

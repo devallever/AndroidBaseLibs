@@ -61,7 +61,7 @@ class NetworkActivity : AbstractActivity() {
     }
 
     private fun sendForJava() {
-        NetRepository.getBannerCall(BannerResponseCache(), object : ResponseCallback<List<BannerData>> {
+        AppRepository.getBannerCall(BannerResponseCache(), object : ResponseCallback<List<BannerData>> {
             override fun onFail(response: NetResponse<List<BannerData>>) {
                 log(response.getMsg())
                 updateUi((response as? BaseResponse<List<BannerData>>)?:return)
@@ -76,7 +76,7 @@ class NetworkActivity : AbstractActivity() {
 
     private fun sendKotlin() {
         lifecycleScope.launch {
-            val result = NetRepository.getBanner(BannerResponseCache())
+            val result = AppRepository.getBanner(BannerResponseCache())
             if (result.success()) {
                 //处理数据
                 bannerMultiLiveData.value = result
@@ -90,13 +90,13 @@ class NetworkActivity : AbstractActivity() {
 
     private val bannerRequestLiveData = MutableLiveData<Any?>(null)
     private val bannerLiveData = Transformations.switchMap(bannerRequestLiveData) {
-        val result = NetRepository.getBannerWithLiveData(BannerResponseCache())
+        val result = AppRepository.getBannerWithLiveData(BannerResponseCache())
         result
     }
 
     private fun sendKotlinLiveData1() {
         lifecycleScope.launch {
-            NetRepository.getBannerForLiveData(BannerResponseCache()).value?.let {
+            AppRepository.getBannerForLiveData(BannerResponseCache()).value?.let {
                 updateUi(it)
             }
         }

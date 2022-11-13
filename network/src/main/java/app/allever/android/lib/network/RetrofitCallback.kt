@@ -1,6 +1,6 @@
 package app.allever.android.lib.network
 
-import app.allever.android.lib.core.function.network.NetworkHandler
+import app.allever.android.lib.core.function.network.HttpHelper
 import app.allever.android.lib.core.function.network.ResponseCallback
 import app.allever.android.lib.core.function.network.cache.ResponseCache
 import app.allever.android.lib.core.function.network.response.NetResponse
@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R>, NetworkHandler {
+class RetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
 
     private var responseCallback: ResponseCallback<DATA>
     private var responseCache: ResponseCache<*>? = null
@@ -23,10 +23,10 @@ class RetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R>, NetworkHandle
     }
 
     override fun onResponse(call: Call<R>, response: Response<R>) {
-        handleSuccessCallback(responseCache, response.body(), responseCallback)
+        HttpHelper.handleSuccessCallback(responseCache, response.body(), responseCallback)
     }
 
     override fun onFailure(call: Call<R>, t: Throwable) {
-        handleFailCallback(responseCallback, t)
+        HttpHelper.handleFailCallback(responseCallback, t)
     }
 }

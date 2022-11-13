@@ -1,24 +1,24 @@
 package app.allever.android.lib.network.demo
 
-import app.allever.android.lib.core.function.network.NetworkHandler
+import app.allever.android.lib.core.function.network.HttpHelper
 import app.allever.android.lib.core.function.network.ResponseCallback
 import app.allever.android.lib.core.function.network.cache.ResponseCache
 import app.allever.android.lib.network.ApiService
 import app.allever.android.lib.network.RetrofitCallback
 import kotlinx.coroutines.delay
 
-object NetRepository : NetworkHandler() {
+object AppRepository{
     private val wanAndroidApi by lazy {
         ApiService.get(WanAndroidApi::class.java)
     }
 
     @Deprecated("")
-    suspend fun getBannerForJava() = requestForJava {
+    suspend fun getBannerForJava() = HttpHelper.requestForJava {
         wanAndroidApi.getBannerForJava()
     }
 
     @Deprecated("")
-    suspend fun getBanner() = request {
+    suspend fun getBanner() = HttpHelper.request {
         wanAndroidApi.getBanner()
     }
 
@@ -29,7 +29,7 @@ object NetRepository : NetworkHandler() {
         responseCache: ResponseCache<*>? = null,
         callback: ResponseCallback<List<BannerData>>
     ) {
-        enqueue(responseCache, callback) {
+        HttpHelper.enqueue(responseCache, callback) {
             wanAndroidApi.getBannerCall().enqueue(RetrofitCallback(responseCache, callback))
         }
     }
@@ -38,7 +38,7 @@ object NetRepository : NetworkHandler() {
      * kotlin协程
      */
     suspend fun getBanner(responseCache: ResponseCache<*>? = null) =
-        request(responseCache) {
+        HttpHelper.request(responseCache) {
             wanAndroidApi.getBanner()
         }
 
@@ -46,7 +46,7 @@ object NetRepository : NetworkHandler() {
      * kotlin协程 + LiveData 方式一
      */
     suspend fun getBannerForLiveData(responseCache: ResponseCache<*>? = null) =
-        requestLiveData(responseCache) {
+        HttpHelper.requestLiveData(responseCache) {
             wanAndroidApi.getBanner()
         }
 
@@ -54,7 +54,7 @@ object NetRepository : NetworkHandler() {
      * kotlin协程 + LiveData 方式一
      */
     fun getBannerWithLiveData(responseCache: ResponseCache<*>? = null) =
-        requestLiveData2(responseCache) {
+        HttpHelper.requestLiveData2(responseCache) {
             wanAndroidApi.getBanner()
         }
 

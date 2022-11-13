@@ -15,7 +15,7 @@ import app.allever.android.lib.core.function.network.response.NetResponse
 import app.allever.android.lib.core.helper.GsonHelper
 import app.allever.android.lib.core.helper.NetworkHelper
 
-abstract class NetworkHandler {
+object HttpHelper {
     @Deprecated("Java调用直接用回调就好了")
     inline fun <T : NetResponse<*>> requestForJava(block: () -> T): T? {
         return try {
@@ -172,7 +172,7 @@ abstract class NetworkHandler {
         return code == HttpConfig.successCode
     }
 
-    protected fun <DATA, R : NetResponse<DATA>> handleSuccessCallback(
+    fun <DATA, R : NetResponse<DATA>> handleSuccessCallback(
         responseCache: ResponseCache<*>? = null,
         requestResult: R?,
         callback: ResponseCallback<DATA>?
@@ -193,7 +193,7 @@ abstract class NetworkHandler {
         }
     }
 
-    protected open fun <DATA> handleFailCallback(callback: ResponseCallback<DATA>?, t: Throwable?) {
+    fun <DATA> handleFailCallback(callback: ResponseCallback<DATA>?, t: Throwable?) {
         if (callback == null) {
             return
         }
