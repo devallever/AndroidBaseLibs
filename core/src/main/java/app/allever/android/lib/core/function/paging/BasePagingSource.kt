@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import app.allever.android.lib.core.ext.log
 
-abstract class AbstractPagingSource<T : Any> : PagingSource<Int, T>() {
+abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
     override fun getRefreshKey(state: PagingState<Int, T>): Int? = null
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
