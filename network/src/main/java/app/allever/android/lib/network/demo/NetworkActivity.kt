@@ -25,7 +25,6 @@ class NetworkActivity : AbstractActivity() {
 
         HttpConfig.baseUrl("https://www.wanandroid.com/")
             .baseResponseClass(BaseResponse::class.java)
-            .interceptor(GlobalInterceptor())
             .header("KEY", "VALUE")
             .init(ApiService)
 

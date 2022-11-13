@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentEmptyBinding
 
-class EmptyFragment : Fragment() {
+class EmptyFragment(val content: String = "") : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,7 +21,7 @@ class EmptyFragment : Fragment() {
             container,
             false
         )
-        binding.tvText.text = this.hashCode().toString()
+        binding.tvText.text = content
         return binding.root
     }
 }

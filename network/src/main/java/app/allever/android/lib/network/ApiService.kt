@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 
-internal object ApiService : IHttpConfig{
+object ApiService : IHttpConfig {
     private val mRetrofit by lazy {
 
         val builder = OkHttpClient.Builder()
