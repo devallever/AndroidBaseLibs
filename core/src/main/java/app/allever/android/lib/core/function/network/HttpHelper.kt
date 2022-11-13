@@ -27,24 +27,8 @@ object HttpHelper {
         }
     }
 
-    @Deprecated("没用缓存,弃用")
-    inline fun <T : NetResponse<*>> request(block: () -> T): Result<T> {
-        return try {
-            val response = block()
-            if (isSuccessCode(response.getCode())) {
-                Result.success(response)
-            } else {
-                Result.failure(
-                    HttpException(
-                        response as NetResponse<*>
-                    )
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            logE(e.message)
-            Result.failure(e)
-        }
+    inline fun <T : NetResponse<*>> request(block: () -> T): T {
+        return request(null, block)
     }
 
 

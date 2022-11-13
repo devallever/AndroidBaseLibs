@@ -11,7 +11,7 @@ import okio.Buffer
 import java.io.IOException
 import java.nio.charset.Charset
 
-class GlobalInterceptor : Interceptor {
+internal class GlobalInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val requestBuilder = originalRequest.newBuilder()

@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
+internal class RetrofitCallback<DATA, R : NetResponse<DATA>> : Callback<R> {
 
     private var responseCallback: ResponseCallback<DATA>? = null
     private var responseCache: ResponseCache<*>? = null

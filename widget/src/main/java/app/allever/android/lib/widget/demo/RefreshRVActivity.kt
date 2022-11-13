@@ -71,6 +71,7 @@ class RefreshRVActivity : AbstractActivity() {
             })
             .enableViewPager(false)
             .enableRefresh(false)
+            .preloadCount(5)
 //            .pageChangeListener(object : RefreshRecyclerView.PageChangeListener<UserItem> {
 //                override fun onPageChanged(position: Int, item: UserItem) {
 //                    toast("position = $position, item = $item")

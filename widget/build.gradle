@@ -60,4 +60,6 @@ dependencies {
         exclude(group:"com.android.support", module: "support-compat")
         exclude(group:"com.android.support", module: "support-core-utils")
     }
+
+    implementation "androidx.paging:paging-runtime:3.1.1"
 }

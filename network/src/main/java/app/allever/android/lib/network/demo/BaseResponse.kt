@@ -2,7 +2,7 @@ package app.allever.android.lib.network.demo
 
 import app.allever.android.lib.core.function.network.response.NetResponse
 
-open class BaseResponse<DATA> : NetResponse<DATA>() {
+internal open class BaseResponse<DATA> : NetResponse<DATA>() {
     var errorCode: Int = 0
     var errorMsg: String = ""
 

@@ -1,6 +1,6 @@
 package app.allever.android.lib.network.demo
 
-data class BannerData(
+internal data class BannerData(
     val desc: String,
     val id: Int,
     val imagePath: String,

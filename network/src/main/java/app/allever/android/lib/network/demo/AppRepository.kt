@@ -7,7 +7,7 @@ import app.allever.android.lib.network.ApiService
 import app.allever.android.lib.network.RetrofitCallback
 import kotlinx.coroutines.delay
 
-object AppRepository{
+internal object AppRepository{
     private val wanAndroidApi by lazy {
         ApiService.get(WanAndroidApi::class.java)
     }
