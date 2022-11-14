@@ -1,4 +1,4 @@
-package app.allever.android.lib.widget.recycler
+package app.allever.android.lib.widget.recycler.binding
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

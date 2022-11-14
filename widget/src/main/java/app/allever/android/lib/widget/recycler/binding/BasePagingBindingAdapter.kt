@@ -1,4 +1,4 @@
-package app.allever.android.lib.widget.recycler
+package app.allever.android.lib.widget.recycler.binding
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
