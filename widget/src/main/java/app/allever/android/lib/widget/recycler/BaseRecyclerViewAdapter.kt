@@ -33,7 +33,7 @@ abstract class BaseRecyclerViewAdapter<T> :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return BaseViewHolder.getHolder(mContext, parent, mLayoutResId)
+        return BaseViewHolder.getHolder(parent, mLayoutResId)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {

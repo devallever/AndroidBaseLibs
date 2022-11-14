@@ -1,8 +1,12 @@
 package app.allever.android.lib.widget.recycler
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import app.allever.android.lib.core.app.App
 
 
 /***
@@ -10,25 +14,32 @@ import androidx.recyclerview.widget.DiffUtil
  * https://blog.csdn.net/qq_35605213/article/details/80176558
  * @param <T>
 </T> */
-abstract class BasePagingAdapter<T : Any>(
+abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
     val mLayoutResId: Int,
     diffCallback: DiffUtil.ItemCallback<T>
 ) :
-    PagingDataAdapter<T, BaseViewHolder>(diffCallback) {
-    var mItemListener: ItemListener? = null
+    PagingDataAdapter<T, BaseBindingViewHolder<DB>>(diffCallback) {
+    var itemClickListener: ((Int, BaseBindingViewHolder<DB>) -> Unit)? = null
+    var itemLongClickListener: ((Int, BaseBindingViewHolder<DB>) -> Boolean)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return BaseViewHolder.getHolder(parent, mLayoutResId)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<DB> {
+        val binding = DataBindingUtil.inflate<DB>(
+            LayoutInflater.from(App.context),
+            mLayoutResId,
+            parent,
+            false
+        )
+        return BaseBindingViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<DB>, position: Int) {
         holder.itemView.setOnClickListener {
-            mItemListener?.onItemClick(position, holder)
+            itemClickListener?.invoke(position, holder)
         }
         holder.itemView.setOnLongClickListener {
-            return@setOnLongClickListener mItemListener?.onItemLongClick(position, holder) ?: false
+            return@setOnLongClickListener itemLongClickListener?.invoke(position, holder) ?: false
         }
-        getItem(position)?.let { bindHolder(holder, position, it) }
+        getItem(position)?.let { convert(holder, position, it) }
     }
 
 
@@ -54,9 +65,9 @@ abstract class BasePagingAdapter<T : Any>(
 //        notifyItemRangeChanged(position, mData.size - position)
 //    }
 
-    fun setItemListener(itemListener: ItemListener) {
-        mItemListener = itemListener
-    }
+//    fun setItemListener(itemListener: ItemListener) {
+//        mItemListener = itemListener
+//    }
 
 //    private fun compatibilityDataSizeChanged(size: Int) {
 //        val dataSize = mData.size
@@ -71,5 +82,5 @@ abstract class BasePagingAdapter<T : Any>(
      * @param holder
      * @param position
      */
-    abstract fun bindHolder(holder: BaseViewHolder, position: Int, item: T)
+    abstract fun convert(holder: BaseBindingViewHolder<DB>, position: Int, item: T)
 }

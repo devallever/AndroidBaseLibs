@@ -1,6 +1,5 @@
 package app.allever.android.lib.widget.recycler
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Paint
 import android.graphics.Typeface
@@ -13,8 +12,9 @@ import android.widget.*
 import androidx.annotation.IdRes
 import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.RecyclerView
+import app.allever.android.lib.core.app.App
 
-class BaseViewHolder(private val mContext: Context, itemView: View) :
+open class BaseViewHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
     private val mViews: SparseArrayCompat<View> = SparseArrayCompat()
 
@@ -81,7 +81,7 @@ class BaseViewHolder(private val mContext: Context, itemView: View) :
 
     fun setTextColorRes(viewId: Int, textColorRes: Int): BaseViewHolder {
         val view = getView<TextView>(viewId)
-        view?.setTextColor(mContext.resources.getColor(textColorRes))
+        view?.setTextColor(App.context.resources.getColor(textColorRes))
         return this
     }
 
@@ -203,13 +203,13 @@ class BaseViewHolder(private val mContext: Context, itemView: View) :
 
     companion object {
 
-        fun getHolder(context: Context, parent: ViewGroup, layoutId: Int): BaseViewHolder {
+        fun getHolder(parent: ViewGroup, layoutId: Int): BaseViewHolder {
 
-            val itemView = LayoutInflater.from(context).inflate(
+            val itemView = LayoutInflater.from(App.context).inflate(
                 layoutId, parent,
                 false
             )
-            val holder = BaseViewHolder(context, itemView)
+            val holder = BaseViewHolder(itemView)
             itemView.tag = holder
             return holder
         }
