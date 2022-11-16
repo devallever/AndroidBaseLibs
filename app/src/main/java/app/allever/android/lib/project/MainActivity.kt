@@ -202,7 +202,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             ActivityHelper.startActivity<ImageCompressActivity>()
         }
 
-        val url = "https://ip-h5-ri01-sycdn.kuwo.cn/3d47f2c942348d5396d4a0cb2ab2ed73/63745cf7/resource/n1/40/9/760095559.mp3"
+        val url = "https://win-web-ri01-sycdn.kuwo.cn/707652b674686c7f7f5540d05f90a886/63747cc0/resource/n1/40/9/760095559.mp3"
         findViewById<View>(R.id.btnLoadMusic).setOnClickListener {
             mMusicPlayer.load(url)
             mMusicPlayer.onPrepareListener = {

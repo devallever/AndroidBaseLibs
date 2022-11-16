@@ -12,10 +12,22 @@ import app.allever.android.lib.core.function.network.exception.ExceptionHandle
 import app.allever.android.lib.core.function.network.exception.HttpException
 import app.allever.android.lib.core.function.network.response.DefaultNetResponse
 import app.allever.android.lib.core.function.network.response.NetResponse
+import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.GsonHelper
 import app.allever.android.lib.core.helper.NetworkHelper
+import app.allever.android.lib.core.util.FileUtils
+import kotlinx.coroutines.launch
+import okhttp3.*
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 object HttpHelper {
+    val okhttpClient by lazy {
+        val builder = OkHttpClient.Builder()
+        builder.callTimeout(10, TimeUnit.SECONDS)
+        builder.build()
+    }
+
     @Deprecated("Java调用直接用回调就好了")
     inline fun <T : NetResponse<*>> requestForJava(block: () -> T): T? {
         return try {
@@ -179,5 +191,29 @@ object HttpHelper {
         val defaultNetResponse =
             exception.message?.let { DefaultNetResponse<DATA>(exception.code, it) }
         defaultNetResponse?.let { callback?.onFail(it) }
+    }
+
+    fun downloadFile(url: String, path: String) {
+        CoroutineHelper.IO.launch {
+            val request: Request = Request.Builder() //访问路径
+                .url(url)
+                .build()
+
+            okhttpClient.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    log("下载成功")
+                    //方式二
+                    val result = FileUtils.saveByteToSDFile(response.body?.bytes(), path)
+                    if (result) {
+                        log("保存成功")
+                    } else {
+                        log("保存失败")
+                    }
+                }
+            })
+        }
     }
 }
