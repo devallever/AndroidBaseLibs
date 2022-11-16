@@ -10,6 +10,7 @@ import app.allever.android.lib.core.ext.toastLong
 import app.allever.android.lib.core.function.businessinterceptor.demo.BusinessInterceptorActivity
 import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
+import app.allever.android.lib.core.function.media.MusicPlayer
 import app.allever.android.lib.core.function.mediapicker.MediaPickerHelper
 import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
 import app.allever.android.lib.core.function.work.PollingTask
@@ -30,6 +31,8 @@ import app.allever.android.lib.widget.ripple.RippleHelper
 import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+
+    private val mMusicPlayer = MusicPlayer()
 
 
     private fun handleResult(result: MediaPickerResult) {
@@ -63,6 +66,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImageVideo))
         RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImage))
         RippleHelper.addRippleView(findViewById(R.id.btnImageCompress))
+        RippleHelper.addRippleView(findViewById(R.id.btnLoadMusic))
+        RippleHelper.addRippleView(findViewById(R.id.btnPlayMusic))
 
         findViewById<View>(R.id.btnMvvm).setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
@@ -197,6 +202,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             ActivityHelper.startActivity<ImageCompressActivity>()
         }
 
+        val url = "https://ip-h5-ri01-sycdn.kuwo.cn/3d47f2c942348d5396d4a0cb2ab2ed73/63745cf7/resource/n1/40/9/760095559.mp3"
+        findViewById<View>(R.id.btnLoadMusic).setOnClickListener {
+            mMusicPlayer.load(url)
+            mMusicPlayer.onPrepareListener = {
+                mMusicPlayer.play()
+            }
+        }
+
+        findViewById<View>(R.id.btnPlayMusic).setOnClickListener {
+            mMusicPlayer.load(url, true)
+        }
+
+
         object : TimerTask() {
             override fun delay() = 3 * 1000L
             override fun execute() = toast("执行定时任务 TimerTask")
@@ -223,6 +241,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }.start()
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMusicPlayer.release()
     }
 }
 

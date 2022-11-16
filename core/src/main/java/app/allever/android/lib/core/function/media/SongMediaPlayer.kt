@@ -1,6 +1,7 @@
 package app.allever.android.lib.core.function.media
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
@@ -86,6 +87,20 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
 
     fun removePlayerListener(listener: OnPlayerListener) {
         onPlayerListeners.remove(listener)
+    }
+
+    fun loadUrl(url: String) {
+        reset()
+        try {
+            val mAudioAttributes = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
+            mediaPlayer.setAudioAttributes(mAudioAttributes)
+            mediaPlayer.setDataSource(url)
+            mediaPlayer.prepareAsync()
+        } catch (e: Exception) {
+            notifyError("error: load: ${e.message}")
+            e.printStackTrace()
+        }
     }
 
     fun load(path: String) {
