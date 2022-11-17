@@ -15,6 +15,7 @@ import app.allever.android.lib.core.function.mediapicker.MediaPickerHelper
 import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
 import app.allever.android.lib.core.function.work.*
 import app.allever.android.lib.core.helper.ActivityHelper
+import app.allever.android.lib.core.helper.TimeHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.base.MvvmConfig
@@ -108,6 +109,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         findViewById<View>(R.id.btnBaseActivity).setOnClickListener {
             ActivityHelper.startActivity(UserActivity::class.java)
         }
+
+        log("1天有${TimeHelper.getSecondByDay(1)}秒")
+        log("2天有${TimeHelper.getSecondByDay(2)}秒")
+
+        log("1小时${TimeHelper.getSecondByHour(1)}秒")
+        log("2小时${TimeHelper.getSecondByHour(2)}秒")
+
+        log("1分钟${TimeHelper.getSecondByMinute(1)}秒")
+        log("2分钟${TimeHelper.getSecondByMinute(2)}秒")
+
+        log("01:30有${TimeHelper.getSecondByMinute(1) + 30}秒")
+
+        log("01:01:30有${TimeHelper.getSecondByTime(0, 1, 1, 30)}秒")
+
 
         CountDownTimer(this, 10 * 1000L) {
             log("倒计时定时器到了666")

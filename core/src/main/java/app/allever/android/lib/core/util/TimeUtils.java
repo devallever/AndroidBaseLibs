@@ -3,7 +3,10 @@ package app.allever.android.lib.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
+import app.allever.android.lib.core.helper.TimeHelper;
 
 public class TimeUtils {
     public static final String FORMAT_mm_ss = "mm:ss";
@@ -275,5 +278,19 @@ public class TimeUtils {
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy.MM.dd");
         return dateFormat2.format(dateFormat.parse(time));
     }
+
+    /**
+     * 判断当前时间是否超过指定时间
+     * @return
+     */
+    public static boolean isGoneTime(int hour, int min, int second) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.set(Calendar.SECOND, second);
+        return System.currentTimeMillis() > calendar.getTimeInMillis();
+    }
+
 
 }

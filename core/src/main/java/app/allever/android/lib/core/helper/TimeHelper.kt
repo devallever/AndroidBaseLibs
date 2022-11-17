@@ -49,4 +49,29 @@ object TimeHelper {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return simpleDateFormat.format(time)
     }
+
+    fun getSecondByDay(day: Int): Int {
+        if (day < 0) {
+            return 0
+        }
+        return day * getSecondByHour(24)
+    }
+
+    fun getSecondByHour(hour: Int): Int {
+        if (hour < 0) {
+            return 0
+        }
+        return hour * getSecondByMinute(60)
+    }
+
+    fun getSecondByMinute(minute: Int): Int {
+        if (minute < 0) {
+            return 0
+        }
+        return minute * 60
+    }
+
+    fun getSecondByTime(day: Int = 0, hour: Int = 0, minute: Int = 0, second: Int = 0): Int {
+        return getSecondByDay(day) + getSecondByHour(hour) + getSecondByMinute(minute) + second
+    }
 }
