@@ -13,10 +13,7 @@ import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.function.media.MusicPlayer
 import app.allever.android.lib.core.function.mediapicker.MediaPickerHelper
 import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
-import app.allever.android.lib.core.function.work.PollingTask
-import app.allever.android.lib.core.function.work.PollingTask2
-import app.allever.android.lib.core.function.work.TimerTask
-import app.allever.android.lib.core.function.work.TimerTask2
+import app.allever.android.lib.core.function.work.*
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
@@ -112,6 +109,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             ActivityHelper.startActivity(UserActivity::class.java)
         }
 
+        CountDownTimer(this, 10 * 1000L) {
+            log("倒计时定时器到了666")
+        }.start()
+
         val mediaPickerListener = object : MediaPickerListener {
             override fun onPicked(
                 all: MutableList<MediaBean>,
@@ -145,6 +146,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 //                MediaHelper.TYPE_AUDIO,
 //                mediaPickerListener = mediaPickerListener
 //            )
+
             return@setOnClickListener
             lifecycleScope.launch {
                 val mediaFolderList = MediaHelper.getAllFolder(this@MainActivity)
