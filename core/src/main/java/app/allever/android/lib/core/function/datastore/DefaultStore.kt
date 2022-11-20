@@ -10,6 +10,14 @@ class DefaultStore : IDataStore {
 
     override fun getInt(key: String): Int = SPHelper.getInt(key, 0)
 
+    override fun putLong(key: String, value: Long) {
+        SPHelper.putLong(key, value)
+    }
+
+    override fun getLong(key: String): Long {
+        return SPHelper.getLong(key, 0L)
+    }
+
     override fun putFloat(key: String, value: Float) {
         SPHelper.putFloat(key, value)
     }

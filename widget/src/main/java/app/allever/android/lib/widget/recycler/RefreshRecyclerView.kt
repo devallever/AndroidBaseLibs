@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -59,10 +61,16 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
         refreshLayout = findViewById(R.id.smartRefreshLayout)
         refreshLayout?.setOnLoadMoreListener {
             handleLoadOrRefresh(true)
+            postDelayed({
+                refreshLayout?.finishLoadMore(true)
+            }, 1000 * 10)
         }
 
         refreshLayout?.setOnRefreshListener {
             handleLoadOrRefresh(false)
+            postDelayed({
+                refreshLayout?.finishRefresh(true)
+            }, 1000 * 10)
         }
 
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -128,17 +136,20 @@ class RefreshRecyclerView<Item> @JvmOverloads constructor(
             mCurrentPage = 0
         }
 
-        coroutineScope.launch {
-            val data = mDataFetchListener?.fetchData(mCurrentPage, isLoadMore)
-            if (data?.isNotEmpty() == true) {
-                mIsDataSourceFromFetchData = true
-                if (isLoadMore) {
-                    loadMoreData(data)
+        //解决刷新/加载没响应
+        if (context is LifecycleOwner) {
+            (context as LifecycleOwner).lifecycleScope.launch {
+                val data = mDataFetchListener?.fetchData(mCurrentPage, isLoadMore)
+                if (data?.isNotEmpty() == true) {
+                    mIsDataSourceFromFetchData = true
+                    if (isLoadMore) {
+                        loadMoreData(data)
+                    } else {
+                        refreshData(data)
+                    }
                 } else {
-                    refreshData(data)
+                    mDataFetchListener?.loadData(mCurrentPage, isLoadMore)
                 }
-            } else {
-                mDataFetchListener?.loadData(mCurrentPage, isLoadMore)
             }
         }
     }

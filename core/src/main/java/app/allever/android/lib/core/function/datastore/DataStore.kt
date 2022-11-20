@@ -18,6 +18,15 @@ object DataStore : IDataStore {
 
     override fun getInt(key: String) = mDataStore.getInt(key)
 
+
+    override fun putLong(key: String, value: Long) {
+        mDataStore.putLong(key, value)
+    }
+
+    override fun getLong(key: String) = mDataStore.getLong(key)
+
+
+
     override fun putFloat(key: String, value: Float) {
         mDataStore.putFloat(key, value)
     }

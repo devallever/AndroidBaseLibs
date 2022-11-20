@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 
-abstract class BaseViewModel : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
     @Deprecated("使用viewModelScope")
     private val mJob by lazy {
@@ -39,7 +39,9 @@ abstract class BaseViewModel : ViewModel() {
      * Activity#onCreate()后调用
      * Fragment#onCreateView()后调用
      */
-    abstract fun init()
+    open fun init() {
+
+    }
 
     fun <T : Any> getPagingFlowData(pageSource: PagingSource<Int, T>): Flow<PagingData<T>> {
         return PagingHelper.getPager(pageSource).cachedIn(viewModelScope)

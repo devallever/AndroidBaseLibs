@@ -19,7 +19,7 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
     diffCallback: DiffUtil.ItemCallback<T>
 ) :
     PagingDataAdapter<T, BaseBindingViewHolder<DB>>(diffCallback) {
-    var itemClickListener: ((Int, BaseBindingViewHolder<DB>) -> Unit)? = null
+    var itemClickListener: ((Int, BaseBindingViewHolder<DB>, item: T) -> Unit)? = null
     var itemLongClickListener: ((Int, BaseBindingViewHolder<DB>) -> Boolean)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<DB> {
@@ -34,7 +34,7 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<DB>, position: Int) {
         holder.itemView.setOnClickListener {
-            itemClickListener?.invoke(position, holder)
+            itemClickListener?.invoke(position, holder, getItem(position)!!)
         }
         holder.itemView.setOnLongClickListener {
             return@setOnLongClickListener itemLongClickListener?.invoke(position, holder) ?: false

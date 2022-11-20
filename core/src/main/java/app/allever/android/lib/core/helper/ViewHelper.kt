@@ -82,3 +82,9 @@ object ViewHelper {
         return x > r.left - marginLeft && x < r.right + marginRight && y > r.top - marginTop && y < r.bottom + marginBottom
     }
 }
+
+fun View.isVisible() = visibility == View.VISIBLE
+
+fun View.visible(show: Boolean) {
+    ViewHelper.setVisible(this, show)
+}

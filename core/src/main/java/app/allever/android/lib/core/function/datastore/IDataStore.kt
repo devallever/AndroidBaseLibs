@@ -7,6 +7,9 @@ interface IDataStore {
     fun putInt(key: String, value: Int)
     fun getInt(key: String): Int
 
+    fun putLong(key: String, value: Long)
+    fun getLong(key: String): Long
+
     fun putFloat(key: String, value: Float)
     fun getFloat(key: String): Float
 

@@ -66,8 +66,8 @@
                 android:gravity="center"
                 android:paddingHorizontal="20dp"
                 android:text="取消"
-                android:textStyle="bold"
-                android:textColor="#ff6c1e" />
+                android:textColor="#ff6c1e"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
