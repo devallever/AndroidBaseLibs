@@ -6,13 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import app.allever.android.lib.core.helper.TimeHelper;
-
 public class TimeUtils {
     public static final String FORMAT_mm_ss = "mm:ss";
     public static final String FORMAT_hh_mm_ss = "HH:mm:ss";
     public static final String FORMAT_yyyy_MM_dd = "yyyy-MM-dd";
     public static final String FORMAT_MM_dd = "MM-dd";
+    public static final String FORMAT_yyyy_MM_dd_hh_mm_ss_SSS = "yyyy-MM-dd HH:mm:ss:SSS";
 
     private static final long ONE_MINUTE = 60000L;
     private static final long ONE_HOUR = 3600000L;
@@ -281,6 +280,7 @@ public class TimeUtils {
 
     /**
      * 判断当前时间是否超过指定时间
+     *
      * @return
      */
     public static boolean isGoneTime(int hour, int min, int second) {
@@ -290,6 +290,23 @@ public class TimeUtils {
         calendar.set(Calendar.MINUTE, min);
         calendar.set(Calendar.SECOND, second);
         return System.currentTimeMillis() > calendar.getTimeInMillis();
+    }
+
+    /**
+     * 获取时间戳
+     */
+    public static Long getTimeStamp(String dateString, String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = df.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date == null) {
+            return 0L;
+        }
+        return date.getTime();
     }
 
 

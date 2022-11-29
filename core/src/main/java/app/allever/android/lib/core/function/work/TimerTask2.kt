@@ -3,6 +3,7 @@ package app.allever.android.lib.core.function.work
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import app.allever.android.lib.core.app.App
+import app.allever.android.lib.core.ext.log
 
 class TimerTask2(
     lifecycleOwner: LifecycleOwner? = null,
@@ -13,6 +14,7 @@ class TimerTask2(
     private val task = Runnable {
         block()
         if (loop) {
+            log("开始: 间隔 = $delay")
             start()
         }
     }
