@@ -3,6 +3,7 @@ package app.allever.android.lib.core.helper
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
+import android.util.Log
 import android.view.View
 import app.allever.android.lib.core.util.StatusBarCompat
 
@@ -37,6 +38,7 @@ object ViewHelper {
     /**
      * 获取屏幕中位置
      */
+    @Deprecated("")
     fun getLocation(view: View): IntArray? {
         val location = IntArray(2)
         if (Build.VERSION.SDK_INT >= 24) {
@@ -50,7 +52,7 @@ object ViewHelper {
         return location
     }
 
-    fun getGlobalVisibleRect(view: View?): Rect? {
+    fun getGlobalVisibleRect(view: View?): Rect {
         val rect = Rect()
         view?.getGlobalVisibleRect(rect)
         return rect
@@ -80,6 +82,16 @@ object ViewHelper {
         val r = Rect()
         view.getGlobalVisibleRect(r)
         return x > r.left - marginLeft && x < r.right + marginRight && y > r.top - marginTop && y < r.bottom + marginBottom
+    }
+
+    /**
+     * 获取view在屏幕中的位置
+     */
+    fun getViewLocationOnScreen(view: View): IntArray {
+        val intArray = IntArray(2)
+        view.getLocationOnScreen(intArray)
+        Log.d("ViewHelper", "${view.javaClass.simpleName}, x = ${intArray[0]}, y = ${intArray[1]}")
+        return intArray
     }
 }
 
