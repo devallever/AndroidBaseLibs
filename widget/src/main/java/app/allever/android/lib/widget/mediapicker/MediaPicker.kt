@@ -3,6 +3,7 @@ package app.allever.android.lib.widget.mediapicker
 import android.content.Context
 import androidx.fragment.app.FragmentManager
 import app.allever.android.lib.core.ext.log
+import app.allever.android.lib.core.ext.toJson
 import app.allever.android.lib.core.function.media.FolderBean
 import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
@@ -100,7 +101,9 @@ object MediaPicker: IMediaPickerEngine {
     suspend fun fetchFolderList(context: Context, typeList: java.util.ArrayList<String>) =
         withContext(Dispatchers.IO) {
             val startTime = System.currentTimeMillis()
-            val mediaFolderList = MediaHelper.getAllFolder(context)
+            val mediaFolderList = MediaHelper.getAllFolder(context) {
+                log("获取全部文件夹进度: ${it.toJson()}")
+            }
             var imageCount = 0
             var videoCount = 0
             var audioCount = 0
@@ -108,9 +111,13 @@ object MediaPicker: IMediaPickerEngine {
             mediaFolderList.map {
                 if (typeList.contains(MediaHelper.TYPE_IMAGE)) {
                     val imageList = if (it.bucketId == null) {
-                        MediaHelper.getImageMedia(context, it.dir)
+                        MediaHelper.getImageMedia(context, it.dir) {
+
+                        }
                     } else {
-                        MediaHelper.getImageMediaBeanFromBucketId(context, it.bucketId, true)
+                        MediaHelper.getImageMediaBeanFromBucketId(context, it.bucketId, true) {
+
+                        }
                     }
                     it.photoCount = imageList.size
                     if (imageList.isNotEmpty()) {
@@ -123,9 +130,13 @@ object MediaPicker: IMediaPickerEngine {
 
                 if (typeList.contains(MediaHelper.TYPE_VIDEO)) {
                     val videoList = if (it.bucketId == null) {
-                        MediaHelper.getVideoMedia(context, it.dir)
+                        MediaHelper.getVideoMedia(context, it.dir) {
+
+                        }
                     } else {
-                        MediaHelper.getVideoMediaBeanFromBucketId(context, it.bucketId)
+                        MediaHelper.getVideoMediaBeanFromBucketId(context, it.bucketId) {
+
+                        }
                     }
                     if (videoList.isNotEmpty()) {
                         it.coverMediaBean = videoList[0]
@@ -138,9 +149,13 @@ object MediaPicker: IMediaPickerEngine {
 
                 if (typeList.contains(MediaHelper.TYPE_AUDIO)) {
                     val audioList = if (it.bucketId == null) {
-                        MediaHelper.getAudioMedia(context, it.dir)
+                        MediaHelper.getAudioMedia(context, it.dir) {
+
+                        }
                     } else {
-                        MediaHelper.getAudioMediaBeanFromBucketId(context, it.bucketId)
+                        MediaHelper.getAudioMediaBeanFromBucketId(context, it.bucketId) {
+
+                        }
                     }
                     it.audioCount = audioList.size
                     audioCount += it.audioCount

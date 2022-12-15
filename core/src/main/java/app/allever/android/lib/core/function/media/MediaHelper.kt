@@ -16,6 +16,7 @@ import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.util.FileUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.math.roundToInt
@@ -173,7 +174,8 @@ object MediaHelper {
     suspend fun getAllFolder(
         context: Context,
         @Type type: String = TYPE_ALL,
-        includeGif: Boolean = false
+        includeGif: Boolean = false,
+        progress:((folderBean: FolderBean) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
 
         val imageFolderList = mutableListOf<FolderBean>()
@@ -315,6 +317,10 @@ object MediaHelper {
 
                         done.add(bucketId)
 
+                        launch(Dispatchers.Main) {
+                            progress?.invoke(imageFolder)
+                        }
+
                         log(TAG, "-----------------------------------------\n\n")
                     } while (cursor.moveToNext())
                 }
@@ -351,7 +357,7 @@ object MediaHelper {
         return@withContext bitmap
     }
 
-    suspend fun getImageMedia(context: Context, path: String, includeGif: Boolean = true) =
+    suspend fun getImageMedia(context: Context, path: String, includeGif: Boolean = true, progress: ((folderBean: MediaBean) -> Unit)? = null) =
         withContext(Dispatchers.IO) {
             val result: MutableList<MediaBean> = mutableListOf()
             val cursor: Cursor? = if (TextUtils.isEmpty(path)) {
@@ -363,14 +369,15 @@ object MediaHelper {
                     arrayOf(path + File.separator + "%")
                 )
             }
-            result.addAll(generateImageResult(cursor, includeGif))
+            result.addAll(generateImageResult(cursor, includeGif, progress))
             result
         }
 
     suspend fun getVideoMedia(
         context: Context,
         path: String,
-        maxDuration: Long = 0
+        maxDuration: Long = 0,
+        progress: ((folderBean: MediaBean) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
         val result: MutableList<MediaBean> = mutableListOf()
         val cursor = if (TextUtils.isEmpty(path)) {
@@ -382,14 +389,15 @@ object MediaHelper {
                 arrayOf(path + File.separator + "%")
             )
         }
-        result.addAll(generateVideoResult(cursor, maxDuration))
+        result.addAll(generateVideoResult(cursor, maxDuration, progress))
         result
     }
 
     suspend fun getAudioMedia(
         context: Context,
         path: String,
-        maxDuration: Long = 0
+        maxDuration: Long = 0,
+        progress: ((folderBean: MediaBean) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
         val result: MutableList<MediaBean> = mutableListOf()
         val cursor = if (TextUtils.isEmpty(path)) {
@@ -401,7 +409,7 @@ object MediaHelper {
                 arrayOf(path + File.separator + "%")
             )
         }
-        result.addAll(generateAudioResult(cursor, maxDuration))
+        result.addAll(generateAudioResult(cursor, maxDuration, progress))
         result
     }
 
@@ -435,7 +443,8 @@ object MediaHelper {
     suspend fun getImageMediaBeanFromBucketId(
         context: Context,
         bucketId: String?,
-        includeGif: Boolean = true
+        includeGif: Boolean = true,
+        progress: ((folderBean: MediaBean) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
         val result: ArrayList<MediaBean> = ArrayList()
         if (TextUtils.isEmpty(bucketId)) {
@@ -446,7 +455,7 @@ object MediaHelper {
             MediaStore.Images.ImageColumns.BUCKET_ID + " = ? ",
             arrayOf(bucketId)
         )
-        result.addAll(generateImageResult(cursor, includeGif))
+        result.addAll(generateImageResult(cursor, includeGif, progress))
         return@withContext result
     }
 
@@ -460,7 +469,8 @@ object MediaHelper {
     suspend fun getVideoMediaBeanFromBucketId(
         context: Context,
         bucketId: String?,
-        maxDuration: Long = 0L
+        maxDuration: Long = 0L,
+        progress: ((folderBean: MediaBean) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
         val result: ArrayList<MediaBean> = ArrayList()
         if (TextUtils.isEmpty(bucketId)) {
@@ -472,7 +482,7 @@ object MediaHelper {
                 MediaStore.Video.VideoColumns.BUCKET_ID + " = ? ",
                 arrayOf(bucketId)
             )
-        result.addAll(generateVideoResult(cursor, maxDuration))
+        result.addAll(generateVideoResult(cursor, maxDuration, progress))
         return@withContext result
     }
 
@@ -486,7 +496,8 @@ object MediaHelper {
     suspend fun getAudioMediaBeanFromBucketId(
         context: Context,
         bucketId: String?,
-        maxDuration: Long = 0L
+        maxDuration: Long = 0L,
+        progress: ((folderBean: MediaBean) -> Unit)? = null
     ) = withContext(Dispatchers.IO) {
         val result: ArrayList<MediaBean> = ArrayList()
         if (TextUtils.isEmpty(bucketId)) {
@@ -498,7 +509,7 @@ object MediaHelper {
                 MediaStore.Audio.AudioColumns.BUCKET_ID + " = ? ",
                 arrayOf(bucketId)
             )
-        result.addAll(generateAudioResult(cursor, maxDuration))
+        result.addAll(generateAudioResult(cursor, maxDuration, progress))
         return@withContext result
     }
 
@@ -547,7 +558,7 @@ object MediaHelper {
         )
     }
 
-    private suspend fun generateImageResult(cursor: Cursor?, includeGif: Boolean) =
+    private suspend fun generateImageResult(cursor: Cursor?, includeGif: Boolean, progress: ((folderBean: MediaBean) -> Unit)? = null) =
         withContext(Dispatchers.IO) {
             val result: MutableList<MediaBean> = mutableListOf()
             if (cursor == null) {
@@ -597,6 +608,11 @@ object MediaHelper {
                             }
                         }
                         result.add(mediaBean)
+
+                        launch(Dispatchers.Main) {
+                            progress?.invoke(mediaBean)
+                        }
+
                     } while (cursor.moveToNext())
                 }
             } catch (e: Exception) {
@@ -608,7 +624,7 @@ object MediaHelper {
             result
         }
 
-    private suspend fun generateVideoResult(cursor: Cursor?, maxDuration: Long = 0L) =
+    private suspend fun generateVideoResult(cursor: Cursor?, maxDuration: Long = 0L, progress: ((folderBean: MediaBean) -> Unit)? = null) =
         withContext(Dispatchers.IO) {
             val result: MutableList<MediaBean> = mutableListOf()
             try {
@@ -657,6 +673,10 @@ object MediaHelper {
                         if (maxDuration <= 0 || time <= maxDuration) {
                             result.add(mediaBean)
                         }
+
+                        launch(Dispatchers.Main) {
+                            progress?.invoke(mediaBean)
+                        }
                     } while (cursor.moveToNext())
                 }
             } catch (e: Exception) {
@@ -668,7 +688,7 @@ object MediaHelper {
             result
         }
 
-    private suspend fun generateAudioResult(cursor: Cursor?, maxDuration: Long = 0L) =
+    private suspend fun generateAudioResult(cursor: Cursor?, maxDuration: Long = 0L, progress: ((folderBean: MediaBean) -> Unit)? = null) =
         withContext(Dispatchers.IO) {
             val result: MutableList<MediaBean> = mutableListOf()
             try {
@@ -730,6 +750,10 @@ object MediaHelper {
                         mediaBean.duration = (time)
                         if (maxDuration <= 0 || time <= maxDuration) {
                             result.add(mediaBean)
+                        }
+
+                        launch(Dispatchers.Main) {
+                            progress?.invoke(mediaBean)
                         }
                     } while (cursor.moveToNext())
                 }
