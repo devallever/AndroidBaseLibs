@@ -7,14 +7,13 @@ import app.allever.android.lib.core.function.imagecompress.ImageCompress
 import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.mediapicker.MediaPickerHelper
 import app.allever.android.lib.mvvm.base.BaseViewModel
-import app.allever.android.lib.mvvm.base.MvvmConfig
 import app.allever.android.lib.project.databinding.ActivityImageCompressBinding
 import app.allever.android.lib.widget.mediapicker.MediaPickerListener
 import kotlinx.coroutines.launch
 
 class ImageCompressActivity : BaseActivity<ActivityImageCompressBinding, ImageCompressViewModel>() {
-    override fun getContentMvvmConfig() =
-        MvvmConfig(R.layout.activity_image_compress, BR.imageCompressVM)
+
+    override fun inflateChildBinding(): ActivityImageCompressBinding = ActivityImageCompressBinding.inflate(layoutInflater)
 
     override fun init() {
         initTopBar("图片压缩")

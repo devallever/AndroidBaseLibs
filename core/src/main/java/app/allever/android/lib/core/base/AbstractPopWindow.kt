@@ -5,18 +5,15 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.animation.LinearInterpolator
 import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import app.allever.android.lib.core.app.App
+import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.core.helper.DisplayHelper
 import razerdp.basepopup.BasePopupFlag
 import razerdp.basepopup.BasePopupWindow
 
-abstract class AbstractPopWindow<DB : ViewDataBinding>(context: Context) :
+abstract class AbstractPopWindow<DB : ViewBinding>(context: Context) :
     BasePopupWindow(context) {
 
     protected var mBinding: DB
@@ -28,8 +25,7 @@ abstract class AbstractPopWindow<DB : ViewDataBinding>(context: Context) :
 
     init {
         mParams = getParams()
-        mBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(App.context), mParams.layoutId, null, false)
+        mBinding = inflateBinding()
         contentView = mBinding.root
         //透明蒙层
         setBackgroundColor(Color.TRANSPARENT)
@@ -112,4 +108,6 @@ abstract class AbstractPopWindow<DB : ViewDataBinding>(context: Context) :
     abstract fun getParams(): Params
 
     abstract fun initView()
+
+    abstract fun inflateBinding(): DB
 }

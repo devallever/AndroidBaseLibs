@@ -10,7 +10,6 @@ import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.RvItemImageVideoBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -20,7 +19,7 @@ import kotlin.math.roundToInt
  * 图片/视频列表的适配器
  */
 class ImageVideoAdapter :
-    BaseQuickAdapter<MediaItem, BaseDataBindingHolder<RvItemImageVideoBinding>>(R.layout.rv_item_image_video) {
+    BaseQuickAdapter<MediaItem, BaseViewHolder>(R.layout.rv_item_image_video) {
 
     companion object {
         private val TAG = ImageVideoAdapter::class.java.simpleName
@@ -36,10 +35,7 @@ class ImageVideoAdapter :
 
     private var mClickListener: ClickListener? = null
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): BaseDataBindingHolder<RvItemImageVideoBinding> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val holder = super.onCreateViewHolder(parent, viewType)
         val itemView = holder.itemView
         val lp = itemView.layoutParams
@@ -66,8 +62,8 @@ class ImageVideoAdapter :
         }
     }
 
-    override fun convert(holder: BaseDataBindingHolder<RvItemImageVideoBinding>, item: MediaItem) {
-        val binding = holder.dataBinding ?: return
+    override fun convert(holder: BaseViewHolder, item: MediaItem) {
+        val binding = RvItemImageVideoBinding.bind(holder.itemView)
         val position = data.indexOf(item)
         if (MediaType.isVideo(item.data.type)) {
             holder.setVisible(R.id.tvDuration, true)

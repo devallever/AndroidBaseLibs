@@ -3,7 +3,6 @@ package app.allever.android.lib.widget.mediapicker.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity
@@ -28,7 +27,8 @@ class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         StatusBarCompat.changeToLightStatusBar(this)
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_media_picker)
+        mBinding = ActivityMediaPickerBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
         mViewModel.initExtra(intent)
         val fragment = FragmentHelper.newInstance(MediaPickerFragment::class.java) {
             putStringArrayList(EXTRA_MEDIA_TYPE_LIST, mViewModel.typeList)
@@ -37,7 +37,7 @@ class MediaPickerActivity : AbstractActivity(), MediaPickerFragment.Callback {
         FragmentHelper.addToContainer(
             supportFragmentManager,
             fragment,
-            mBinding.fragmentContainer.id
+            R.id.fragmentContainer
         )
     }
 

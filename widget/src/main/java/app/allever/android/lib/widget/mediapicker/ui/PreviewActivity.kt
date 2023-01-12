@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
 import app.allever.android.lib.core.base.AbstractActivity
@@ -40,8 +39,8 @@ class PreviewActivity : AbstractActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_preview)
-
+        mBinding = ActivityPreviewBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
         mViewModel.initExtra(intent)
 
         initView()

@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.imageloader.load
 import app.allever.android.lib.core.function.media.MediaType
-import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPreviewBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
 
@@ -26,12 +24,7 @@ class PreviewFragment : AbstractFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.fragment_preview,
-            container,
-            false
-        )
+        mBinding = FragmentPreviewBinding.inflate(layoutInflater)
         initView()
         return mBinding.root
     }

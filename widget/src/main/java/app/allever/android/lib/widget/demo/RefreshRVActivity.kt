@@ -26,7 +26,7 @@ class RefreshRVActivity : AbstractActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.inflate(layoutInflater, R.layout.activity_refresh_recycler_view, null, false)
+        mBinding = ActivityRefreshRecyclerViewBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         initView()
         initBottomNavigationData()

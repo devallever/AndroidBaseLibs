@@ -2,17 +2,19 @@ package app.allever.android.lib.core.base
 
 import android.app.Activity
 import android.content.Context
-import android.view.*
+import android.view.GestureDetector
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.PopupWindow
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.helper.DisplayHelper
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 
-abstract class AbstractPopupWindow<DB : ViewDataBinding>(ctx: Context) : BaseDialog(ctx), IDialog {
+abstract class AbstractPopupWindow<DB : ViewBinding>(ctx: Context) : BaseDialog(ctx), IDialog {
 
     protected var mBinding: DB
     protected var mParams: Params
@@ -31,8 +33,7 @@ abstract class AbstractPopupWindow<DB : ViewDataBinding>(ctx: Context) : BaseDia
     init {
         mParams = getParams()
         mPopupWindow = PopupWindow(mParams.width, mParams.height)
-        mBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(App.context), mParams.layoutId, null, false)
+        mBinding = inflateBinding()
         mPopupWindow.contentView = mBinding.root
         mPopupWindow.elevation = DisplayHelper.dip2px(20).toFloat()
         val gestureDetector =
@@ -144,6 +145,8 @@ abstract class AbstractPopupWindow<DB : ViewDataBinding>(ctx: Context) : BaseDia
     abstract fun getParams(): Params
 
     abstract fun initView()
+
+    abstract fun inflateBinding(): DB
 
     /**
      *

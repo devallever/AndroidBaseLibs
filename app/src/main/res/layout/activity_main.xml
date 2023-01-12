@@ -1,177 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<app.allever.android.lib.widget.ReboundNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-
-    <data>
-        <variable
-            name="mainVM"
-            type="app.allever.android.lib.project.MainViewModel" />
-    </data>
-
-    <app.allever.android.lib.widget.ReboundNestedScrollView
-
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/btnMvp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="MVP"
+            android:textStyle="bold" />
 
 
-            <TextView
-                android:id="@+id/btnMvp"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="MVP"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnMvvm"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="MVVM"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnNetwork"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Network"
+            android:textStyle="bold" />
 
 
-            <TextView
-                android:id="@+id/btnMvvm"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="MVVM"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnDialog"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Dialog"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnNetwork"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Network"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnPermission"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Permission"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/btnCamera"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Camera"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnDialog"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Dialog"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnRefreshRV"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="refreshRV"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnPermission"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Permission"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnImageLoader"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="ImageLoader"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnCamera"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Camera"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnBusinessInterceptor"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="BusinessInterceptor"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnRefreshRV"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="refreshRV"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnBaseActivity"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="btnBaseActivity"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnImageLoader"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="ImageLoader"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnMediaSelector"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="媒体选择器(图片/视频/音频)"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnBusinessInterceptor"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="BusinessInterceptor"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnMediaSelectorImageVideo"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="媒体选择器(图片/视频)"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnBaseActivity"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="btnBaseActivity"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnMediaSelectorImage"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="媒体选择器(图片)"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnMediaSelector"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="媒体选择器(图片/视频/音频)"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnImageCompress"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="图片压缩"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnMediaSelectorImageVideo"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="媒体选择器(图片/视频)"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnLoadMusic"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="加载在线音乐"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnMediaSelectorImage"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="媒体选择器(图片)"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/btnPlayMusic"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="加载并播放在线音乐"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnImageCompress"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="图片压缩"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btnLoadMusic"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="加载在线音乐"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btnPlayMusic"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="加载并播放在线音乐"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+    </LinearLayout>
 
 
-    </app.allever.android.lib.widget.ReboundNestedScrollView>
-
-</layout>
+</app.allever.android.lib.widget.ReboundNestedScrollView>

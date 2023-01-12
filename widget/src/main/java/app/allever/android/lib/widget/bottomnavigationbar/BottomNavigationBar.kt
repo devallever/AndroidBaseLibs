@@ -4,10 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import app.allever.android.lib.core.helper.DisplayHelper
-import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.BottomNavigationBarBinding
 
 class BottomNavigationBar @JvmOverloads constructor(
@@ -94,12 +92,7 @@ class BottomNavigationBar @JvmOverloads constructor(
     }
 
     private fun initView() {
-        mBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.bottom_navigation_bar,
-            this,
-            true
-        )
+        mBinding = BottomNavigationBarBinding.inflate(LayoutInflater.from(context), this, true)
         mAdapter = NavigationBarAdapter(config)
         mBinding.recyclerView.layoutManager = GridLayoutManager(context, config.data.size)
         mBinding.recyclerView.adapter = mAdapter

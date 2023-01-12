@@ -1,9 +1,10 @@
 package app.allever.android.lib.project
 
-import android.view.View
+//import app.allever.android.lib.camerax.demo.CameraActivity
+//import app.allever.android.lib.mvp.demo.MvpActivity
 import androidx.lifecycle.lifecycleScope
-import app.allever.android.lib.camerax.demo.CameraActivity
 import app.allever.android.lib.common.BaseActivity
+import app.allever.android.lib.common.databinding.ActivityBaseBinding
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.ext.toastLong
@@ -16,9 +17,7 @@ import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
 import app.allever.android.lib.core.function.work.*
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.TimeHelper
-import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
-import app.allever.android.lib.mvvm.base.MvvmConfig
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
 import app.allever.android.lib.permission.permissiox.demo.PermissionXActivity
@@ -47,66 +46,68 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         return false
     }
 
-    override fun getContentMvvmConfig(): MvvmConfig  = MvvmConfig(R.layout.activity_main, BR.mainVM)
+    override fun inflateChildBinding() = ActivityMainBinding.inflate(layoutInflater)
+
+    override fun inflate(): ActivityBaseBinding = ActivityBaseBinding.inflate(layoutInflater)
 
     override fun init() {
         initTopBar(getString(R.string.app_name), false)
-        RippleHelper.addRippleView(findViewById(R.id.btnMvvm))
-        RippleHelper.addRippleView(findViewById(R.id.btnMvp))
-        RippleHelper.addRippleView(findViewById(R.id.btnNetwork))
-        RippleHelper.addRippleView(findViewById(R.id.btnDialog))
-        RippleHelper.addRippleView(findViewById(R.id.btnPermission))
-        RippleHelper.addRippleView(findViewById(R.id.btnCamera))
-        RippleHelper.addRippleView(findViewById(R.id.btnRefreshRV))
-        RippleHelper.addRippleView(findViewById(R.id.btnImageLoader))
-        RippleHelper.addRippleView(findViewById(R.id.btnBaseActivity))
-        RippleHelper.addRippleView(findViewById(R.id.btnMediaSelector))
-        RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImageVideo))
-        RippleHelper.addRippleView(findViewById(R.id.btnMediaSelectorImage))
-        RippleHelper.addRippleView(findViewById(R.id.btnImageCompress))
-        RippleHelper.addRippleView(findViewById(R.id.btnLoadMusic))
-        RippleHelper.addRippleView(findViewById(R.id.btnPlayMusic))
+        RippleHelper.addRippleView(binding.btnMvvm)
+        RippleHelper.addRippleView(binding.btnMvp)
+        RippleHelper.addRippleView(binding.btnNetwork)
+        RippleHelper.addRippleView(binding.btnDialog)
+        RippleHelper.addRippleView(binding.btnPermission)
+        RippleHelper.addRippleView(binding.btnCamera)
+        RippleHelper.addRippleView(binding.btnRefreshRV)
+        RippleHelper.addRippleView(binding.btnImageLoader)
+        RippleHelper.addRippleView(binding.btnBaseActivity)
+        RippleHelper.addRippleView(binding.btnMediaSelector)
+        RippleHelper.addRippleView(binding.btnMediaSelectorImageVideo)
+        RippleHelper.addRippleView(binding.btnMediaSelectorImage)
+        RippleHelper.addRippleView(binding.btnImageCompress)
+        RippleHelper.addRippleView(binding.btnLoadMusic)
+        RippleHelper.addRippleView(binding.btnPlayMusic)
 
-        findViewById<View>(R.id.btnMvvm).setOnClickListener {
+        binding.btnMvvm.setOnClickListener {
             ActivityHelper.startActivity(MvvmActivity::class.java)
 //            ActivityHelper.startActivity(CropMainActivity::class.java)
 //            ActivityHelper.startActivity(AndPermissionActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnMvp).setOnClickListener {
-            ActivityHelper.startActivity(MvpActivity::class.java)
+        binding.btnMvp.setOnClickListener {
+//            ActivityHelper.startActivity(MvpActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnNetwork).setOnClickListener {
+        binding.btnNetwork.setOnClickListener {
             ActivityHelper.startActivity(NetworkActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnDialog).setOnClickListener {
+        binding.btnDialog.setOnClickListener {
             ActivityHelper.startActivity(DialogActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnPermission).setOnClickListener {
+        binding.btnPermission.setOnClickListener {
 //            ActivityHelper.startActivity(AndPermissionActivity::class.java)
             ActivityHelper.startActivity(PermissionXActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnCamera).setOnClickListener {
-            ActivityHelper.startActivity(CameraActivity::class.java)
+        binding.btnCamera.setOnClickListener {
+//            ActivityHelper.startActivity(CameraActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnRefreshRV).setOnClickListener {
+        binding.btnRefreshRV.setOnClickListener {
             ActivityHelper.startActivity(RefreshRVActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnImageLoader).setOnClickListener {
+        binding.btnImageLoader.setOnClickListener {
             ActivityHelper.startActivity(ImageLoaderActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnBusinessInterceptor).setOnClickListener {
+        binding.btnBusinessInterceptor.setOnClickListener {
             ActivityHelper.startActivity(BusinessInterceptorActivity::class.java)
         }
 
-        findViewById<View>(R.id.btnBaseActivity).setOnClickListener {
+        binding.btnBaseActivity.setOnClickListener {
             ActivityHelper.startActivity(UserActivity::class.java)
         }
 
@@ -144,7 +145,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        findViewById<View>(R.id.btnMediaSelector).setOnClickListener {
+        binding.btnMediaSelector.setOnClickListener {
             lifecycleScope.launch {
                 val result = MediaPickerHelper.launchPicker(this@MainActivity,
                     MediaPickerHelper.TYPE_IMAGE,
@@ -195,7 +196,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        findViewById<View>(R.id.btnMediaSelectorImageVideo).setOnClickListener {
+        binding.btnMediaSelectorImageVideo.setOnClickListener {
             lifecycleScope.launch {
                 val result = MediaPickerHelper.launchPicker(this@MainActivity,
                     MediaPickerHelper.TYPE_IMAGE,
@@ -207,7 +208,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         }
 
-        findViewById<View>(R.id.btnMediaSelectorImage).setOnClickListener {
+        binding.btnMediaSelectorImage.setOnClickListener {
             lifecycleScope.launch {
                 val result = MediaPickerHelper.launchPicker(this@MainActivity, MediaHelper.TYPE_IMAGE)
                 handleResult(result)
@@ -215,19 +216,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         }
 
-        findViewById<View>(R.id.btnImageCompress).setOnClickListener {
+        binding.btnImageCompress.setOnClickListener {
             ActivityHelper.startActivity<ImageCompressActivity>()
         }
 
         val url = "https://win-web-ri01-sycdn.kuwo.cn/707652b674686c7f7f5540d05f90a886/63747cc0/resource/n1/40/9/760095559.mp3"
-        findViewById<View>(R.id.btnLoadMusic).setOnClickListener {
+        binding.btnLoadMusic.setOnClickListener {
             mMusicPlayer.load(url)
             mMusicPlayer.onPrepareListener = {
                 mMusicPlayer.play()
             }
         }
 
-        findViewById<View>(R.id.btnPlayMusic).setOnClickListener {
+        binding.btnPlayMusic.setOnClickListener {
             mMusicPlayer.load(url, true)
         }
 

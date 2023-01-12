@@ -1,65 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <data>
-        <variable
-            name="imageLoaderViewModel"
-            type="app.allever.android.lib.project.ImageLoaderViewModel" />
-    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv1"
+        style="@style/coil_iv_style" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/iv2"
+        style="@style/coil_iv_style"
+        android:layout_width="160dp"
+        android:layout_gravity="center" />
 
-            <ImageView
-                android:id="@+id/iv1"
-                style="@style/coil_iv_style" />
+    <ImageView
+        android:id="@+id/iv3"
+        style="@style/coil_iv_style"
+        android:layout_margin="5dp" />
 
-            <ImageView
-                android:id="@+id/iv2"
-                style="@style/coil_iv_style"
-                android:layout_width="160dp"
-                android:layout_gravity="center" />
+    <ImageView
+        android:id="@+id/iv4"
+        style="@style/coil_iv_style" />
 
-            <ImageView
-                android:id="@+id/iv3"
-                style="@style/coil_iv_style"
-                android:layout_margin="5dp" />
+    <ImageView
+        android:id="@+id/iv5"
+        style="@style/coil_iv_style"
+        android:layout_width="160dp"
+        android:layout_gravity="center" />
 
-            <ImageView
-                android:id="@+id/iv4"
-                style="@style/coil_iv_style" />
+    <ImageView
+        android:id="@+id/iv6"
+        style="@style/coil_iv_style"
+        android:layout_gravity="center" />
 
-            <ImageView
-                android:id="@+id/iv5"
-                style="@style/coil_iv_style"
-                android:layout_width="160dp"
-                android:layout_gravity="center" />
+    <ImageView
+        android:id="@+id/iv7"
+        style="@style/coil_iv_style"
+        android:layout_width="160dp"
+        android:layout_gravity="center"
+        android:scaleType="centerInside" />
 
-            <ImageView
-                android:id="@+id/iv6"
-                style="@style/coil_iv_style"
-                android:layout_gravity="center" />
-
-            <ImageView
-                android:id="@+id/iv7"
-                style="@style/coil_iv_style"
-                android:layout_width="160dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside" />
-
-            <ImageView
-                android:id="@+id/iv8"
-                style="@style/coil_iv_style" />
+    <ImageView
+        android:id="@+id/iv8"
+        style="@style/coil_iv_style" />
 
 
-        </LinearLayout>
-    </ScrollView>
-
-
-</layout>
+</LinearLayout>
+</ScrollView>

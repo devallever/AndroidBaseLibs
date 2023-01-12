@@ -14,7 +14,6 @@ import android.widget.MediaController
 import android.widget.SeekBar
 import android.widget.VideoView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.DataBindingUtil
 import app.allever.android.lib.core.R
 import app.allever.android.lib.core.databinding.VideoPlayerViewBinding
 import app.allever.android.lib.core.ext.log
@@ -40,12 +39,7 @@ class VideoViewPlayer @JvmOverloads constructor(
     private var mShowTitleBar = false
 
     init {
-        binding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.video_player_view,
-            this,
-            true
-        )
+        binding = VideoPlayerViewBinding.inflate(LayoutInflater.from(context))
 
         initListener()
     }

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -21,7 +20,6 @@ import app.allever.android.lib.core.function.media.MediaBean
 import app.allever.android.lib.core.function.media.MediaHelper
 import app.allever.android.lib.core.function.media.MediaType
 import app.allever.android.lib.core.helper.FragmentHelper
-import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentMediaPickerBinding
 import app.allever.android.lib.widget.fragment.EmptyFragment
 import app.allever.android.lib.widget.mediapicker.MediaItem
@@ -53,12 +51,7 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.fragment_media_picker,
-            container,
-            false
-        )
+        mBinding = FragmentMediaPickerBinding.inflate(layoutInflater)
         mViewModel.initExtra(arguments)
         initView()
         initData()

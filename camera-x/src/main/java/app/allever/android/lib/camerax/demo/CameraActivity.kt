@@ -33,4 +33,6 @@ class CameraActivity : TabActivity<ActivityTabBinding, TabViewModel>() {
         }
     }
 
+    override fun inflateChildBinding() = ActivityTabBinding.inflate(layoutInflater)
+
 }

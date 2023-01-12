@@ -2,18 +2,15 @@ package app.allever.android.lib.project
 
 import app.allever.android.lib.common.BaseActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
-import app.allever.android.lib.mvvm.base.MvvmConfig
 import app.allever.android.lib.project.databinding.ActivityDialogBinding
-import app.allever.android.lib.widget.ripple.RippleHelper
 
 class DialogActivity: BaseActivity<ActivityDialogBinding, DialogViewModel>() {
-    override fun getContentMvvmConfig() = MvvmConfig(R.layout.activity_dialog, BR.dialogVM)
     override fun init() {
         initTopBar("弹窗")
-        RippleHelper.addRippleView(binding.btnBottomDialog)
-        RippleHelper.addRippleView(binding.btnCenterDialog)
-        RippleHelper.addRippleView(binding.btnNotificationPopWindow)
-        RippleHelper.addRippleView(binding.btnAbstractPopupWindow)
+//        RippleHelper.addRippleView(binding.btnBottomDialog)
+//        RippleHelper.addRippleView(binding.btnCenterDialog)
+//        RippleHelper.addRippleView(binding.btnNotificationPopWindow)
+//        RippleHelper.addRippleView(binding.btnAbstractPopupWindow)
         binding.btnBottomDialog.setOnClickListener {
             BottomDialog().show(supportFragmentManager)
         }
@@ -29,6 +26,9 @@ class DialogActivity: BaseActivity<ActivityDialogBinding, DialogViewModel>() {
             NotificationWindow(this).show(window.decorView)
         }
     }
+
+    override fun inflateChildBinding(): ActivityDialogBinding  = ActivityDialogBinding.inflate(layoutInflater)
+
 }
 
 class DialogViewModel : BaseViewModel() {

@@ -1,44 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingDefaultResource">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/id_vp_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000000">
+        android:layout_height="match_parent" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/id_vp_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:background="#66000000"
+        android:visibility="visible">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:background="#66000000"
-            android:visibility="visible">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_back" />
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerVertical="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_back" />
-
-            <ImageView
-                android:id="@+id/iv_select"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginHorizontal="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_album_unselected"
-                android:visibility="visible" />
-
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_select"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_album_unselected"
+            android:visibility="visible" />
 
     </RelativeLayout>
-</layout>
+
+</RelativeLayout>

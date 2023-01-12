@@ -27,6 +27,10 @@ android {
     }
 
     dataBinding {
+        enabled = false
+    }
+
+    viewBinding {
         enabled = true
     }
 
@@ -44,15 +48,16 @@ dependencies {
 
     api project(path: ':core')
     api project(path: ':common')
-    implementation project(path: ':mvp')
-    implementation project(path: ':cropper')
-    implementation project(path: ':permission-andpermission')
-    implementation project(path: ':ad-admob')
-    implementation project(path: ':ad-facebook')
-    implementation project(path: ':ad-amazon')
-    implementation project(path: ':ad-mimo')
-    implementation project(path: ':imagecompress-luban')
-    implementation project(path: ':camera-x')
+        implementation project(path: ':mvvm')
+//    implementation project(path: ':mvp')
+//    implementation project(path: ':cropper')
+//    implementation project(path: ':permission-andpermission')
+//    implementation project(path: ':ad-admob')
+//    implementation project(path: ':ad-facebook')
+//    implementation project(path: ':ad-amazon')
+//    implementation project(path: ':ad-mimo')
+//    implementation project(path: ':imagecompress-luban')
+//    implementation project(path: ':camera-x')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

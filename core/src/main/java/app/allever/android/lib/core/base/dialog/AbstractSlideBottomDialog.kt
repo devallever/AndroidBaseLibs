@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
+import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.core.helper.DisplayHelper
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class AbstractSlideBottomDialog<DB : ViewDataBinding> : BottomSheetDialogFragment() {
+abstract class AbstractSlideBottomDialog<DB : ViewBinding> : BottomSheetDialogFragment() {
 
     protected lateinit var mBinding: DB
 
@@ -29,7 +28,7 @@ abstract class AbstractSlideBottomDialog<DB : ViewDataBinding> : BottomSheetDial
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(layoutInflater, getLayoutId(), null, false)
+        mBinding = inflateBinding()
         return mBinding.root
     }
 
@@ -70,6 +69,6 @@ abstract class AbstractSlideBottomDialog<DB : ViewDataBinding> : BottomSheetDial
      * dialog布局文件中写高度无效，最终都变成match_parent
      */
     protected open fun getDialogHeight(): Int = DisplayHelper.dip2px(350)
-    abstract fun getLayoutId(): Int
+    abstract fun inflateBinding(): DB
     abstract fun initView()
 }

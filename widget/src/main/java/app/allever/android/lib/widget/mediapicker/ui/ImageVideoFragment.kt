@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +15,6 @@ import app.allever.android.lib.core.base.AbstractFragment
 import app.allever.android.lib.core.function.work.PollingTask
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.DisplayHelper
-import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.FragmentPickerListBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
 import app.allever.android.lib.widget.mediapicker.MediaPicker
@@ -50,12 +48,7 @@ class ImageVideoFragment : AbstractFragment(), IMediaPicker, PreviewActivity.Cal
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.fragment_picker_list,
-            container,
-            false
-        )
+        mBinding = FragmentPickerListBinding.inflate(layoutInflater)
         mViewModel.initExtra(arguments)
         initView()
         initData()

@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.core.base.AbstractFragment
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : AbstractFragment() {
+abstract class BaseMvvmFragment<DB : ViewBinding, VM : BaseViewModel> : AbstractFragment() {
 
     private var _binding: DB? = null
     protected val mBinding: DB
@@ -27,12 +26,8 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val mvvmConfig = getMvvmConfig()
-        _binding = DataBindingUtil.inflate(inflater, mvvmConfig.layoutId, container, false)
-        _binding?.lifecycleOwner = this
+        _binding = inflate()
         mViewModel = createVM()
-        _binding?.setVariable(mvvmConfig.bindingVariable, mViewModel)
-
         init()
         mViewModel.init()
         return _binding?.root
@@ -69,6 +64,7 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : BaseViewModel> : Abst
         })[(this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>]
     }
 
-    abstract fun getMvvmConfig(): MvvmConfig
+    abstract fun inflate(): DB
+
     abstract fun init()
 }

@@ -5,15 +5,13 @@ import android.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.common.BaseActivity
 import app.allever.android.lib.core.function.imageloader.*
-import app.allever.android.lib.mvvm.BR
 import app.allever.android.lib.mvvm.base.BaseViewModel
-import app.allever.android.lib.mvvm.base.MvvmConfig
 import app.allever.android.lib.project.databinding.ActivityCoilBinding
 import kotlinx.coroutines.launch
 
 class ImageLoaderActivity : BaseActivity<ActivityCoilBinding, ImageLoaderViewModel>() {
 
-    override fun getContentMvvmConfig() = MvvmConfig(R.layout.activity_coil,BR.imageLoaderViewModel)
+    override fun inflateChildBinding() = ActivityCoilBinding.inflate(layoutInflater)
 
     override fun init() {
         initTopBar("图片加载器")

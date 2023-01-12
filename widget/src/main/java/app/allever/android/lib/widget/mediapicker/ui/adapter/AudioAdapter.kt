@@ -1,6 +1,5 @@
 package app.allever.android.lib.widget.mediapicker.ui.adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
@@ -13,11 +12,10 @@ import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.RvItemAudioBinding
 import app.allever.android.lib.widget.mediapicker.MediaItem
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class AudioAdapter :
-    BaseQuickAdapter<MediaItem, BaseDataBindingHolder<RvItemAudioBinding>>(R.layout.rv_item_audio) {
+    BaseQuickAdapter<MediaItem, BaseViewHolder>(R.layout.rv_item_audio) {
 
     private var mClickListener: ClickListener? = null
     private lateinit var mBinding: RvItemAudioBinding
@@ -91,10 +89,9 @@ class AudioAdapter :
         songPlayer.addOnPlayerListener(onPlayerListener)
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<RvItemAudioBinding>, item: MediaItem) {
+    override fun convert(holder: BaseViewHolder, item: MediaItem) {
         val position = data.indexOf(item)
-        val binding = holder.dataBinding ?: return
+        val binding = RvItemAudioBinding.bind(holder.itemView)
         mBinding = binding
         binding.tvIndex.text = "${(position + 1)}"
         binding.tvTitle.text = item.data.musicTitle
@@ -149,6 +146,7 @@ class AudioAdapter :
             binding.ivCover.clearAnimation()
         }
     }
+
 
     fun setOptionListener(clickListener: ClickListener) {
         mClickListener = clickListener

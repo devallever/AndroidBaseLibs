@@ -7,15 +7,13 @@ import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.widget.R
 import app.allever.android.lib.widget.databinding.RvItemSlectFolderBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class FolderAdapter(private val typeList: List<String>) :
-    BaseQuickAdapter<FolderBean, BaseDataBindingHolder<RvItemSlectFolderBinding>>(R.layout.rv_item_slect_folder) {
-    override fun convert(
-        holder: BaseDataBindingHolder<RvItemSlectFolderBinding>,
-        item: FolderBean
-    ) {
-        val binding = holder.dataBinding ?: return
+    BaseQuickAdapter<FolderBean, BaseViewHolder>(R.layout.rv_item_slect_folder) {
+
+    override fun convert(holder: BaseViewHolder, item: FolderBean) {
+        val binding = RvItemSlectFolderBinding.bind(holder.itemView)
         binding.tvAudioCount.text = item.audioCount.toString()
         binding.tvPhotoCount.text = item.photoCount.toString()
         binding.tvVideoCount.text = item.videoCount.toString()

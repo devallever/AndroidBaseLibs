@@ -5,16 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.common.databinding.ActivityBaseBinding
 import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.mvvm.base.BaseMvvmActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
-import app.allever.android.lib.mvvm.base.MvvmConfig
 
-abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
+abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
     BaseMvvmActivity<ActivityBaseBinding, VM>() {
     protected lateinit var binding: DB
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,15 +30,11 @@ abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
         } else {
             StatusBarCompat.changeToLightStatusBar(this)
         }
-
+        binding = inflateChildBinding()
         super.onCreate(savedInstanceState)
-
-        val contentConfig = getContentMvvmConfig()
-        binding = DataBindingUtil.inflate(layoutInflater, contentConfig.layoutId, null, false)
         parentBinding().contentContainer.addView(binding.root)
-        init()
-        mViewModel.init()
-        mBinding.setVariable(contentConfig.bindingVariable, mViewModel)
+//        init()
+//        mViewModel.init()
         if (enableAdaptStatusBar()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 StatusBarCompat.setStatusBarColor(this, Color.parseColor("#000000"))
@@ -52,11 +46,11 @@ abstract class BaseActivity<DB : ViewDataBinding, VM : BaseViewModel> :
         setVisibility(mBinding.statusBar, showStatusBar())
     }
 
-    override fun getMvvmConfig() = MvvmConfig(R.layout.activity_base, -1)
-
     protected fun parentBinding(): ActivityBaseBinding = mBinding
 
-    abstract fun getContentMvvmConfig(): MvvmConfig
+    override fun inflate(): ActivityBaseBinding  = ActivityBaseBinding.inflate(layoutInflater)
+
+    abstract fun inflateChildBinding(): DB
 
     protected open fun enableAdaptStatusBar(): Boolean = true
 

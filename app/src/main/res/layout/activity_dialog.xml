@@ -1,70 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="dialogVM"
-            type="app.allever.android.lib.project.DialogViewModel" />
-    </data>
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
 
-    <ScrollView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/btnBottomDialog"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="?actionBarSize"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="Bottom Dialog"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/btnCenterDialog"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="Center Dialog"
+        android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnBottomDialog"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Bottom Dialog"
-                android:textStyle="bold" />
+    <TextView
+        android:id="@+id/btnNotificationPopWindow"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="Notification PopWindow"
+        android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnCenterDialog"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Center Dialog"
-                android:textStyle="bold" />
+    <TextView
+        android:id="@+id/btnNotificationPopWindow2"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="Notification PopWindow 2"
+        android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/btnNotificationPopWindow"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Notification PopWindow"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btnNotificationPopWindow2"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="Notification PopWindow 2"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btnAbstractPopupWindow"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="AbstractPopupWindow"
-                android:textStyle="bold" />
+    <TextView
+        android:id="@+id/btnAbstractPopupWindow"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="AbstractPopupWindow"
+        android:textStyle="bold" />
 
 
-        </LinearLayout>
-    </ScrollView>
-</layout>
+</LinearLayout>
+</ScrollView>

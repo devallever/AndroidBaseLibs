@@ -1,119 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:scaleType="centerCrop"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/tv_album_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@id/iv_image"
+        android:layout_toRightOf="@id/iv_image"
+        android:singleLine="true"
+        android:text="全部"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        tools:ignore="RtlHardcoded" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp">
-
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:scaleType="centerCrop"
-            tools:ignore="RtlHardcoded" />
-
-        <TextView
-            android:id="@+id/tv_album_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="12dp"
-            android:layout_toEndOf="@id/iv_image"
-            android:layout_toRightOf="@id/iv_image"
-            android:singleLine="true"
-            android:text="全部"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            tools:ignore="RtlHardcoded" />
+        android:layout_height="24dp"
+        android:layout_below="@+id/tv_album_name"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toEndOf="@id/iv_image"
+        android:layout_toRightOf="@id/iv_image"
+        android:orientation="horizontal"
+        tools:ignore="RtlHardcoded">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_below="@+id/tv_album_name"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_toEndOf="@id/iv_image"
-            android:layout_toRightOf="@id/iv_image"
-            android:orientation="horizontal"
-            tools:ignore="RtlHardcoded">
+            android:id="@+id/videoContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left">
 
-            <LinearLayout
-                android:id="@+id/videoContainer"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left">
+            <ImageView
+                android:id="@+id/iv_video"
+                style="@style/item_select_album_iv_count_style"
+                android:src="@drawable/ic_album_video_flag"
+                android:tint="#000000"
+                android:visibility="visible" />
 
-                <ImageView
-                    android:id="@+id/iv_video"
-                    style="@style/item_select_album_iv_count_style"
-                    android:src="@drawable/ic_album_video_flag"
-                    android:tint="#000000"
-                    android:visibility="visible" />
+            <TextView
+                android:id="@+id/tv_video_count"
+                style="@style/item_select_album_tv_count_style"
+                tools:ignore="RtlHardcoded" />
 
-                <TextView
-                    android:id="@+id/tv_video_count"
-                    style="@style/item_select_album_tv_count_style"
-                    tools:ignore="RtlHardcoded" />
+        </LinearLayout>
 
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/imageContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left">
 
-            <LinearLayout
-                android:id="@+id/imageContainer"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left">
+            <ImageView
+                android:id="@+id/iv_photo"
+                style="@style/item_select_album_iv_count_style"
+                android:src="@drawable/ic_album_image_flag"
+                android:tint="#000000" />
 
-                <ImageView
-                    android:id="@+id/iv_photo"
-                    style="@style/item_select_album_iv_count_style"
-                    android:src="@drawable/ic_album_image_flag"
-                    android:tint="#000000" />
+            <TextView
+                android:id="@+id/tv_photo_count"
+                style="@style/item_select_album_tv_count_style"
+                tools:ignore="RtlHardcoded" />
 
-                <TextView
-                    android:id="@+id/tv_photo_count"
-                    style="@style/item_select_album_tv_count_style"
-                    tools:ignore="RtlHardcoded" />
+        </LinearLayout>
 
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/audioContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left">
 
-            <LinearLayout
-                android:id="@+id/audioContainer"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left">
+            <ImageView
+                android:id="@+id/iv_audio"
+                style="@style/item_select_album_iv_count_style"
+                android:src="@drawable/ic_album_audio_flag"
+                android:tint="#000000"
+                tools:ignore="RtlHardcoded" />
 
-                <ImageView
-                    android:id="@+id/iv_audio"
-                    style="@style/item_select_album_iv_count_style"
-                    android:src="@drawable/ic_album_audio_flag"
-                    android:tint="#000000"
-                    tools:ignore="RtlHardcoded" />
+            <TextView
+                android:id="@+id/tv_audio_count"
+                style="@style/item_select_album_tv_count_style"
+                tools:ignore="RtlHardcoded" />
 
-                <TextView
-                    android:id="@+id/tv_audio_count"
-                    style="@style/item_select_album_tv_count_style"
-                    tools:ignore="RtlHardcoded" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
         </LinearLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:background="#19474747" />
-    </RelativeLayout>
-</layout>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="#19474747" />
+</RelativeLayout>

@@ -15,6 +15,6 @@ object FragmentHelper {
     }
 
     fun addToContainer(fragmentManager: FragmentManager, fragment: Fragment, containerId: Int) {
-        fragmentManager.beginTransaction().add(containerId, fragment).commit()
+        fragmentManager.beginTransaction().replace(containerId, fragment).commit()
     }
 }
