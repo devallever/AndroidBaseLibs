@@ -1,61 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<layout>
-
-    <data>
-
-        <variable
-            name="camera2ViewModel"
-            type="app.allever.android.lib.camerax.demo.Camera2ViewModel" />
-
-    </data>
-
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <app.allever.android.lib.core.function.camera.AutoFitSurfaceView
+        android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <app.allever.android.lib.core.function.camera.AutoFitSurfaceView
-            android:id="@+id/surfaceView"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentBottom="true">
-
-            <LinearLayout
+            <Button
+                android:id="@+id/btnOpenCamera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="打开相机" />
 
-                <Button
-                    android:id="@+id/btnOpenCamera"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="打开相机" />
+            <Button
+                android:id="@+id/btnOpenFrontCamera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="打开前置相机" />
 
-                <Button
-                    android:id="@+id/btnOpenFrontCamera"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="打开前置相机" />
+            <Button
+                android:id="@+id/btnCloseCamera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="关闭相机" />
 
-                <Button
-                    android:id="@+id/btnCloseCamera"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="关闭相机" />
-
-                <Button
-                    android:id="@+id/btnTackPicture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="拍照" />
-            </LinearLayout>
-        </ScrollView>
+            <Button
+                android:id="@+id/btnTackPicture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="拍照" />
+        </LinearLayout>
+    </ScrollView>
 
 
-    </RelativeLayout>
-</layout>
+</RelativeLayout>
+

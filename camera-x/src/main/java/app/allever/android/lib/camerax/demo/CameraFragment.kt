@@ -1,19 +1,17 @@
 package app.allever.android.lib.camerax.demo
 
 import android.graphics.Bitmap
-import app.allever.android.lib.camerax.BR
-import app.allever.android.lib.camerax.R
 import app.allever.android.lib.camerax.databinding.FragmentCameraBinding
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.function.camera.CameraListener
 import app.allever.android.lib.core.function.camera.CameraManager
 import app.allever.android.lib.mvvm.base.BaseMvvmFragment
 import app.allever.android.lib.mvvm.base.BaseViewModel
-import app.allever.android.lib.mvvm.base.MvvmConfig
 import java.io.File
 
 class CameraFragment : BaseMvvmFragment<FragmentCameraBinding, CameraViewModel>() {
-    override fun getMvvmConfig() = MvvmConfig(R.layout.fragment_camera, BR.cameraViewModel)
+
+    override fun inflate() = FragmentCameraBinding.inflate(layoutInflater)
 
     override fun init() {
         CameraManager.setCameraListener(object : CameraListener {

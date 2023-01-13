@@ -1,8 +1,7 @@
 package app.allever.android.lib.project
 
-//import app.allever.android.lib.camerax.demo.CameraActivity
-//import app.allever.android.lib.mvp.demo.MvpActivity
 import androidx.lifecycle.lifecycleScope
+import app.allever.android.lib.camerax.demo.CameraActivity
 import app.allever.android.lib.common.BaseActivity
 import app.allever.android.lib.common.databinding.ActivityBaseBinding
 import app.allever.android.lib.core.ext.log
@@ -17,6 +16,7 @@ import app.allever.android.lib.core.function.mediapicker.MediaPickerResult
 import app.allever.android.lib.core.function.work.*
 import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.TimeHelper
+import app.allever.android.lib.mvp.demo.MvpActivity
 import app.allever.android.lib.mvvm.base.BaseViewModel
 import app.allever.android.lib.mvvm.demo.MvvmActivity
 import app.allever.android.lib.network.demo.NetworkActivity
@@ -75,7 +75,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         binding.btnMvp.setOnClickListener {
-//            ActivityHelper.startActivity(MvpActivity::class.java)
+            ActivityHelper.startActivity(MvpActivity::class.java)
         }
 
         binding.btnNetwork.setOnClickListener {
@@ -92,7 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         binding.btnCamera.setOnClickListener {
-//            ActivityHelper.startActivity(CameraActivity::class.java)
+            ActivityHelper.startActivity(CameraActivity::class.java)
         }
 
         binding.btnRefreshRV.setOnClickListener {
