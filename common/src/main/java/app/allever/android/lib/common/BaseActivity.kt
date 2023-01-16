@@ -33,8 +33,6 @@ abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
         binding = inflateChildBinding()
         super.onCreate(savedInstanceState)
         parentBinding().contentContainer.addView(binding.root)
-//        init()
-//        mViewModel.init()
         if (enableAdaptStatusBar()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 StatusBarCompat.setStatusBarColor(this, Color.parseColor("#000000"))

@@ -1,12 +1,9 @@
 package app.allever.android.lib.widget.recycler.binding
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import app.allever.android.lib.core.app.App
+import androidx.viewbinding.ViewBinding
 
 
 /***
@@ -14,7 +11,7 @@ import app.allever.android.lib.core.app.App
  * https://blog.csdn.net/qq_35605213/article/details/80176558
  * @param <T>
 </T> */
-abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
+abstract class BasePagingBindingAdapter<T : Any, DB : ViewBinding>(
     val mLayoutResId: Int,
     diffCallback: DiffUtil.ItemCallback<T>
 ) :
@@ -23,12 +20,7 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
     var itemLongClickListener: ((Int, BaseBindingViewHolder<DB>) -> Boolean)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<DB> {
-        val binding = DataBindingUtil.inflate<DB>(
-            LayoutInflater.from(App.context),
-            mLayoutResId,
-            parent,
-            false
-        )
+        val binding = inflate()
         return BaseBindingViewHolder(binding)
     }
 
@@ -41,7 +33,6 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
         }
         getItem(position)?.let { convert(holder, position, it) }
     }
-
 
 //    fun updateData(position: Int) {
 //        notifyItemChanged(position, position)
@@ -83,4 +74,5 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewDataBinding>(
      * @param position
      */
     abstract fun convert(holder: BaseBindingViewHolder<DB>, position: Int, item: T)
+    abstract fun inflate(): DB
 }
