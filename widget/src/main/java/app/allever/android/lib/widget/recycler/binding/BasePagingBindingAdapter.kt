@@ -20,7 +20,7 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewBinding>(
     var itemLongClickListener: ((Int, BaseBindingViewHolder<DB>) -> Boolean)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<DB> {
-        val binding = inflate()
+        val binding = inflate(parent)
         return BaseBindingViewHolder(binding)
     }
 
@@ -74,5 +74,5 @@ abstract class BasePagingBindingAdapter<T : Any, DB : ViewBinding>(
      * @param position
      */
     abstract fun convert(holder: BaseBindingViewHolder<DB>, position: Int, item: T)
-    abstract fun inflate(): DB
+    abstract fun inflate(parent: ViewGroup? = null): DB
 }
