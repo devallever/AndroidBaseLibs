@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import app.allever.android.lib.widget.databinding.FragmentEmptyBinding
 
-class EmptyFragment(val content: String = "") : Fragment() {
+open class EmptyFragment(val content: String = "") : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

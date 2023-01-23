@@ -58,6 +58,14 @@ ext {
 
     //Paging
     paging3  = "androidx.paging:paging-runtime:3.1.1"
+
+    //Navigation
+    nav_version = "2.5.3"
+    //Navigation -  Kotlin
+    navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    navigationUIKtx = "androidx.navigation:navigation-ui-ktx:$nav_version"
+    //Navigation -  Feature module Support
+    navigationFeatures = "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 //Android-------------------------------------------------------------------------------------------
 
 
@@ -212,6 +220,10 @@ ext {
 
     //鲁班图片压缩
     luban = "top.zibin:Luban:1.1.8"
+
+    blurView =  "com.github.Dimezis:BlurView:version-2.0.2"
+
+    shapeBlurView = "com.github.centerzx:ShapeBlurView:1.0.5"
 //Other---------------------------------------------------------------------------------------------
 }
 
