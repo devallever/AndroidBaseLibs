@@ -1,9 +1,13 @@
 package app.allever.android.lib.core.helper
 
+import android.app.Notification
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.NonNull
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import app.allever.android.lib.core.app.App
 
@@ -14,6 +18,22 @@ object NotificationHelper {
 
     val manager = notificationManagerCompat
 
+
+    fun notify(id: Int, @NonNull notification: Notification) {
+        manager.notify(id, notification)
+    }
+
+    fun notify(
+        context: Context,
+        channel: String,
+        notificationId: Int,
+        block: (builder: NotificationCompat.Builder) -> Unit
+    ) {
+        val builder = NotificationCompat.Builder(context, channel)
+        block.invoke(builder)
+        val notification = builder.build()
+        manager.notify(notificationId, notification)
+    }
 
     fun jumpSetting() {
         try {
