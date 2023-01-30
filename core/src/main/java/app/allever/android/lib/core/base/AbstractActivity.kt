@@ -36,15 +36,19 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
     override fun onCreate(savedInstanceState: Bundle?) {
         // 「必须在 Application 的 onCreate 方法中执行 BGASwipeBackHelper.init 来初始化滑动返回」
         // 在 super.onCreate(savedInstanceState) 之前调用该方法
-        initSwipeBackFinish();
+        if (enableEnterAnim()){
+            initSwipeBackFinish()
+        }
         super.onCreate(savedInstanceState)
         log(this.javaClass.simpleName)
         mWeakRefActivity = WeakReference(this)
         ActivityHelper.add(mWeakRefActivity)
 
 
-        //打开动画
-        overridePendingTransition(R.anim.open_begin, R.anim.open_end)
+        if (enableEnterAnim()) {
+            //打开动画
+            overridePendingTransition(R.anim.open_begin, R.anim.open_end)
+        }
     }
 
     /**
@@ -129,6 +133,10 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
     }
 
     override fun onBackPressed() {
+        if (!enableExitAnim()) {
+            super.onBackPressed()
+            return
+        }
         // 正在滑动返回的时候取消返回按钮事件
         if (mSwipeBackHelper.isSliding) {
             return
@@ -165,5 +173,13 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    protected open fun enableEnterAnim(): Boolean {
+        return true
+    }
+
+    protected open fun enableExitAnim(): Boolean {
+        return true
     }
 }

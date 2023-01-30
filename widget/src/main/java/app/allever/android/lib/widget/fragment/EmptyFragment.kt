@@ -14,7 +14,9 @@ open class EmptyFragment(val content: String = "") : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentEmptyBinding.inflate(layoutInflater)
-        binding.tvText.text = content
+        binding.tvText.text = content.ifEmpty {
+            "EmptyFragment"
+        }
         return binding.root
     }
 }

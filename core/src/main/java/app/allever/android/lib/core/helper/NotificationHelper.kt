@@ -26,7 +26,7 @@ object NotificationHelper {
     fun notify(
         context: Context,
         channel: String,
-        notificationId: Int,
+        notificationId: Int = System.currentTimeMillis().toInt(),
         block: (builder: NotificationCompat.Builder) -> Unit
     ) {
         val builder = NotificationCompat.Builder(context, channel)

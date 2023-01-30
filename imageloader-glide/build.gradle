@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -36,4 +37,5 @@ dependencies {
 
     api glide
     api glideTransformations
+    kapt 'com.github.bumptech.glide:compiler:4.13.0'
 }
