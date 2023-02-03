@@ -4,16 +4,20 @@ import androidx.appcompat.app.AlertDialog
 import app.allever.android.lib.core.function.businessinterceptor.BaseInterceptor
 import app.allever.android.lib.core.function.businessinterceptor.InterceptChain
 import app.allever.android.lib.core.function.datastore.DataStore
+import app.allever.android.lib.core.helper.CoroutineHelper
+import kotlinx.coroutines.launch
 
 class ThirdInterceptor : BaseInterceptor() {
-    private var hasRedPocketMoney = DataStore.getBoolean("hasRedPocketMoney", false)
+    private var hasRedPocketMoney = false
     override fun intercept(chain: InterceptChain) {
         super.intercept(chain)
-
-        if (!hasRedPocketMoney) {
-            doSomeThing(chain)
-        } else {
-            chain.process()
+        CoroutineHelper.MAIN.launch {
+            hasRedPocketMoney = DataStore.getBoolean("hasRedPocketMoney", false)
+            if (!hasRedPocketMoney) {
+                doSomeThing(chain)
+            } else {
+                chain.process()
+            }
         }
     }
 
@@ -23,9 +27,11 @@ class ThirdInterceptor : BaseInterceptor() {
                 .setTitle("领取红包")
                 .setCancelable(true)
                 .setPositiveButton("领取") { dialog, _ ->
-                    DataStore.putBoolean("hasRedPocketMoney", true)
-                    dialog.dismiss()
-                    chain.process()
+                    CoroutineHelper.MAIN.launch {
+                        DataStore.putBoolean("hasRedPocketMoney", true)
+                        dialog.dismiss()
+                        chain.process()
+                    }
                 }
                 .setOnDismissListener {
                     chain.process()
