@@ -1,6 +1,7 @@
 package app.allever.android.lib.mvvm.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.core.base.AbstractFragment
+import app.allever.android.lib.core.ext.log
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseMvvmFragment<DB : ViewBinding, VM : BaseViewModel> : AbstractFragment() {
@@ -26,7 +28,11 @@ abstract class BaseMvvmFragment<DB : ViewBinding, VM : BaseViewModel> : Abstract
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val start = System.currentTimeMillis()
         _binding = inflate()
+        val end = System.currentTimeMillis()
+        val duration = end - start
+        log("页面加载时长：${this::class.java.simpleName} -> $duration ms")
         mViewModel = createVM()
         init()
         mViewModel.init()

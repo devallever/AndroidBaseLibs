@@ -51,6 +51,22 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
         }
     }
 
+//    override fun setContentView(view: View?) {
+//        val start = System.currentTimeMillis()
+//        super.setContentView(view)
+//        val end = System.currentTimeMillis()
+//        val duration = end - start
+//        log("页面加载时长：${this::class.java.simpleName} -> $duration ms")
+//    }
+//
+//    override fun setContentView(layoutResID: Int) {
+//        val start = System.currentTimeMillis()
+//        super.setContentView(layoutResID)
+//        val end = System.currentTimeMillis()
+//        val duration = end - start
+//        log("页面加载时长：${this::class.java.simpleName} -> $duration ms")
+//    }
+
     /**
      * 初始化滑动返回。在 super.onCreate(savedInstanceState) 之前调用该方法
      */

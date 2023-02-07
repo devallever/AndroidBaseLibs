@@ -35,6 +35,9 @@ ext {
     androidXActivityKtx = "androidx.activity:activity-ktx:1.4.0"
     androidXFragmentKtx = "androidx.fragment:fragment-ktx:1.4.0"
 
+    //AsyncLayoutInflater
+    androidXAsyncLayoutInflater = "androidx.asynclayoutinflater:asynclayoutinflater:1.0.0"
+
     androidXConstraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
     androidXCoordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     androidXRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
@@ -66,6 +69,15 @@ ext {
     navigationUIKtx = "androidx.navigation:navigation-ui-ktx:$nav_version"
     //Navigation -  Feature module Support
     navigationFeatures = "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    //DataStore
+    dataStoreCore = "androidx.datastore:datastore-core:1.0.0"
+    dataStore = "androidx.datastore:datastore:1.0.0"
+
+    //Room
+    room = "androidx.room:room-runtime:2.4.3"
+    roomKtx = "androidx.room:room-ktx:2.4.3"
+    roomCompiler = "androidx.room:room-compiler:2.4.3"
 //Android-------------------------------------------------------------------------------------------
 
 
