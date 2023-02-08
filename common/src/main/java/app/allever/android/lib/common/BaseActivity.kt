@@ -52,8 +52,6 @@ abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
 
     protected open fun enableAdaptStatusBar(): Boolean = true
 
-    protected open fun showTopBar(): Boolean = true
-
     protected open fun showStatusBar(): Boolean = true
 
     protected open fun initTopBar(title: String?, showBackIcon: Boolean = true, leftClickListener: Runnable? = null) {
@@ -78,15 +76,6 @@ abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
         ViewHelper.adaptStatusBarView(statusBarView, statusBarColor)
     }
 
-    /**
-     * true: 黑夜模式，白色字体
-     * false：白光模式，黑色字体
-     *
-     * @return isDarkMode
-     */
-    protected open fun isDarkMode(): Boolean {
-        return false
-    }
 
     protected open fun enableEventBus(): Boolean {
         return false

@@ -13,6 +13,7 @@ import app.allever.android.lib.core.helper.ActivityHelper
 import app.allever.android.lib.core.helper.CoroutineHelper
 import app.allever.android.lib.core.helper.HandlerHelper
 import app.allever.android.lib.core.helper.LifecycleHelper
+import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.core.widget.swipebacklayout.BGAKeyboardUtil
 import app.allever.android.lib.core.widget.swipebacklayout.BGASwipeBackHelper
 import java.lang.ref.WeakReference
@@ -39,6 +40,20 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
         if (enableEnterAnim()){
             initSwipeBackFinish()
         }
+
+        if (isFullScreen()) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+            StatusBarCompat.translucentStatusBar(this, true)
+        }
+
+        //状态栏颜色
+        if (isDarkMode()) {
+            StatusBarCompat.cancelLightStatusBar(this)
+        } else {
+            StatusBarCompat.changeToLightStatusBar(this)
+        }
+
         super.onCreate(savedInstanceState)
         log(this.javaClass.simpleName)
         mWeakRefActivity = WeakReference(this)
@@ -198,4 +213,21 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
     protected open fun enableExitAnim(): Boolean {
         return true
     }
+
+    protected open fun showTopBar(): Boolean = true
+
+    /**
+     * true: 黑夜模式，白色字体
+     * false：白光模式，黑色字体
+     *
+     * @return isDarkMode
+     */
+    protected open fun isDarkMode(): Boolean {
+        return false
+    }
+
+    /**
+     * 是否全屏
+     */
+    protected open fun isFullScreen(): Boolean = true
 }
