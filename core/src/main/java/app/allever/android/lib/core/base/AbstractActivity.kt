@@ -9,10 +9,7 @@ import app.allever.android.lib.core.R
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
-import app.allever.android.lib.core.helper.ActivityHelper
-import app.allever.android.lib.core.helper.CoroutineHelper
-import app.allever.android.lib.core.helper.HandlerHelper
-import app.allever.android.lib.core.helper.LifecycleHelper
+import app.allever.android.lib.core.helper.*
 import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.core.widget.swipebacklayout.BGAKeyboardUtil
 import app.allever.android.lib.core.widget.swipebacklayout.BGASwipeBackHelper
@@ -230,4 +227,11 @@ abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delega
      * 是否全屏
      */
     protected open fun isFullScreen(): Boolean = true
+
+    /**
+     * 适配状态栏
+     */
+    protected fun adaptStatusBar(view: View) {
+        ViewHelper.setMarginTop(view, DisplayHelper.getStatusBarHeight(this))
+    }
 }
