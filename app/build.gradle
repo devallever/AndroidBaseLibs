@@ -58,6 +58,10 @@ dependencies {
     implementation project(path: ':ad-mimo')
     implementation project(path: ':imagecompress-luban')
     implementation project(path: ':camera-x')
+    implementation project(path: ':login-google')
+    implementation project(path: ':login-facebook')
+    implementation project(path: ':login-instagram')
+    implementation project(path: ':login-wechat')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

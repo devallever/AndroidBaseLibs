@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="app.allever.android.lib.login.wechat">
+
+    <application>
+
+
+        <!-- 微信分享 -->
+        <activity
+            android:name="app.allever.android.lib.login.wechat.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <!-- 编写别名 -->
+        <activity-alias
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:targetActivity="app.allever.android.lib.login.wechat.wxapi.WXEntryActivity" />
+    </application>
+</manifest>
