@@ -34,7 +34,20 @@ interface ICameraProxy {
 
     fun setLifeCycleOwner(lifecycleOwner: LifecycleOwner)
 
+    /**
+     * 拍照
+     */
     fun takePicture()
+
+    /**
+     * 开始录制视频
+     */
+    fun startRecordVideo()
+
+    /**
+     * 停止录制视频
+     */
+    fun stopRecordVideo()
 
     /**
      * 设置监听

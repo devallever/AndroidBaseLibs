@@ -1,13 +1,17 @@
 package app.allever.android.lib.camerax.demo
 
 import android.graphics.Bitmap
+import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.camerax.databinding.FragmentCameraXBinding
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
 import app.allever.android.lib.core.function.camera.CameraListener
 import app.allever.android.lib.core.function.camera.CameraManager
+import app.allever.android.lib.core.function.imageloader.load
 import app.allever.android.lib.mvvm.base.BaseMvvmFragment
 import app.allever.android.lib.mvvm.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
 class CameraXFragment : BaseMvvmFragment<FragmentCameraXBinding, CameraXViewModel>() {
@@ -45,19 +49,24 @@ class CameraXFragment : BaseMvvmFragment<FragmentCameraXBinding, CameraXViewMode
             }
 
             override fun onTakePicture(data: ByteArray?, bitmap: Bitmap?, imageFormat: Int) {
-                val path =
-                    requireActivity().externalCacheDir?.absolutePath + File.separator + System.currentTimeMillis() + ".jpg"
-                val result = CameraManager.saveBitmap2File(
-                    bitmap,
-                    path
-                )
-                val msg = if (result) {
-                    "保存成功：$path"
-                } else {
-                    "保存失败"
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val path =
+                        requireActivity().externalCacheDir?.absolutePath + File.separator + System.currentTimeMillis() + ".jpg"
+                    val result = CameraManager.saveBitmap2File(
+                        bitmap,
+                        path
+                    )
+                    val msg = if (result) {
+                        "保存成功：$path"
+                    } else {
+                        "保存失败"
+                    }
+                    toast(msg)
+                    log(msg)
+                    launch(Dispatchers.Main) {
+                        mBinding.ivPreviewPic.load(path)
+                    }
                 }
-                toast(msg)
-                log(msg)
             }
         })
     }

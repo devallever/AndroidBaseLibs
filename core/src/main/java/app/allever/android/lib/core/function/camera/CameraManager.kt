@@ -44,6 +44,14 @@ object CameraManager : ICameraProxy {
         cameraProxy?.takePicture()
     }
 
+    override fun startRecordVideo() {
+        cameraProxy?.startRecordVideo()
+    }
+
+    override fun stopRecordVideo() {
+        cameraProxy?.stopRecordVideo()
+    }
+
     override fun setCameraListener(listener: CameraListener?) {
         cameraProxy?.setCameraListener(listener)
     }

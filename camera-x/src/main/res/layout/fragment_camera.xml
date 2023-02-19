@@ -1,48 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <app.allever.android.lib.core.function.camera.CameraSurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/ivPreviewPic"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/black" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btnOpenCamera"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/pictureFun"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="打开相机" />
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/btnOpenFrontCamera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="打开前置相机" />
+                <Button
+                    android:id="@+id/btnOpenCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="打开相机" />
 
-            <Button
-                android:id="@+id/btnCloseCamera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="关闭相机" />
+                <Button
+                    android:id="@+id/btnOpenFrontCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="打开前置相机" />
 
-            <Button
-                android:id="@+id/btnTackPicture"
-                android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnCloseCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="关闭相机" />
+
+                <Button
+                    android:id="@+id/btnTackPicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="拍照" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/videoFun"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="拍照" />
-        </LinearLayout>
+                android:orientation="vertical"
+                app:layout_constraintLeft_toRightOf="@+id/pictureFun"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btnStartRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="开始录制视频" />
+
+                <Button
+                    android:id="@+id/btnStopRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="停止录制视频" />
+
+                <Button
+                    android:id="@+id/btnPlayVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="播放录制视频" />
+
+                <Button
+                    android:id="@+id/btnStopVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="停止播放录制视频" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 

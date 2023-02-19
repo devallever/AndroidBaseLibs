@@ -207,6 +207,14 @@ class Camera2ProxyImpl : ICameraProxy {
 
     }
 
+    override fun startRecordVideo() {
+
+    }
+
+    override fun stopRecordVideo() {
+
+    }
+
     override fun setCameraListener(listener: CameraListener?) {
         mListener = listener
     }

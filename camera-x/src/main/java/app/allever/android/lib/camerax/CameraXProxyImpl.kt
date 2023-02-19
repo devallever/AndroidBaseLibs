@@ -9,7 +9,10 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import app.allever.android.lib.core.ext.log
-import app.allever.android.lib.core.function.camera.*
+import app.allever.android.lib.core.function.camera.CameraFacing
+import app.allever.android.lib.core.function.camera.CameraListener
+import app.allever.android.lib.core.function.camera.ICameraProxy
+import app.allever.android.lib.core.function.camera.Size
 import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
 import java.lang.ref.WeakReference
@@ -85,9 +88,9 @@ class CameraXProxyImpl : ICameraProxy {
                 CameraFacing.FACE_BACK -> 90f
                 else -> 270f
             }
-            val rotateBitmap = CameraManager.getRotateBitmap(bitmap, degree)
+//            val rotateBitmap = CameraManager.getRotateBitmap(bitmap, degree)
             photoFile.delete()
-            mCameraListener?.onTakePicture(null, rotateBitmap, 0)
+            mCameraListener?.onTakePicture(null, bitmap, 0)
         }
 
         override fun onError(exception: ImageCaptureException) {
@@ -154,6 +157,14 @@ class CameraXProxyImpl : ICameraProxy {
             .setMetadata(metadata)
             .build()
         mImageCapture.takePicture(outputOptions, mExecutor, mCaptureCallback)
+    }
+
+    override fun startRecordVideo() {
+
+    }
+
+    override fun stopRecordVideo() {
+
     }
 
     override fun setCameraListener(listener: CameraListener?) {

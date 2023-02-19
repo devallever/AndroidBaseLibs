@@ -197,6 +197,14 @@ class CameraProxyImpl : ICameraProxy {
         mCamera?.takePicture(null, null, mPictureCallback)
     }
 
+    override fun startRecordVideo() {
+
+    }
+
+    override fun stopRecordVideo() {
+
+    }
+
     override fun setCameraListener(listener: CameraListener?) {
         mListener = listener
     }
