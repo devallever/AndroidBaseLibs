@@ -42,6 +42,7 @@ class CameraXProxyImpl : ICameraProxy {
     private var mDisplayId = -1
 
     private val mImageAnalysisCallback = ImageAnalysis.Analyzer { image ->
+        log("analyze: ")
         mCameraListener?.onPreview(ByteArray(0), image.format)
         image.close()
     }

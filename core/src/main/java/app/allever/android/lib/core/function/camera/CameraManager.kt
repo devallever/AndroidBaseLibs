@@ -1,6 +1,5 @@
 package app.allever.android.lib.core.function.camera
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
@@ -9,15 +8,9 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import java.io.*
 
-@SuppressLint("StaticFieldLeak")
 object CameraManager : ICameraProxy {
 
     private var cameraProxy: ICameraProxy? = null
-    lateinit var context: Context
-
-    fun init(context: Context) {
-        this.context = context.applicationContext
-    }
 
     fun injectProxy(cameraProxy: ICameraProxy) {
         this.cameraProxy = cameraProxy

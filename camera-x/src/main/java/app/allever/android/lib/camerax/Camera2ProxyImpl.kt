@@ -225,7 +225,7 @@ class Camera2ProxyImpl : ICameraProxy {
 
     private suspend fun openCameraInternal(): CameraDevice = suspendCoroutine {
         if (ActivityCompat.checkSelfPermission(
-                CameraManager.context,
+                App.context,
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
