@@ -12,6 +12,7 @@ abstract class TabActivity<DB, VM> : BaseActivity<ActivityTabBinding, TabViewMod
     abstract fun getTabTitles(): MutableList<String>
     abstract fun getFragments(): MutableList<Fragment>
     open fun onPageChanged(position: Int) {}
+    override fun inflateChildBinding() = ActivityTabBinding.inflate(layoutInflater)
     override fun init() {
         initTopBar(getPageTitle())
         binding.viewPager.adapter = Pager2Adapter(this, getFragments())

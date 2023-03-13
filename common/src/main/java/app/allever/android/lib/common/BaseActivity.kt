@@ -16,20 +16,6 @@ abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
     BaseMvvmActivity<ActivityBaseBinding, VM>() {
     protected lateinit var binding: DB
     override fun onCreate(savedInstanceState: Bundle?) {
-        //透明状态栏
-        if (showTopBar()) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
-
-        if (showTopBar())
-            StatusBarCompat.translucentStatusBar(this, true)
-        //状态栏颜色
-        if (isDarkMode()) {
-            StatusBarCompat.cancelLightStatusBar(this)
-        } else {
-            StatusBarCompat.changeToLightStatusBar(this)
-        }
         binding = inflateChildBinding()
         super.onCreate(savedInstanceState)
         parentBinding().contentContainer.addView(binding.root)
@@ -41,20 +27,23 @@ abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
             }
         }
         setVisibility(mBinding.topBar, showTopBar())
-        setVisibility(mBinding.statusBar, showStatusBar())
+        setVisibility(mBinding.statusBar, showTopBar())
     }
-
-    protected fun parentBinding(): ActivityBaseBinding = mBinding
-
-    override fun inflate(): ActivityBaseBinding  = ActivityBaseBinding.inflate(layoutInflater)
 
     abstract fun inflateChildBinding(): DB
 
+    override fun inflate() = ActivityBaseBinding.inflate(layoutInflater)
+
+    protected fun parentBinding(): ActivityBaseBinding = mBinding
+
+
     protected open fun enableAdaptStatusBar(): Boolean = true
 
-    protected open fun showStatusBar(): Boolean = true
-
-    protected open fun initTopBar(title: String?, showBackIcon: Boolean = true, leftClickListener: Runnable? = null) {
+    protected open fun initTopBar(
+        title: String?,
+        showBackIcon: Boolean = true,
+        leftClickListener: Runnable? = null
+    ) {
         ViewHelper.setVisible(mBinding.tvTitle, !TextUtils.isEmpty(title))
         ViewHelper.setVisible(mBinding.ivBack, showBackIcon)
         mBinding.tvTitle.text = title
@@ -74,10 +63,5 @@ abstract class BaseActivity<DB : ViewBinding, VM : BaseViewModel> :
 
     protected open fun adaptStatusBarView(statusBarView: View?, statusBarColor: Int) {
         ViewHelper.adaptStatusBarView(statusBarView, statusBarColor)
-    }
-
-
-    protected open fun enableEventBus(): Boolean {
-        return false
     }
 }
