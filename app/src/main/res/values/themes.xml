@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.AndroidModuleLibs" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.AndroidAppProject" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -12,13 +12,36 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <!--去除顶部的状态栏-->
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:navigationBarColor">@color/black</item>
-        <item name="android:forceDarkAllowed"  tools:targetApi="q">false</item>
+        <!--        <item name="android:windowTranslucentStatus">true</item>-->
+        <!--        <item name="android:windowIsTranslucent">true</item>-->
+        <!--        <item name="android:windowAnimationStyle">@null</item>-->
+        <!--        <item name="android:windowIsFloating">false</item>-->
+        <!--        <item name="android:windowFrame">@null</item>-->
+        <!--        <item name="android:navigationBarColor">@color/black</item>-->
+        <!--        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>-->
+    </style>
+
+    <!-- 全屏 -->
+    <style name="FullScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--        <item name="android:windowTranslucentStatus">true</item>-->
+        <!--        <item name="android:windowIsTranslucent">true</item>-->
+        <!--        <item name="android:windowAnimationStyle">@null</item>-->
+        <!--        <item name="android:windowIsFloating">false</item>-->
+        <!--        <item name="android:windowFrame">@null</item>-->
+        <!--        <item name="android:navigationBarColor">@color/black</item>-->
+        <!--        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>-->
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="main_menu_item_style">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>
