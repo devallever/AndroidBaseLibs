@@ -62,6 +62,7 @@ dependencies {
     implementation project(path: ':login-facebook')
     implementation project(path: ':login-instagram')
     implementation project(path: ':login-wechat')
+    implementation project(path: ':player-kernel-ijk')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
