@@ -22,17 +22,17 @@ object ViewHelper {
     fun setVisible(view: View, show: Boolean) {
         if (show) {
             view.animate().setListener(object: Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator?) {
+                override fun onAnimationStart(animation: Animator) {
                     view.visibility = View.VISIBLE
                 }
 
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                 }
 
-                override fun onAnimationCancel(animation: Animator?) {
+                override fun onAnimationCancel(animation: Animator) {
                 }
 
-                override fun onAnimationRepeat(animation: Animator?) {
+                override fun onAnimationRepeat(animation: Animator) {
                 }
             }).setDuration(300).setInterpolator(AccelerateInterpolator()).alpha(1f).start()
 

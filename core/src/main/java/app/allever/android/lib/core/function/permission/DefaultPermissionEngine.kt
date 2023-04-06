@@ -17,6 +17,10 @@ object DefaultPermissionEngine : BasePermissionEngine() {
         vararg permissions: String
     ) {
 
+        if (PermissionHelper.hasPermissionOrigin(context, permissions.toList())) {
+            listener.onAllGranted()
+            return
+        }
         mPermissionListener = listener
         request(context, listener) {
             val activity = when (context) {

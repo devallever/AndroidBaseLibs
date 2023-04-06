@@ -38,22 +38,22 @@ class VideoViewHolder
     private var mAlphaAnimator: ObjectAnimator? = null
 
     private var mAnimListener = object : Animator.AnimatorListener {
-        override fun onAnimationRepeat(animation: Animator?) {
+        override fun onAnimationRepeat(animation: Animator) {
 //            DLog.d(TAG, "onAnimationRepeat")
         }
 
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
 //            DLog.d(TAG, "onAnimationEnd")
         }
 
-        override fun onAnimationCancel(animation: Animator?) {
+        override fun onAnimationCancel(animation: Animator) {
 //            DLog.d(TAG, "onAnimationCancel")
             mIvPlay?.alpha =
                 ALPHA_VALUE_OPAQUE
             mIvPlay?.visibility = View.VISIBLE
         }
 
-        override fun onAnimationStart(animation: Animator?) {
+        override fun onAnimationStart(animation: Animator) {
             mIvPlay?.alpha =
                 ALPHA_VALUE_OPAQUE
 //            DLog.d(TAG, "onAnimationStart")

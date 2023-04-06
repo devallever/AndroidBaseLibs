@@ -158,30 +158,30 @@ abstract class AbstractPopupWindow<DB : ViewBinding>(ctx: Context) : BaseDialog(
         val v = view
         var orgX: Int = 0
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             onSingleTapUp()
             resetRunnable()
             return super.onSingleTapUp(e)
         }
 
-        override fun onScroll(e1: MotionEvent?, p1: MotionEvent?, x: Float, y: Float): Boolean {
+        override fun onScroll(e1: MotionEvent, p1: MotionEvent, x: Float, y: Float): Boolean {
             resetRunnable()
             return true
         }
 
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             return super.onSingleTapConfirmed(e)
         }
 
-        override fun onContextClick(e: MotionEvent?): Boolean {
+        override fun onContextClick(e: MotionEvent): Boolean {
             return super.onContextClick(e)
         }
 
-        override fun onShowPress(e: MotionEvent?) {
+        override fun onShowPress(e: MotionEvent) {
             super.onShowPress(e)
         }
 
-        override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
+        override fun onFling(p0: MotionEvent, p1: MotionEvent, p2: Float, p3: Float): Boolean {
             val moveX = p1?.rawX?.toInt() ?: 0
             val moveY = p1?.rawY?.toInt() ?: 0
             val downX = p0?.rawX?.toInt() ?: 0
@@ -215,7 +215,7 @@ abstract class AbstractPopupWindow<DB : ViewBinding>(ctx: Context) : BaseDialog(
             )
         }
 
-        override fun onDown(event: MotionEvent?): Boolean {
+        override fun onDown(event: MotionEvent): Boolean {
             orgX = event?.x?.toInt() ?: 0
             App.mainHandler.removeCallbacks(mHideTask)
             return super.onDown(event)

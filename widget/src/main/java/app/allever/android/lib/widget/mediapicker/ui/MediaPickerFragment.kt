@@ -187,10 +187,10 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
             ObjectAnimator.ofFloat(mBinding.flSelectAlbumContainer, "alpha", 0f, 1f)
         mSelectAlbumContainerAnimShow?.duration = ANIMATION_DURATION
         mSelectAlbumContainerAnimShow?.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) {
                 mBinding.flSelectAlbumContainer.visibility = View.VISIBLE
             }
         })
@@ -200,10 +200,10 @@ class MediaPickerFragment : AbstractFragment(), SelectListener {
             ObjectAnimator.ofFloat(mBinding.flSelectAlbumContainer, "alpha", 1f, 0f)
         mSelectAlbumContainerAnimHide?.duration = ANIMATION_DURATION
         mSelectAlbumContainerAnimHide?.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
                 mBinding.flSelectAlbumContainer.visibility = View.GONE
             }
         })

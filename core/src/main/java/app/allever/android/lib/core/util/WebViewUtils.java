@@ -30,7 +30,7 @@ public class WebViewUtils {
         webSettings.supportMultipleWindows();//多窗口
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
         //webview的缓存模式
-        webSettings.setAppCacheEnabled(true);
+//        webSettings.setAppCacheEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setDomStorageEnabled(true);
         webSettings.setNeedInitialFocus(true);
