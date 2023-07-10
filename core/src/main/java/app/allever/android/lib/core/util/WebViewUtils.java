@@ -1,5 +1,6 @@
 package app.allever.android.lib.core.util;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -9,6 +10,21 @@ public class WebViewUtils {
 
     //    private static final String WEBVIEW_CONTENT = "<html><head></head><body style=\"text-align:justify;margin:0;\">%s</body></html>";
     private static final String WEBVIEW_CONTENT = "<html><head></head><body style=\"margin:0;\">%s</body></html>";
+
+
+    /**
+     * 回调Android 代码
+     * @param webView
+     * @param content
+     * @param inf
+     * @param objectName
+     */
+    @SuppressLint("JavascriptInterface")
+    public static void loadData(WebView webView, String content, Object inf, String objectName) {
+        webView.addJavascriptInterface(inf, objectName);
+        loadData(webView, content);
+    }
+
 
     public static void loadData(WebView webView, String content) {
         if (webView == null) {
@@ -49,7 +65,11 @@ public class WebViewUtils {
         webView.setBackgroundColor(0);
 
 //        webView.loadData(String.format(WEBVIEW_CONTENT, content), "text/html", "utf-8");
-        webView.loadData(getWebViewContent(content), "text/html;charset=UTF-8", "utf-8");
+        if (content.startsWith("http")) {
+            webView.loadUrl(content);
+        } else {
+            webView.loadData(getWebViewContent(content), "text/html;charset=UTF-8", "utf-8");
+        }
     }
 
     /**
