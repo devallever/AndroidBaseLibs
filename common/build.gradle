@@ -45,10 +45,10 @@ dependencies {
     api project(path: ':core')
     api project(path: ':mvvm')
     api project(path: ':widget')
-    api project(path: ':network')
-    api project(path: ':permission-permissionx')
-    api project(path: ':datastore-mmkv')
     api project(path: ':imageloader-glide')
+    api project(path: ':network')
+
+    api paging3
 
     api eventBus
 }

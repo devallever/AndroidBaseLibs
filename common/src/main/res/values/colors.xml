@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="googleRed">#EB4334</color>
+    <color name="googleGreen">#35AA53</color>
+    <color name="googleBleu">#4586F3</color>
+    <color name="googleYellow">#FBBD06</color>
 </resources>
