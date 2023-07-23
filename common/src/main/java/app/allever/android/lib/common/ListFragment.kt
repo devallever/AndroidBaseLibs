@@ -3,6 +3,7 @@ package app.allever.android.lib.common
 import android.text.TextUtils
 import android.view.KeyEvent
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import app.allever.android.lib.common.databinding.FragmentListBinding
 import app.allever.android.lib.core.helper.DisplayHelper
@@ -24,7 +25,7 @@ abstract class ListFragment<DB : ViewBinding, VM : BaseViewModel, T> :
 
         mBinding.smartRefreshLayout.setEnableOverScrollDrag(true)
 
-        mBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        mBinding.recyclerView.layoutManager = layoutManager()
 
         mAdapter = getAdapter()
         mBinding.recyclerView.adapter = mAdapter
@@ -56,6 +57,10 @@ abstract class ListFragment<DB : ViewBinding, VM : BaseViewModel, T> :
     abstract fun getList(): MutableList<T>
     open protected fun onItemClick(position: Int, item: T) {
 
+    }
+
+    open protected fun layoutManager(): RecyclerView.LayoutManager {
+        return LinearLayoutManager(requireContext())
     }
 
     open fun getTitle(): String {
