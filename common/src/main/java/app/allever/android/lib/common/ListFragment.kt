@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 abstract class ListFragment<DB : ViewBinding, VM : BaseViewModel, T> :
     BaseFragment<FragmentListBinding, ListViewModel>() {
 
-    private var mAdapter: BaseQuickAdapter<T, *>? = null
+    protected var mAdapter: BaseQuickAdapter<T, *>? = null
 
     override fun inflate() = FragmentListBinding.inflate(layoutInflater)
 

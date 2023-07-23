@@ -1,5 +1,6 @@
 package app.allever.android.lib.mvvm.base
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -7,6 +8,7 @@ import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import app.allever.android.lib.core.function.paging.BasePagingSource
 import app.allever.android.lib.core.function.paging.PagingHelper
+import io.github.studycwq.extension.asLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,6 +36,11 @@ open class BaseViewModel : ViewModel() {
     protected val ioScope by lazy {
         CoroutineScope(Dispatchers.IO + mJob)
     }
+
+    protected val _loadMoreStatusLiveData = MutableLiveData(false)
+    val loadMoreStatusLiveData = _loadMoreStatusLiveData.asLiveData()
+    protected val _refreshStatusLiveData = MutableLiveData(false)
+    val refreshStatusLiveData = _refreshStatusLiveData.asLiveData()
 
     /***
      * Activity#onCreate()后调用
