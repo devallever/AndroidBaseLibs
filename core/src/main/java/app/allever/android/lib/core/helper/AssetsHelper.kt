@@ -1,17 +1,42 @@
 package app.allever.android.lib.core.helper
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import app.allever.android.lib.core.app.App
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.*
 
 object AssetsHelper {
     private val mAssetsRes = WeakHashMap<String, Any>()
+
+    suspend fun getJson(context: Context, fileName: String?): String = withContext(Dispatchers.IO) {
+        val stringBuilder = StringBuilder()
+        try {
+            val assetManager = context.assets
+            val bf = BufferedReader(
+                InputStreamReader(
+                    assetManager.open(
+                        fileName!!
+                    )
+                )
+            )
+            var line: String?
+            while (bf.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        stringBuilder.toString()
+    }
 
     fun toInputStream(path: String?): InputStream? {
         if (path != null) {

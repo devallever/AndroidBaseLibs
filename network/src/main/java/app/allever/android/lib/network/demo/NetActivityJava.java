@@ -56,7 +56,7 @@ public class NetActivityJava extends AbstractActivity {
 //            @Override
 //            public void onSuccess(@NonNull BaseResponse<?> response) {
 //                List<BannerData> list = (List<BannerData>) response.getData();
-//                LogUtils.INSTANCE.d(list.size() + "");
+//                LoggerKt.log(list.size() + "");
 //            }
 //
 //            @Override
@@ -90,7 +90,7 @@ public class NetActivityJava extends AbstractActivity {
 //
 //            @Override
 //            public void resumeWith(@NonNull Object o) {
-//                LogUtils.INSTANCE.d(o.toString());
+//                LoggerKt.log(o.toString());
 //            }
 //        });
     }
