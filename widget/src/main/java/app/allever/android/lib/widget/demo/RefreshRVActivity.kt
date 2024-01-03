@@ -2,7 +2,6 @@ package app.allever.android.lib.widget.demo
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.base.AbstractActivity

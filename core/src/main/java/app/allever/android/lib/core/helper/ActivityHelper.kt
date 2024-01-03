@@ -43,7 +43,7 @@ object ActivityHelper {
 
     fun resumeTop(weakRefActivity: WeakReference<Activity>?) {
         val index = activityList.indexOf(weakRefActivity)
-        activityList.add(activityList.removeAt(index))
+        activityList.add(0, activityList.removeAt(index))
     }
 
     fun remove(weakRefActivity: WeakReference<Activity>?) {
