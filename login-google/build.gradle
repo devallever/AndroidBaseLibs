@@ -43,5 +43,5 @@ android {
 
 dependencies {
     api project(path: ':core')
-    api 'com.google.android.gms:play-services-auth:+'
+    api 'com.google.android.gms:play-services-auth:20.7.0'
 }

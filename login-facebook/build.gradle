@@ -43,8 +43,7 @@ android {
 
 dependencies {
     api project(path: ':core')
-//    api 'com.google.android.gms:play-services-auth:+'
-    api 'com.facebook.android:facebook-login:+'
-    api 'com.facebook.android:facebook-share:+'
-    api 'com.facebook.fresco:fresco:+'
+    api 'com.facebook.android:facebook-login:16.3.0'
+    api 'com.facebook.android:facebook-share:16.3.0'
+    api 'com.facebook.fresco:fresco:3.1.3'
 }
