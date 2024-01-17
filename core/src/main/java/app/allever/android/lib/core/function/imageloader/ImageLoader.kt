@@ -54,7 +54,7 @@ object ImageLoader {
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine?.load(it ?: resource, imageView, errorResId, placeholder)
-            downloadInternal(it, resource)
+//            downloadInternal(it, resource)
         }
     }
 
@@ -76,7 +76,7 @@ object ImageLoader {
                 errorResId,
                 placeholder
             )
-            downloadInternal(it, resource)
+//            downloadInternal(it, resource)
         }
     }
 
@@ -90,14 +90,14 @@ object ImageLoader {
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine?.loadRound(it ?: resource, imageView, radius, errorResId, placeholder)
-            downloadInternal(it, resource)
+//            downloadInternal(it, resource)
         }
     }
 
     fun loadGif(resource: Any, imageView: ImageView) {
         loadInternal(resource, true) {
             mLoaderEngine?.loadGif(it ?: resource, imageView)
-            downloadInternal(it, resource)
+//            downloadInternal(it, resource)
         }
     }
 
@@ -109,7 +109,7 @@ object ImageLoader {
     ) {
         loadInternal(resource, loadOrigin) {
             mLoaderEngine?.loadBlur(it ?: resource, imageView, radius)
-            downloadInternal(it, resource)
+//            downloadInternal(it, resource)
         }
     }
 

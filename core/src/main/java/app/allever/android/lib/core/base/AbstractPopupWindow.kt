@@ -164,7 +164,7 @@ abstract class AbstractPopupWindow<DB : ViewBinding>(ctx: Context) : BaseDialog(
             return super.onSingleTapUp(e)
         }
 
-        override fun onScroll(e1: MotionEvent, p1: MotionEvent, x: Float, y: Float): Boolean {
+        override fun onScroll(e1: MotionEvent?, p1: MotionEvent, x: Float, y: Float): Boolean {
             resetRunnable()
             return true
         }
@@ -181,7 +181,7 @@ abstract class AbstractPopupWindow<DB : ViewBinding>(ctx: Context) : BaseDialog(
             super.onShowPress(e)
         }
 
-        override fun onFling(p0: MotionEvent, p1: MotionEvent, p2: Float, p3: Float): Boolean {
+        override fun onFling(p0: MotionEvent?, p1: MotionEvent, p2: Float, p3: Float): Boolean {
             val moveX = p1?.rawX?.toInt() ?: 0
             val moveY = p1?.rawY?.toInt() ?: 0
             val downX = p0?.rawX?.toInt() ?: 0

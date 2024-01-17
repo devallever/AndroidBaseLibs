@@ -13,6 +13,13 @@ interface IPermissionEngine {
     ) {
     }
 
+    fun requestPermission(
+        context: Context,
+        listener: PermissionListener,
+        permissions: List<String>
+    ) {
+    }
+
     fun requestPermission(listener: PermissionListener, vararg permissions: String)
     fun jumpSetting(context: Context, requestCode: Int)
     fun handlePermissionResult(

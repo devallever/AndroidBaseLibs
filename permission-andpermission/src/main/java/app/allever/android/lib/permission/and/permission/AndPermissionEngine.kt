@@ -18,6 +18,14 @@ class AndPermissionEngine : BasePermissionEngine() {
         request(context, listener, *permissions)
     }
 
+    override fun requestPermission(
+        context: Context,
+        listener: PermissionListener,
+        permissions: List<String>
+    ) {
+        request(context, listener, permissions.toTypedArray())
+    }
+
     /**
      * 默认使用栈顶Activity作为context，当Activity销毁后，同意或拒绝会崩溃
      */
@@ -36,6 +44,25 @@ class AndPermissionEngine : BasePermissionEngine() {
         context: Context,
         listener: PermissionListener,
         vararg permissions: String
+    ) {
+        request(context, listener) {
+            AndPermission.with(context)
+                .runtime()
+                .permission(permissions)
+                .onGranted {
+                    handleAllGranted(permissions, it, listener)
+                }
+                .onDenied {
+                    handleDenied(permissions, context, listener, it)
+                }
+                .start()
+        }
+    }
+
+    private fun request(
+        context: Context,
+        listener: PermissionListener,
+         permissions: Array<String>
     ) {
         request(context, listener) {
             AndPermission.with(context)
