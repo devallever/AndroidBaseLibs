@@ -11,6 +11,39 @@ object DefaultPermissionEngine : BasePermissionEngine() {
     private var mPermissionListener: PermissionListener? = null
 
     private const val RC_CODE = 0x01
+
+    override fun requestPermission(
+        context: Context,
+        listener: PermissionListener,
+        permissions: MutableList<String>
+    ) {
+        if (PermissionHelper.hasPermissionOrigin(context, permissions.toList())) {
+            listener.onAllGranted()
+            return
+        }
+        mPermissionListener = listener
+        request(context, listener) {
+            val activity = when (context) {
+                is Activity -> {
+                    context
+                }
+                is Fragment -> {
+                    context.requireActivity()
+                }
+                else -> {
+                    ActivityHelper.getTopActivity()
+                }
+            }
+
+            activity?.let {
+                PermissionHelper.requestPermissionOrigin(
+                    it,
+                    RC_CODE,
+                    permissions
+                )
+            }
+        }
+    }
     override fun requestPermission(
         context: Context,
         listener: PermissionListener,
