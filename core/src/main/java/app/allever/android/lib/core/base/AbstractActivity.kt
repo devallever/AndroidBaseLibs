@@ -5,14 +5,21 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import app.allever.android.lib.core.R
 import app.allever.android.lib.core.app.App
 import app.allever.android.lib.core.ext.log
 import app.allever.android.lib.core.ext.toast
-import app.allever.android.lib.core.helper.*
+import app.allever.android.lib.core.helper.ActivityHelper
+import app.allever.android.lib.core.helper.CoroutineHelper
+import app.allever.android.lib.core.helper.DisplayHelper
+import app.allever.android.lib.core.helper.HandlerHelper
+import app.allever.android.lib.core.helper.LifecycleHelper
+import app.allever.android.lib.core.helper.ViewHelper
 import app.allever.android.lib.core.util.StatusBarCompat
 import app.allever.android.lib.core.widget.swipebacklayout.BGAKeyboardUtil
 import app.allever.android.lib.core.widget.swipebacklayout.BGASwipeBackHelper
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
 abstract class AbstractActivity : AppCompatActivity(), BGASwipeBackHelper.Delegate {
