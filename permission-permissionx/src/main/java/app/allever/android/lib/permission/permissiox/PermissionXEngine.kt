@@ -26,16 +26,6 @@ class PermissionXEngine : BasePermissionEngine() {
         }
     }
 
-    override fun requestPermission(
-        context: Context,
-        listener: PermissionListener,
-        permissions: List<String>
-    ) {
-        request(context, listener) {
-            request(context, listener, permissions)
-        }
-    }
-
     override fun jumpSetting(context: Context, requestCode: Int) {
         PermissionUtil.GoToSetting(context)
     }

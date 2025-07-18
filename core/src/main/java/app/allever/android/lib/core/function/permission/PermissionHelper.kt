@@ -30,13 +30,6 @@ object PermissionHelper : IPermissionEngine {
         mEngine.requestPermission(context, listener, *permissions)
     }
 
-    override fun requestPermission(
-        context: Context,
-        listener: PermissionListener,
-        permissions: List<String>
-    ) {
-        mEngine.requestPermission(context, listener, permissions)
-    }
 
     override fun requestPermission(listener: PermissionListener, vararg permissions: String) {
         mEngine.requestPermission(listener, *permissions)

@@ -18,14 +18,6 @@ class AndPermissionEngine : BasePermissionEngine() {
         request(context, listener, *permissions)
     }
 
-    override fun requestPermission(
-        context: Context,
-        listener: PermissionListener,
-        permissions: List<String>
-    ) {
-        request(context, listener, permissions.toTypedArray())
-    }
-
     /**
      * 默认使用栈顶Activity作为context，当Activity销毁后，同意或拒绝会崩溃
      */
