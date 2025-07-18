@@ -1,6 +1,7 @@
 package app.allever.android.lib.core.function.media
 
 import android.content.Context
+import android.content.res.AssetFileDescriptor
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
@@ -107,6 +108,17 @@ class SongMediaPlayer(onPlayerListener: OnPlayerListener? = null) {
         reset()
         try {
             mediaPlayer.setDataSource(path)
+            mediaPlayer.prepareAsync()
+        } catch (e: Exception) {
+            notifyError("error: load: ${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    fun loadAssets(assetFd: AssetFileDescriptor) {
+        reset()
+        try {
+            mediaPlayer.setDataSource(assetFd)
             mediaPlayer.prepareAsync()
         } catch (e: Exception) {
             notifyError("error: load: ${e.message}")

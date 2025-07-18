@@ -78,6 +78,13 @@ object DefaultPermissionEngine : BasePermissionEngine() {
         }
     }
 
+    override fun requestPermission(
+        context: Context,
+        listener: PermissionListener,
+        permissions: List<String>
+    ) {
+    }
+
     override fun requestPermission(listener: PermissionListener, vararg permissions: String) {
         ActivityHelper.getTopActivity()?.let { requestPermission(it, listener, *permissions) }
     }

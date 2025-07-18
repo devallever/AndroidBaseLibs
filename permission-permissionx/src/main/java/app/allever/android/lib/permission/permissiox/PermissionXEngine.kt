@@ -26,6 +26,16 @@ class PermissionXEngine : BasePermissionEngine() {
         }
     }
 
+    override fun requestPermission(
+        context: Context,
+        listener: PermissionListener,
+        permissions: List<String>
+    ) {
+        request(context, listener) {
+            request(context, listener, permissions)
+        }
+    }
+
     override fun jumpSetting(context: Context, requestCode: Int) {
         PermissionUtil.GoToSetting(context)
     }
@@ -51,6 +61,31 @@ class PermissionXEngine : BasePermissionEngine() {
                     listener.onAllGranted()
                 } else {
                     handleDenied(permissions, context, listener, deniedList)
+                }
+            }
+    }
+
+    private fun request(
+        context: Context,
+        listener: PermissionListener,
+        permissions: List<String>
+    ) {
+        val permissionMediator = if (context is FragmentActivity) {
+            PermissionX.init(context)
+        } else {
+            if (context is Fragment) {
+                PermissionX.init(context)
+            } else {
+                PermissionX.init(ActivityHelper.getTopActivity() as? FragmentActivity)
+            }
+        }
+        permissionMediator.permissions(permissions)
+            .request { allGranted, grantedList, deniedList ->
+                if (allGranted) {
+                    log("同意了所有权限")
+                    listener.onAllGranted()
+                } else {
+                    handleDenied(permissions.toTypedArray(), context, listener, deniedList)
                 }
             }
     }
