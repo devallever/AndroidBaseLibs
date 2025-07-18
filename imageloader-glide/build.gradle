@@ -44,5 +44,5 @@ dependencies {
 
     api glide
     api glideTransformations
-    kapt 'com.github.bumptech.glide:compiler:4.13.0'
+//    kapt "com.github.bumptech.glide:compiler:4.13.0"
 }
