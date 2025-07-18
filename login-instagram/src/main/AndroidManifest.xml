@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.allever.android.lib.login.instagram">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <activity android:name=".LoginInsActivity"/>
+        <activity android:name="app.allever.android.lib.login.instagram.LoginInsActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

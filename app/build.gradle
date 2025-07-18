@@ -6,6 +6,8 @@ plugins {
 
 android {
     compileSdk rootProject.ext.compileSdkVersion
+    namespace ""
+    namespace "app.allever.android.lib.project"
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -26,12 +28,10 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = false
-    }
-
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding false
+        viewBinding true
+        buildConfig true
     }
 
     compileOptions {
@@ -65,7 +65,4 @@ dependencies {
     implementation project(path: ':login-wechat')
     implementation project(path: ':player-kernel-ijk')
     implementation project(path: ':datastore-mmkv')
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

@@ -6,6 +6,7 @@ plugins {
 
 android {
     compileSdk rootProject.ext.compileSdkVersion
+    namespace "app.allever.android.lib.login.facebook"
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -24,12 +25,10 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = false
-    }
-
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding false
+        viewBinding true
+        buildConfig true
     }
 
     compileOptions {
@@ -44,7 +43,7 @@ android {
 dependencies {
     api project(path: ':core')
 //    api 'com.google.android.gms:play-services-auth:+'
-    api 'com.facebook.android:facebook-login:+'
-    api 'com.facebook.android:facebook-share:+'
-    api 'com.facebook.fresco:fresco:+'
+    api 'com.facebook.android:facebook-login:18.0.3'
+    api 'com.facebook.android:facebook-share:18.0.3'
+    api 'com.facebook.fresco:fresco:3.6.0'
 }

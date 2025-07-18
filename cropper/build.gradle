@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdk rootProject.ext.compileSdkVersion
+    namespace "app.allever.androd.lib.cropper"
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -28,6 +29,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding false
+        viewBinding true
+        buildConfig true
     }
 }
 

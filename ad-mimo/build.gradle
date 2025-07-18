@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdk rootProject.ext.compileSdkVersion
+    namespace "app.allever.android.lib.ad.mimo"
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion

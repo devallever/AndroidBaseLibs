@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdk rootProject.ext.compileSdkVersion
+    namespace "app.allever.android.lib.mvp"
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -22,8 +23,10 @@ android {
         }
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding false
+        viewBinding true
+        buildConfig true
     }
 
     compileOptions {

@@ -154,10 +154,10 @@ public class LoginInsActivity extends Activity {
         webSettings.setTextSize(WebSettings.TextSize.NORMAL);
         webSettings.setDomStorageEnabled(true);
         webSettings.setDatabaseEnabled(true);
-        webSettings.setAppCacheEnabled(true);
+//        webSettings.setAppCacheEnabled(true);
         webSettings.setGeolocationEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_NORMAL);
-        webSettings.setAppCacheMaxSize(5 * 1048576);
+//        webSettings.setAppCacheMaxSize(5 * 1048576);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.setVerticalScrollBarEnabled(false);
         mWebView.setHorizontalScrollBarEnabled(false);
